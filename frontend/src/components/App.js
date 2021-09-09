@@ -1,27 +1,25 @@
-import logo from '../logo.svg';
+import { useState } from 'react';
 import '../App.css';
-import BasicComponent from './BasicComponent';
+import ButtonAppBar from './Appbar/Appbar';
 
 function App() {
+
+  const sessionUuid = '009876';
+
+  // our useState hook in the react component to remember the logged in user (or if they ar enot logged in)
+  const [currentUserUuid, setCurrentUserUuid] = useState({
+    uuid: sessionUuid || null
+  })
+
+  console.log("what is currentUserUui? " + currentUserUuid.uuid);
+
   return (
     <>
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Poo Poo
-          </a>
-        </header>
+        <ButtonAppBar
+          setCurrentUserUuid={setCurrentUserUuid}
+        />
       </div>
-      <BasicComponent></BasicComponent>
     </>
   );
 }
