@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-  },
+  }
 }));
 
 function ButtonAppBar({ setCurrentUserUuid }) {
@@ -37,7 +37,7 @@ function ButtonAppBar({ setCurrentUserUuid }) {
           <Typography variant="h6" className={classes.title}>
             PasswordKepper logged in
           </Typography>
-          <Button 
+          <Button
             color="inherit"
             onClick={() => buttonClick(setCurrentUserUuid)}
           > Logout

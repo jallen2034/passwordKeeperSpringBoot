@@ -1,17 +1,18 @@
 import { useState } from 'react';
-import '../App.css';
 import ButtonAppBar from './Appbar/Appbar';
 
 function App() {
 
-  const sessionUuid = '009876';
+  // usestate our app will use we will drill down into our components
+  // this is a hardcoded value for now
+  const sessionUuid = '009876'
+  const [clickedPassword, setClickedPassword] = useState('')
+  const [register, setRegister] = useState('')
 
   // our useState hook in the react component to remember the logged in user (or if they ar enot logged in)
   const [currentUserUuid, setCurrentUserUuid] = useState({
     uuid: sessionUuid || null
   })
-
-  console.log("what is currentUserUui? " + currentUserUuid.uuid);
 
   return (
     <>
