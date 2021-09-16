@@ -1,9 +1,9 @@
 import Button from '@material-ui/core/Button';
 
-function SimpleButton(setCurrentUserUuid) {
+function SimpleButton({type}) {
     return (
         <Button variant="contained" color="primary" disableElevation>
-            Test button
+            {type}
         </Button>
     );
 }

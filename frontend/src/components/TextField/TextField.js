@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // component itself
-function BasicTextFields() {
+function BasicTextFields({passwordText}) {
   const classes = useStyles();
 
   return (

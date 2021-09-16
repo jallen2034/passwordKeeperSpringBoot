@@ -1,12 +1,13 @@
 import React from 'react';
 
-function RelativeInformation(){
+function RelativeInformation({url, name, category}){
+
   return (
     <>
       <div>
-        <h4>www.facebook.com</h4>
-        <h5>Save On Foods</h5>
-        <h5>Social Media</h5>
+        <h4>{url}</h4>
+        <h5>{category}</h5>
+        <h5>{name}</h5>
       </div>
     </>
   );
