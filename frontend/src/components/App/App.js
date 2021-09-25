@@ -13,11 +13,11 @@ function App() {
   const [clickedPassword, setClickedPassword] = useState('')
   const [register, setRegister] = useState(false)
   const [currentUserUuid, setCurrentUserUuid] = useState({
-    uuid: sessionUuid || null
+    uuid: sessionUuid || false
   })
 
-  console.log(register)
-  console.log(currentUserUuid.uuid)
+  console.log("register in app component: ", register)
+  console.log("currentUserUuid.uuid in app component", currentUserUuid.uuid)
 
   if (!register && !currentUserUuid.uuid) {
     return (
@@ -25,6 +25,8 @@ function App() {
         <div className="App">
           <ButtonAppBar
             setCurrentUserUuid={setCurrentUserUuid}
+            currentUserUuid={currentUserUuid}
+            register={register}
           />
           <SignIn></SignIn>
         </div>
@@ -36,6 +38,8 @@ function App() {
         <div className="App">
           <ButtonAppBar
             setCurrentUserUuid={setCurrentUserUuid}
+            currentUserUuid={currentUserUuid}
+            register={register}
           />
           <Register></Register>
         </div>
@@ -47,6 +51,8 @@ function App() {
         <div className="App">
           <ButtonAppBar
             setCurrentUserUuid={setCurrentUserUuid}
+            currentUserUuid={currentUserUuid}
+            register={register}
           />
           <PasswordVault></PasswordVault>
         </div>

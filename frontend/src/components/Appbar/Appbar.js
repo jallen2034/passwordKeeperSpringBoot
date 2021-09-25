@@ -6,10 +6,17 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 // import MenuIcon from '@material-ui/icons/Menu'; this is broken for some reason TODO - FIX
 
-// test test
-const buttonClick = function (setCurrentUserUuid) {
+/* test test
+ * for now set the users uuid to null if this functionis called and the current uuid is not null
+ * set a hardcoded uuid for when a user logs in (for now) */
+const buttonClick = function (setCurrentUserUuid, currentUserUuid) {
   console.log("setCurrentUserUuid in ButtonAppBar component? " + setCurrentUserUuid);
-  setCurrentUserUuid((prev) => ({ ...prev, uuid: null }));
+
+  if(currentUserUuid) {
+    setCurrentUserUuid((prev) => ({ ...prev, uuid: null }));
+  } else {
+    setCurrentUserUuid((prev) => ({ ...prev, uuid: 4321 }));
+  }
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -24,8 +31,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function ButtonAppBar({ setCurrentUserUuid }) {
+function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register }) {
   const classes = useStyles();
+
+  // for storybook testing of this component - hardcoed values - will be removed later when developing actual react app
+  if (!currentUserUuid && !register) {
+    currentUserUuid = false
+    register = true
+  }
 
   return (
     <div className={classes.root}>
@@ -37,11 +50,33 @@ function ButtonAppBar({ setCurrentUserUuid }) {
           <Typography variant="h6" className={classes.title}>
             PasswordKepper logged in
           </Typography>
-          <Button
-            color="inherit"
-            onClick={() => buttonClick(setCurrentUserUuid)}
-          > Logout
-          </Button>
+          {(() => {
+            if (!currentUserUuid && !register) {
+              return (
+                <Button
+                  color="inherit"
+                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid)}
+                > Register
+                </Button>
+              )
+            } else if (!currentUserUuid && !register) {
+              return (
+                <Button
+                  color="inherit"
+                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid)}
+                > Login
+                </Button>
+              )
+            } else {
+              return (
+                <Button
+                  color="inherit"
+                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid)}
+                > Logout
+                </Button>
+              )
+            }
+          })()}
         </Toolbar>
       </AppBar>
     </div>
