@@ -84,7 +84,7 @@ const passwordCompanyDivsList = []
 // loop through array of retrieved passwords from the API
 mockArrPasswordsAPI.forEach((item, index) => {
 
-  // hardcoded user id for now, this will later change to be dynamic on user login
+  // hardcoded user id for now, this will later change to be dynamic on user login (usestate)
   if (item.user_id === 1) {
     passwordDivsList.push(<Grid item xs={6} md={3}>
       <PasswordEntry
