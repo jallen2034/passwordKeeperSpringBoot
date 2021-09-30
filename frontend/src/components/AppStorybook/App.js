@@ -16,9 +16,6 @@ function App() {
     uuid: sessionUuid || false
   })
 
-  console.log("register in app component: ", register)
-  console.log("currentUserUuid.uuid in app component", currentUserUuid.uuid)
-
   if (!register && !currentUserUuid.uuid) {
     return (
       <>
