@@ -9,15 +9,17 @@ public class Users {
     @Id  // instance variables that match up with the password table of our database
     private int id;
 
-    @Column(name = "email")
+    @Column(name = "email")  // these represent the columns in our tables of our ORM
     private String email;
 
     @Column(name = "master_password")
     private String master_password;
 
+    // default constructor
     public Users() {
     }
 
+    // constructor
     public Users(int id, String email, String master_password) {
         this.id = id;
         this.email = email;

@@ -1,10 +1,7 @@
 package com.example.passwordKeepr.passwordKeeprTest.Users;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.ArrayList;
 
 // data access layer
 // the service layer is mostly responsible for business logic, we are using the N-Tier design pattern here

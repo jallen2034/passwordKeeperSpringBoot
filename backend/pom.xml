@@ -22,6 +22,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+		<!-- https://stackoverflow.com/questions/47907236/nosuchmethoderror-org-springframework-data-repository-config-repositoryconfigur -->
+		<!-- this has to match the version of the parent, ie 2.5.5 -->
+		<!-- I want the sweet release of death™ -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>2.5.5</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
