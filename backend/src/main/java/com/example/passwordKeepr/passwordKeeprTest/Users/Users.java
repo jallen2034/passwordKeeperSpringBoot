@@ -1,19 +1,17 @@
 package com.example.passwordKeepr.passwordKeeprTest.Users;
 import javax.persistence.*;
-import java.util.UUID;
 
-// model
+// https://stackoverflow.com/questions/41791802/autoincrement-id-postgresql-and-spring-boot-data-jpa
 @Entity // for hibernate
 @Table(name = "users") // for the table in our database
 public class Users {
 
-    @Id  // instance variables that match up with the password table of our database
+    // instance variables that match up with the password table of our db - id autoincrements
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private int id;
-
-    @Column(name = "email")  // these represent the columns in our tables of our ORM
     private String email;
-
-    @Column(name = "master_password")
     private String master_password;
 
     // default constructor

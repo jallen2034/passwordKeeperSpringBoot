@@ -8,14 +8,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.UUID;
 
 /* https://stackoverflow.com/questions/32801008/how-to-find-out-if-an-email-already-exist-with-jpa-spring-and-sending-some-error
  * https://mkyong.com/regular-expressions/how-to-validate-password-with-regular-expression/
- * https://github.com/patrickfav/bcrypt
- * this class contains regex to validate a 8-20 character password with at least one digit, one
- * lowercase letter, one uppercase letter, one special character with no white spaces
- * Example: VeryBigLemon20!*/
+ * contains regex to validate a 8-20 character password with at least one digit, one
+ * lowercase letter, one uppercase letter, one special character with no white spaces */
 @Service
 public class RegisterService {
 
@@ -49,7 +46,7 @@ public class RegisterService {
             "qwerty"
         );
 
-        // blacklist users inputted password if its in the above array
+        // blacklist users inputted password
         for (int i = 0; i < blacklistedValues.size(); i++) {
             if (password.equals(blacklistedValues.get(i)) == true) {
                 this.duplicateFound = true;
@@ -75,7 +72,7 @@ public class RegisterService {
             throw new ApiRequestException("User already registered!");
         } else {
             this.passwordVerifier(password, email);
-            return "We're still working on this!";
+            return "New user created!";
         }
     }
 
@@ -93,10 +90,7 @@ public class RegisterService {
     private void commitNewUser(String email, String password)  {
         this.passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = this.passwordEncoder.encode(password);
-        System.out.println(encodedPassword);
-
-        // hardcoded ID here for now works, need to figure out how to auto increment this in JPA TODO
-        Users newUser = new Users(7, email, password);
+        Users newUser = new Users(0, email, encodedPassword);
         usersRepository.save(newUser);
     }
 }
