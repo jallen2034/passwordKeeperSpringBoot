@@ -1,9 +1,10 @@
 package com.example.passwordKeepr.passwordKeeprTest.Users;
 import javax.persistence.*;
+import java.util.UUID;
 
-// this is our model
-@Entity // this annotation is for hibernate
-@Table(name = "users") // this one is for the table in our database
+// model
+@Entity // for hibernate
+@Table(name = "users") // for the table in our database
 public class Users {
 
     @Id  // instance variables that match up with the password table of our database
@@ -26,7 +27,6 @@ public class Users {
         this.master_password = master_password;
     }
 
-    // getters and setters :))
     public int getId() {
         return id;
     }

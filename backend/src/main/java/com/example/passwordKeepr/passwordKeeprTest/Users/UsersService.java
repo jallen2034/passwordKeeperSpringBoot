@@ -3,8 +3,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-// data access layer
-// the service layer is mostly responsible for business logic, we are using the N-Tier design pattern here
+/* data access layer
+ * the service layer is mostly responsible for business logic, we are using the N-Tier design pattern here */
 @Service
 public class UsersService {
 

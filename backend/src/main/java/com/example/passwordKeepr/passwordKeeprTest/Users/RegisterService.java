@@ -1,13 +1,29 @@
 package com.example.passwordKeepr.passwordKeeprTest.Users;
+import com.example.passwordKeepr.passwordKeeprTest.Exception.ApiRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.UUID;
 
-// https://stackoverflow.com/questions/32801008/how-to-find-out-if-an-email-already-exist-with-jpa-spring-and-sending-some-error
+/* https://stackoverflow.com/questions/32801008/how-to-find-out-if-an-email-already-exist-with-jpa-spring-and-sending-some-error
+ * https://mkyong.com/regular-expressions/how-to-validate-password-with-regular-expression/
+ * https://github.com/patrickfav/bcrypt
+ * this class contains regex to validate a 8-20 character password with at least one digit, one
+ * lowercase letter, one uppercase letter, one special character with no white spaces
+ * Example: VeryBigLemon20!*/
 @Service
 public class RegisterService {
 
+    private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
     private final UsersRepository usersRepository;
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
+    private boolean duplicateFound = false;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public RegisterService(UsersRepository usersRepository) {
@@ -20,22 +36,67 @@ public class RegisterService {
         String password = (String) lookupRequestObject.get("password");
         String confirmPassword = (String) lookupRequestObject.get("confirmPassword");
 
+        List<String> blacklistedValues = Arrays.asList(
+            "Passw0rd",
+            "Password123",
+            "password",
+            "Password!",
+            "123456",
+            "1234567",
+            "12345678",
+            "123456789",
+            "12345678910",
+            "qwerty"
+        );
+
+        // blacklist users inputted password if its in the above array
+        for (int i = 0; i < blacklistedValues.size(); i++) {
+            if (password.equals(blacklistedValues.get(i)) == true) {
+                this.duplicateFound = true;
+                break;
+            }
+        }
+
         if (email == null) {
-            return "Must provide email!";
+            throw new ApiRequestException("Must provide email!");
         } else if (password == null) {
-            return "Must provide password!";
+            throw new ApiRequestException("Must provide password!");
         } else if (confirmPassword == null) {
-            return "Must provide password confirmation!";
+            throw new ApiRequestException("Must provide password confirmation!");
         } else if (password.equals(confirmPassword) == false) {
-            return "Password and password confirmation do not match!";
+            throw new ApiRequestException("Password and password confirmation do not match!");
+        } else if (duplicateFound == true) {
+            throw new ApiRequestException("You can't use that password!");
         }
 
         Users usersFromDb = usersRepository.findByEmail(email);
 
         if (usersFromDb != null) {
-            return "User already registered!";
+            throw new ApiRequestException("User already registered!");
         } else {
-            return "Hello! Account created!";
+            this.passwordVerifier(password, email);
+            return "We're still working on this!";
         }
+    }
+
+    // https://www.techiedelight.com/validate-password-java/
+    private void passwordVerifier(String password, String email) {
+        System.out.println(password);
+
+        if (PASSWORD_PATTERN.matcher(password).matches()) {
+            this.commitNewUser(email, password);
+        } else {
+            throw new ApiRequestException("Password does not meet complexity requirement!");
+        }
+    }
+
+    private void commitNewUser(String email, String password)  {
+        this.passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = this.passwordEncoder.encode(password);
+        System.out.println(encodedPassword);
+
+        // hardcoded ID here for now works, need to figure out how to auto increment this in JPA TODO
+        Users newUser = new Users(7, email, password);
+        usersRepository.save(newUser);
     }
 }
