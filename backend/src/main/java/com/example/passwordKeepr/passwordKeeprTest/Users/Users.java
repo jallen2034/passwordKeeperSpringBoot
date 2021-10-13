@@ -1,5 +1,6 @@
 package com.example.passwordKeepr.passwordKeeprTest.Users;
 import javax.persistence.*;
+import java.util.UUID;
 
 // https://stackoverflow.com/questions/41791802/autoincrement-id-postgresql-and-spring-boot-data-jpa
 @Entity // for hibernate
@@ -13,16 +14,18 @@ public class Users {
     private int id;
     private String email;
     private String master_password;
+    private UUID uuid;
 
     // default constructor
     public Users() {
     }
 
     // constructor
-    public Users(int id, String email, String master_password) {
+    public Users(int id, String email, String master_password, UUID uuid) {
         this.id = id;
         this.email = email;
         this.master_password = master_password;
+        this.uuid = uuid;
     }
 
     public int getId() {
@@ -48,6 +51,10 @@ public class Users {
     public void setMasterPassword(String masterPassword) {
         this.master_password = masterPassword;
     }
+
+    public UUID getUuid() { return uuid; }
+
+    public void setUuid(UUID uuid) { this.uuid = uuid; }
 
     // for debugging
     @Override

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 /* https://stackoverflow.com/questions/32801008/how-to-find-out-if-an-email-already-exist-with-jpa-spring-and-sending-some-error
@@ -27,7 +28,7 @@ public class RegisterService {
         this.usersRepository = usersRepository;
     }
 
-    public <lookupRequestObject> String registerUser(Map<String, Object> lookupRequestObject) {
+    public <lookupRequestObject> UUID registerUser(Map<String, Object> lookupRequestObject) {
 
         String email = (String) lookupRequestObject.get("email");
         String password = (String) lookupRequestObject.get("password");
@@ -71,26 +72,27 @@ public class RegisterService {
         if (usersFromDb != null) {
             throw new ApiRequestException("User already registered!");
         } else {
-            this.passwordVerifier(password, email);
-            return "New user created!";
+            return this.passwordVerifier(password, email);
         }
     }
 
     // https://www.techiedelight.com/validate-password-java/
-    private void passwordVerifier(String password, String email) {
+    private UUID passwordVerifier(String password, String email) {
         System.out.println(password);
 
         if (PASSWORD_PATTERN.matcher(password).matches()) {
-            this.commitNewUser(email, password);
+            return this.commitNewUser(email, password);
         } else {
             throw new ApiRequestException("Password does not meet complexity requirement!");
         }
     }
 
-    private void commitNewUser(String email, String password)  {
+    private UUID commitNewUser(String email, String password)  {
+        UUID uuid = UUID.randomUUID();
         this.passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = this.passwordEncoder.encode(password);
-        Users newUser = new Users(0, email, encodedPassword);
+        Users newUser = new Users(0, email, encodedPassword, uuid);
         usersRepository.save(newUser);
+        return uuid;
     }
 }
