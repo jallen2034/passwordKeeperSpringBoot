@@ -1,29 +1,61 @@
-import logo from '../logo.svg';
-import '../App.css';
-import BasicComponent from './BasicComponent';
+// this is a copy of the app component purely for storybook. 
+import { useState } from 'react'
+import ButtonAppBar from './Appbar/Appbar'
+import SignIn from './Login/Login'
+import Register from './Register/Register'
+import PasswordVault from './PasswordVault/PasswordVault'
 
 function App() {
-  return (
-    <>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Poo Poo
-          </a>
-        </header>
-      </div>
-      <BasicComponent></BasicComponent>
-    </>
-  );
+
+  // usestate our app will use we will drill down into our components
+  // this is a hardcoded value for now
+  const sessionUuid = null
+  const [clickedPassword, setClickedPassword] = useState('')
+  const [register, setRegister] = useState(false)
+  const [currentUserUuid, setCurrentUserUuid] = useState({
+    uuid: sessionUuid || false
+  })
+
+  if (!register && !currentUserUuid.uuid) {
+    return (
+      <>
+        <div className="App">
+          <ButtonAppBar
+            setCurrentUserUuid={setCurrentUserUuid}
+            currentUserUuid={currentUserUuid}
+            register={register}
+          />
+          <SignIn></SignIn>
+        </div>
+      </>
+    );
+  } else if (register && !currentUserUuid.uuid) {
+    return (
+      <>
+        <div className="App">
+          <ButtonAppBar
+            setCurrentUserUuid={setCurrentUserUuid}
+            currentUserUuid={currentUserUuid}
+            register={register}
+          />
+          <Register></Register>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className="App">
+          <ButtonAppBar
+            setCurrentUserUuid={setCurrentUserUuid}
+            currentUserUuid={currentUserUuid}
+            register={register}
+          />
+          <PasswordVault></PasswordVault>
+        </div>
+      </>
+    );
+  }
 }
 
 export default App;
