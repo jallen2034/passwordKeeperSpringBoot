@@ -24,7 +24,6 @@
 		</dependency>
 		<!-- https://stackoverflow.com/questions/47907236/nosuchmethoderror-org-springframework-data-repository-config-repositoryconfigur -->
 		<!-- this fucking dumb ass fuck stupid shit has to match the version of the parent, ie 2.5.5 -->
-		<!-- gibe sweet release of death™ -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
@@ -51,6 +50,11 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>

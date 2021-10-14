@@ -32,7 +32,7 @@ public class RegisterService {
 
         String email = (String) lookupRequestObject.get("email");
         String password = (String) lookupRequestObject.get("password");
-        String confirmPassword = (String) lookupRequestObject.get("confirmPassword");
+        String confirmPassword = (String) lookupRequestObject.get("passwordConfirm");
 
         List<String> blacklistedValues = Arrays.asList(
             "Passw0rd",
@@ -76,9 +76,9 @@ public class RegisterService {
         }
     }
 
-    // https://www.techiedelight.com/validate-password-java/
+    /* https://www.techiedelight.com/validate-password-java/
+     * https://mkyong.com/regular-expressions/how-to-validate-password-with-regular-expression/ */
     private UUID passwordVerifier(String password, String email) {
-        System.out.println(password);
 
         if (PASSWORD_PATTERN.matcher(password).matches()) {
             return this.commitNewUser(email, password);
