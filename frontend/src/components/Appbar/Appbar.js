@@ -5,13 +5,14 @@ import { Button, IconButton, Typography, Toolbar, AppBar } from '@material-ui/co
 /* test test
  * for now set the users uuid to null if this functionis called and the current uuid is not null
  * set a hardcoded uuid for when a user logs in (for now) */
-const buttonClick = function (setCurrentUserUuid, currentUserUuid) {
-  console.log("setCurrentUserUuid in ButtonAppBar component? " + setCurrentUserUuid);
+const buttonClick = function (setCurrentUserUuid, currentUserUuid, register, setRegister) {
 
-  if(currentUserUuid) {
-    setCurrentUserUuid((prev) => ({ ...prev, uuid: null }));
-  } else {
-    setCurrentUserUuid((prev) => ({ ...prev, uuid: 4321 }));
+  if (!register) {
+    setRegister(true)
+  } else if (register) {
+    setRegister(false)
+  } else if (currentUserUuid.uuid) {
+    setCurrentUserUuid((prev) => ({ ...prev, uuid: null }))
   }
 }
 
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register }) {
+function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegister }) {
   const classes = useStyles();
 
   // for storybook testing of this component - hardcoed values - will be removed later when developing actual react app
@@ -44,22 +45,22 @@ function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register }) {
             {/* <MenuIcon /> this is broken for some reason TODO - FIX */}
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            PasswordKepper logged in
+            PasswordKepper
           </Typography>
           {(() => {
-            if (!currentUserUuid && !register) {
+            if (!currentUserUuid.uuid && !register) {
               return (
                 <Button
                   color="inherit"
-                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid)}
+                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid, register, setRegister)}
                 > Register
                 </Button>
               )
-            } else if (!currentUserUuid && !register) {
+            } else if (!currentUserUuid.uuid && !register) {
               return (
                 <Button
                   color="inherit"
-                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid)}
+                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid, register, setRegister)}
                 > Login
                 </Button>
               )
@@ -67,7 +68,7 @@ function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register }) {
               return (
                 <Button
                   color="inherit"
-                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid)}
+                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid, register, setRegister)}
                 > Logout
                 </Button>
               )
