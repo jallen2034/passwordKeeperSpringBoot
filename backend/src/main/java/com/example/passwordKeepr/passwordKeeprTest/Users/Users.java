@@ -7,7 +7,6 @@ import java.util.UUID;
 @Table(name = "users") // for the table in our database
 public class Users {
 
-    // instance variables that match up with the password table of our db - id autoincrements
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
