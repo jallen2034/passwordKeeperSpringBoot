@@ -10,7 +10,7 @@ function App() {
 
   /* usestate our app will use we will drill down into our components
    * this is a hardcoded value for now */
-  const sessionUuid = null
+  const sessionUuid = window.localStorage.getItem('Uuid')
   const [clickedPassword, setClickedPassword] = useState('')
   const [register, setRegister] = useState(false)
   const [key, setKey] = useState(false)
@@ -40,6 +40,8 @@ function App() {
       </>
     );
   } else if (register && !currentUserUuid.uuid) {
+    console.log("aye: ", currentUserUuid.uuid)
+    console.log("yo: ", register)
     return (
       <>
         <div className="App">
@@ -60,6 +62,8 @@ function App() {
       </>
     );
   } else {
+    console.log("aye: ", currentUserUuid.uuid)
+    console.log("yo: ", register)
     return (
       <>
         <div className="App">

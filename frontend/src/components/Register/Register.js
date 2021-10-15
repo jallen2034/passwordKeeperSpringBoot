@@ -3,8 +3,7 @@ import { useState } from 'react'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
+import Avatar from '@material-ui/core/Avatar';
 import Link from '@material-ui/core/Link'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
@@ -71,8 +70,8 @@ function Register({ setCurrentUserUuid }) {
     axios.post("http://localhost:8080/register", { email, password, passwordConfirm })
       .then((response) => {
         console.log("Response from server: ", response.data)
-        window.localStorage.setItem('Uuid', response.datad)
-        setCurrentUserUuid({ uuid: response.data})
+        setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data }))
+        window.localStorage.setItem('Uuid', response.data)
       }).catch((error) => {
         console.log(error.response.data.message)
         toast.error(error.response.data.message)
@@ -85,6 +84,8 @@ function Register({ setCurrentUserUuid }) {
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+          </Avatar>
           <Typography component="h1" variant="h5">
             Register
           </Typography>
@@ -130,10 +131,6 @@ function Register({ setCurrentUserUuid }) {
               onChange={(event) => {
                 setPasswordConfirm(event.target.value)
               }}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
             />
             <Button
               type="submit"

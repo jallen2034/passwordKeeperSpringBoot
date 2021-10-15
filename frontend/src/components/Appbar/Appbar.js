@@ -11,8 +11,11 @@ const buttonClick = function (setCurrentUserUuid, currentUserUuid, register, set
     setRegister(true)
   } else if (register) {
     setRegister(false)
-  } else if (currentUserUuid.uuid) {
+  }
+
+  if (currentUserUuid.uuid) {
     setCurrentUserUuid((prev) => ({ ...prev, uuid: null }))
+    window.localStorage.removeItem('Uuid')
   }
 }
 
@@ -56,7 +59,7 @@ function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegist
                 > Register
                 </Button>
               )
-            } else if (!currentUserUuid.uuid && !register) {
+            } else if (!currentUserUuid.uuid && register) {
               return (
                 <Button
                   color="inherit"
