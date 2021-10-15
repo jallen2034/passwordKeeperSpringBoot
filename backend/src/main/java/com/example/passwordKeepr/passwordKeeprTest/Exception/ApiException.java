@@ -1,7 +1,5 @@
 package com.example.passwordKeepr.passwordKeeprTest.Exception;
-
 import org.springframework.http.HttpStatus;
-
 import java.time.ZonedDateTime;
 
 public class ApiException {
