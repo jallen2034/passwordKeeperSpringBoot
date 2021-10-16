@@ -19,7 +19,6 @@ function App() {
   })
 
   if (!register && !currentUserUuid.uuid) {
-
     return (
       <>
         <div className="App">
@@ -29,7 +28,7 @@ function App() {
             register={register}
             setRegister={setRegister}
           />
-          <SignIn></SignIn>
+          <SignIn setCurrentUserUuid={setCurrentUserUuid}></SignIn>
         </div>
         <div>
           <ToastContainer
@@ -40,8 +39,6 @@ function App() {
       </>
     );
   } else if (register && !currentUserUuid.uuid) {
-    console.log("aye: ", currentUserUuid.uuid)
-    console.log("yo: ", register)
     return (
       <>
         <div className="App">
@@ -62,8 +59,6 @@ function App() {
       </>
     );
   } else {
-    console.log("aye: ", currentUserUuid.uuid)
-    console.log("yo: ", register)
     return (
       <>
         <div className="App">

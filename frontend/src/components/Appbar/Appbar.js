@@ -48,7 +48,7 @@ function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegist
             {/* <MenuIcon /> this is broken for some reason TODO - FIX */}
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            PasswordKepper
+            PasswordKeeper
           </Typography>
           {(() => {
             if (!currentUserUuid.uuid && !register) {
