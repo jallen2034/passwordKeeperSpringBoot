@@ -55,11 +55,12 @@ public class RegisterService {
             }
         }
 
-        if (email == null) {
+        System.out.println("Email: " + email);
+        if (email == "") {
             throw new ApiRequestException("Must provide email!");
-        } else if (password == null) {
+        } else if (password == "") {
             throw new ApiRequestException("Must provide password!");
-        } else if (confirmPassword == null) {
+        } else if (confirmPassword == "") {
             throw new ApiRequestException("Must provide password confirmation!");
         } else if (password.equals(confirmPassword) == false) {
             throw new ApiRequestException("Password and password confirmation do not match!");
