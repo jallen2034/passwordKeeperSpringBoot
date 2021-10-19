@@ -28,7 +28,7 @@ public class RegisterService {
         this.usersRepository = usersRepository;
     }
 
-    public <lookupRequestObject> UUID registerUser(Map<String, Object> lookupRequestObject) {
+    public <lookupRequestObject> String registerUser(Map<String, Object> lookupRequestObject) {
 
         String email = (String) lookupRequestObject.get("email");
         String password = (String) lookupRequestObject.get("password");
@@ -68,7 +68,7 @@ public class RegisterService {
             throw new ApiRequestException("You can't use that password!");
         }
 
-        Users usersFromDb = usersRepository.findByEmail(email);
+        User usersFromDb = usersRepository.findByEmail(email);
 
         if (usersFromDb != null) {
             throw new ApiRequestException("User already registered!");
@@ -79,7 +79,7 @@ public class RegisterService {
 
     /* https://www.techiedelight.com/validate-password-java/
      * https://mkyong.com/regular-expressions/how-to-validate-password-with-regular-expression/ */
-    private UUID passwordVerifier(String password, String email) {
+    private String passwordVerifier(String password, String email) {
 
         if (PASSWORD_PATTERN.matcher(password).matches()) {
             return this.commitNewUser(email, password);
@@ -88,11 +88,11 @@ public class RegisterService {
         }
     }
 
-    private UUID commitNewUser(String email, String password)  {
-        UUID uuid = UUID.randomUUID();
+    private String commitNewUser(String email, String password)  {
+        String uuid = UUID.randomUUID().toString();
         this.passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = this.passwordEncoder.encode(password);
-        Users newUser = new Users(0, email, encodedPassword, uuid);
+        User newUser = new User(0, email, encodedPassword, uuid);
         usersRepository.save(newUser);
         return uuid;
     }

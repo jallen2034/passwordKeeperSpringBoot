@@ -1,5 +1,4 @@
-package com.example.passwordKeepr.passwordKeeprTest.Controller;
-import com.example.passwordKeepr.passwordKeeprTest.Controller.Greeting;
+package com.example.passwordKeepr.passwordKeeprTest.Greeting;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.concurrent.atomic.AtomicLong;
@@ -7,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class GreetingController {
+
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 

@@ -17,8 +17,8 @@ public class LoginController {
 
     @CrossOrigin(origins = "http://localhost:3000/", maxAge = 90000)
     @PostMapping("/login")
-    public UUID loginUsers(@RequestBody Map<String, Object> lookupRequestObject) {
-        UUID uuidToClient = loginService.loginUser(lookupRequestObject);
+    public String loginUsers(@RequestBody Map<String, Object> lookupRequestObject) {
+        String uuidToClient = loginService.loginUser(lookupRequestObject);
         return uuidToClient;
     }
 }
