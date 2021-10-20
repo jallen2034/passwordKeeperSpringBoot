@@ -1,26 +1,33 @@
 package com.example.passwordKeepr.passwordKeeprTest.Users;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.Password;
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
-// https://stackoverflow.com/questions/41791802/autoincrement-id-postgresql-and-spring-boot-data-jpa
+/* https://stackoverflow.com/questions/41791802/autoincrement-id-postgresql-and-spring-boot-data-jpa
+ * https://attacomsian.com/blog/spring-data-jpa-one-to-many-mapping */
 @Entity // for hibernate
 @Table(name = "users") // for the table in our database
-public class Users {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "serial")
     private int id;
+
+    @Column(columnDefinition = "serial")
     private String email;
     private String master_password;
-    private UUID uuid;
+    private String uuid;
 
-    // default constructor
-    public Users() {
+    @OneToMany(fetch = FetchType.LAZY,
+        mappedBy = "user",
+        cascade = CascadeType.ALL)
+    private List<Password> passwordList;
+
+    public User() {
     }
 
-    // constructor
-    public Users(int id, String email, String master_password, UUID uuid) {
+    public User(int id, String email, String master_password, String uuid) {
         this.id = id;
         this.email = email;
         this.master_password = master_password;
@@ -51,9 +58,13 @@ public class Users {
         this.master_password = masterPassword;
     }
 
-    public UUID getUuid() { return uuid; }
+    public String getUuid() { return uuid; }
 
-    public void setUuid(UUID uuid) { this.uuid = uuid; }
+    public void setUuid(String uuid) { this.uuid = uuid; }
+
+    public List<Password> getPasswordList() {
+        return passwordList;
+    }
 
     // for debugging
     @Override

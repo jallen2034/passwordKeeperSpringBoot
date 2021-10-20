@@ -21,8 +21,8 @@ public class RegisterController {
 
     @CrossOrigin(origins = "http://localhost:3000/", maxAge = 90000)
     @PostMapping("/register")
-    public UUID registerUsers(@RequestBody Map<String, Object> lookupRequestObject) {
-        UUID uuidToClient = regiserService.registerUser(lookupRequestObject);
+    public String registerUsers(@RequestBody Map<String, Object> lookupRequestObject) {
+        String uuidToClient = regiserService.registerUser(lookupRequestObject);
         return uuidToClient;
     }
 }

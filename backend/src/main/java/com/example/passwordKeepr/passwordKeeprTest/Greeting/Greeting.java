@@ -1,4 +1,4 @@
-package com.example.passwordKeepr.passwordKeeprTest.Controller;
+package com.example.passwordKeepr.passwordKeeprTest.Greeting;
 
 public class Greeting {
     private final long id;

@@ -16,8 +16,8 @@ public class UsersService {
     }
 
     // method to get all users from database and return them to the /getUsers controller
-    public List<Users> getUsers() {
-        List<Users> usersFromDb = usersRepository.findAll();
+    public List<User> getUsers() {
+        List<User> usersFromDb = usersRepository.findAll();
         return usersFromDb;
     }
 }
