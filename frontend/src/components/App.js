@@ -14,6 +14,7 @@ function App() {
   const [clickedPassword, setClickedPassword] = useState('')
   const [register, setRegister] = useState(false)
   const [key, setKey] = useState(false)
+  const [indexSelected, setIndexSelected] = useState(true)
   const [currentUserUuid, setCurrentUserUuid] = useState({
     uuid: sessionUuid || null
   })
@@ -67,8 +68,12 @@ function App() {
             currentUserUuid={currentUserUuid}
             register={register}
             setRegister={setRegister}
+            setIndexSelected={setIndexSelected}
           />
-          <PasswordVault></PasswordVault>
+          <PasswordVault 
+          indexSelected={indexSelected}
+          sessionUuid={sessionUuid}
+          ></PasswordVault>
         </div>
         <div>
           <ToastContainer

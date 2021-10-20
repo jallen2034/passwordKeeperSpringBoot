@@ -4,18 +4,29 @@ import { Button, IconButton, Typography, Toolbar, AppBar } from '@material-ui/co
 
 /* test test
  * for now set the users uuid to null if this functionis called and the current uuid is not null
- * set a hardcoded uuid for when a user logs in (for now) */
-const buttonClick = function (setCurrentUserUuid, currentUserUuid, register, setRegister) {
+ * set a hardcoded uuid for when a user logs in (for now)
+ * this is currently a really sucky implementation and needs refactoring */
+const buttonClick = function (setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, switcherButton) {
 
-  if (!register) {
-    setRegister(true)
-  } else if (register) {
-    setRegister(false)
-  }
+  switch (switcherButton) {
+    case "view":
+      setIndexSelected(true)
+      break;
+    case "create":
+      setIndexSelected(false)
+      break;
+    default:
 
-  if (currentUserUuid.uuid) {
-    setCurrentUserUuid((prev) => ({ ...prev, uuid: null }))
-    window.localStorage.removeItem('Uuid')
+      if (!register) {
+        setRegister(true)
+      } else if (register) {
+        setRegister(false)
+      }
+
+      if (currentUserUuid.uuid) {
+        setCurrentUserUuid((prev) => ({ ...prev, uuid: null }))
+        window.localStorage.removeItem('Uuid')
+      }
   }
 }
 
@@ -31,8 +42,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegister }) {
+function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected }) {
   const classes = useStyles();
+  let switcherButton;
 
   // for storybook testing of this component - hardcoed values - will be removed later when developing actual react app
   if (!currentUserUuid && !register) {
@@ -55,7 +67,7 @@ function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegist
               return (
                 <Button
                   color="inherit"
-                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid, register, setRegister)}
+                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, switcherButton = "default")}
                 > Register
                 </Button>
               )
@@ -63,17 +75,29 @@ function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegist
               return (
                 <Button
                   color="inherit"
-                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid, register, setRegister)}
+                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, switcherButton = "default")}
                 > Login
                 </Button>
               )
             } else {
               return (
-                <Button
-                  color="inherit"
-                  onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid, register, setRegister)}
-                > Logout
-                </Button>
+                <>
+                  <Button
+                    color="inherit"
+                    onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, switcherButton = "view")}
+                  > View Passwords
+                  </Button>
+                  <Button
+                    color="inherit"
+                    onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, switcherButton = "create")}
+                  > Create New Password
+                  </Button>
+                  <Button
+                    color="inherit"
+                    onClick={() => buttonClick(setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, switcherButton = "default")}
+                  > Logout
+                  </Button>
+                </>
               )
             }
           })()}

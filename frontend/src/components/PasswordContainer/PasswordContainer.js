@@ -1,7 +1,10 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
+import axios from 'axios'
 import PasswordEntry from '../PasswordEntry/PasswordEntry'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // dummy data that will be retrieved from the API to show all the personal passwords the current logged in user is looking at
 const mockArrPasswordsAPI = [
@@ -108,9 +111,25 @@ mockArrPasswordsAPI.forEach((item, index) => {
   }
 })
 
-// component itself
-function PasswordContainer() {
+function PasswordContainer({ sessionUuid }) {
   const classes = useStyles()
+  const retrieveUsersPasswords = function (sessionUuid) {
+    console.log(sessionUuid)
+
+    axios.post("http://localhost:8080/passwords", { sessionUuid })
+    .then((response) => {
+      console.log(response)
+    }).catch((error) => {
+      toast.error(error.response.data.message)
+    })
+  }
+
+  // https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once
+  useEffect(() => {
+    if (sessionUuid) {
+      retrieveUsersPasswords(sessionUuid);
+    }
+  }, []);
 
   return (
     <>
