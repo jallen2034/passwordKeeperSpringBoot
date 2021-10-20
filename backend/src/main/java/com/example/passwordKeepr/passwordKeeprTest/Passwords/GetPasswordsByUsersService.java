@@ -19,8 +19,7 @@ public class GetPasswordsByUsersService {
     }
 
     public <lookupRequestObject> List getPasswordsByUser(Map<String, Object> lookupRequestObject) {
-        String uuid = (String) lookupRequestObject.get("uuid");
-        System.out.println(lookupRequestObject);
+        String uuid = (String) lookupRequestObject.get("sessionUuid");
         User userFromDb = usersRepository.findByUuid(uuid);
         List passwords = userFromDb.getPasswordList();
         return passwords;

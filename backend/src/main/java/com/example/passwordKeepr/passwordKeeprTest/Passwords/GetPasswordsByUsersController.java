@@ -16,7 +16,7 @@ public class GetPasswordsByUsersController {
     }
 
     @CrossOrigin(origins = "http://localhost:3000/", maxAge = 90000)
-    @GetMapping("/passwords")
+    @PostMapping("/passwords")
     public List getPasswordsbyUsers(@RequestBody Map<String, Object> lookupRequestObject) {
         System.out.println(lookupRequestObject);
         return getPasswordsByUsersService.getPasswordsByUser(lookupRequestObject);

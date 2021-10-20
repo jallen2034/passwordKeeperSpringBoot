@@ -1,6 +1,5 @@
 package com.example.passwordKeepr.passwordKeeprTest.Passwords;
 import com.example.passwordKeepr.passwordKeeprTest.Users.User;
-
 import javax.persistence.*;
 import javax.persistence.Entity;
 
@@ -24,7 +23,6 @@ public class Password {
     private int organisations_id;
 
     public Password () {
-
     }
 
     public Password(int id, int organisations_id, String category, String url, String password_text) {
