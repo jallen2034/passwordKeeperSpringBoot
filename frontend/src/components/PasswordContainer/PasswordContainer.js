@@ -32,7 +32,6 @@ const displayPasswords = function (responseData, setDataFromApi) {
   setDataFromApi(passwordDivsList)
 }
 
-
 function PasswordContainer({ sessionUuid }) {
   const [dataFromApi, setDataFromApi] = useState([])
   const classes = useStyles()
