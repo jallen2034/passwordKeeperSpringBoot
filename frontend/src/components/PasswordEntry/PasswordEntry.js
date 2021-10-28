@@ -39,7 +39,7 @@ function PasswordEntry({ url, passwordText, category, id, name }) {
           category={category}
         />
         <TextField
-          passwordText={passwordText}
+          value={passwordText}
         />
         <div className={classes.div}>
           <Button>Copy</Button>
