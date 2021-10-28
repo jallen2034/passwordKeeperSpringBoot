@@ -19,71 +19,77 @@ function App() {
     uuid: sessionUuid || null
   })
 
-  if (!register && !currentUserUuid.uuid) {
-    return (
-      <>
-        <div className="App">
-          <ButtonAppBar
-            setCurrentUserUuid={setCurrentUserUuid}
-            currentUserUuid={currentUserUuid}
-            register={register}
-            setRegister={setRegister}
-          />
-          <SignIn setCurrentUserUuid={setCurrentUserUuid}></SignIn>
-        </div>
-        <div>
-          <ToastContainer
-            position="bottom-center"
-            autoClose={4000}
-          />
-        </div>
-      </>
-    );
-  } else if (register && !currentUserUuid.uuid) {
-    return (
-      <>
-        <div className="App">
-          <ButtonAppBar
-            setCurrentUserUuid={setCurrentUserUuid}
-            currentUserUuid={currentUserUuid}
-            register={register}
-            setRegister={setRegister}
-          />
-          <Register setCurrentUserUuid={setCurrentUserUuid}></Register>
-        </div>
-        <div>
-          <ToastContainer
-            position="bottom-center"
-            autoClose={4000}
-          />
-        </div>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <div className="App">
-          <ButtonAppBar
-            setCurrentUserUuid={setCurrentUserUuid}
-            currentUserUuid={currentUserUuid}
-            register={register}
-            setRegister={setRegister}
-            setIndexSelected={setIndexSelected}
-          />
-          <PasswordVault 
-          indexSelected={indexSelected}
-          sessionUuid={sessionUuid}
-          ></PasswordVault>
-        </div>
-        <div>
-          <ToastContainer
-            position="bottom-center"
-            autoClose={4000}
-          />
-        </div>
-      </>
-    );
-  }
+  return (
+    <div>
+      {(() => {
+        if (!register && !currentUserUuid.uuid) {
+          return (
+            <>
+              <div className="App">
+                <ButtonAppBar
+                  setCurrentUserUuid={setCurrentUserUuid}
+                  currentUserUuid={currentUserUuid}
+                  register={register}
+                  setRegister={setRegister}
+                />
+                <SignIn setCurrentUserUuid={setCurrentUserUuid}></SignIn>
+              </div>
+              <div>
+                <ToastContainer
+                  position="bottom-center"
+                  autoClose={4000}
+                />
+              </div>
+            </>
+          )
+        } else if (register && !currentUserUuid.uuid) {
+          return (
+            <>
+              <div className="App">
+                <ButtonAppBar
+                  setCurrentUserUuid={setCurrentUserUuid}
+                  currentUserUuid={currentUserUuid}
+                  register={register}
+                  setRegister={setRegister}
+                />
+                <Register setCurrentUserUuid={setCurrentUserUuid}></Register>
+              </div>
+              <div>
+                <ToastContainer
+                  position="bottom-center"
+                  autoClose={4000}
+                />
+              </div>
+            </>
+          )
+        } else {
+          return (
+            <>
+              <div className="App">
+                <ButtonAppBar
+                  setCurrentUserUuid={setCurrentUserUuid}
+                  currentUserUuid={currentUserUuid}
+                  register={register}
+                  setRegister={setRegister}
+                  setIndexSelected={setIndexSelected}
+                />
+                <PasswordVault
+                  indexSelected={indexSelected}
+                  sessionUuid={sessionUuid}
+                ></PasswordVault>
+              </div>
+              <div>
+                <ToastContainer
+                  position="bottom-center"
+                  autoClose={4000}
+                />
+              </div>
+            </>
+          )
+        }
+      })()}
+    </div>
+  )
 }
 
 export default App;

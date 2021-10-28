@@ -35,6 +35,7 @@ const displayPasswords = function (responseData, setDataFromApi) {
 function PasswordContainer({ sessionUuid }) {
   const [dataFromApi, setDataFromApi] = useState([])
   const classes = useStyles()
+  console.log(sessionUuid)
 
   const retrieveUsersPasswords = function (sessionUuid, setDataFromApi) {
 
@@ -57,6 +58,7 @@ function PasswordContainer({ sessionUuid }) {
     }
   }, [sessionUuid]);
 
+  console.log("dataFromApi.length: ", dataFromApi.length)
   return (
     <>
       {dataFromApi.length > 0
