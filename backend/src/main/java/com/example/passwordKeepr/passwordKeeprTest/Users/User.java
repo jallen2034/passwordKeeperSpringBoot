@@ -2,7 +2,6 @@ package com.example.passwordKeepr.passwordKeeprTest.Users;
 import com.example.passwordKeepr.passwordKeeprTest.Passwords.Password;
 import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
 /* https://stackoverflow.com/questions/41791802/autoincrement-id-postgresql-and-spring-boot-data-jpa
  * https://attacomsian.com/blog/spring-data-jpa-one-to-many-mapping */
@@ -64,6 +63,10 @@ public class User {
 
     public List<Password> getPasswordList() {
         return passwordList;
+    }
+
+    public void setPasswordList(List<Password> passwordList) {
+        this.passwordList = passwordList;
     }
 
     // for debugging

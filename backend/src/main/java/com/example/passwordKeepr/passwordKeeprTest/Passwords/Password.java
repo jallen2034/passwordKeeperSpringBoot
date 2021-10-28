@@ -25,12 +25,13 @@ public class Password {
     public Password () {
     }
 
-    public Password(int id, int organisations_id, String category, String url, String password_text) {
+    public Password(int id, int organisations_id, String category, String url, String password_text, User userFromdb) {
         this.id = id;
         this.organisations_id = organisations_id;
         this.category = category;
         this.url = url;
         this.password_text = password_text;
+        this.user = userFromdb;
     }
 
     public int getId() {
