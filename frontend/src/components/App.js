@@ -14,12 +14,12 @@ function App() {
   const [clickedPassword, setClickedPassword] = useState('')
   const [register, setRegister] = useState(false)
   const [key, setKey] = useState(false)
+  const [indexSelected, setIndexSelected] = useState(true)
   const [currentUserUuid, setCurrentUserUuid] = useState({
     uuid: sessionUuid || null
   })
 
   if (!register && !currentUserUuid.uuid) {
-
     return (
       <>
         <div className="App">
@@ -29,7 +29,7 @@ function App() {
             register={register}
             setRegister={setRegister}
           />
-          <SignIn></SignIn>
+          <SignIn setCurrentUserUuid={setCurrentUserUuid}></SignIn>
         </div>
         <div>
           <ToastContainer
@@ -40,8 +40,6 @@ function App() {
       </>
     );
   } else if (register && !currentUserUuid.uuid) {
-    console.log("aye: ", currentUserUuid.uuid)
-    console.log("yo: ", register)
     return (
       <>
         <div className="App">
@@ -62,8 +60,6 @@ function App() {
       </>
     );
   } else {
-    console.log("aye: ", currentUserUuid.uuid)
-    console.log("yo: ", register)
     return (
       <>
         <div className="App">
@@ -72,8 +68,12 @@ function App() {
             currentUserUuid={currentUserUuid}
             register={register}
             setRegister={setRegister}
+            setIndexSelected={setIndexSelected}
           />
-          <PasswordVault></PasswordVault>
+          <PasswordVault 
+          indexSelected={indexSelected}
+          sessionUuid={sessionUuid}
+          ></PasswordVault>
         </div>
         <div>
           <ToastContainer

@@ -67,13 +67,12 @@ function Register({ setCurrentUserUuid }) {
 
   const registerUser = function (event, setCurrentUserUuid) {
     event.preventDefault()
+
     axios.post("http://localhost:8080/register", { email, password, passwordConfirm })
       .then((response) => {
-        console.log("Response from server: ", response.data)
         setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data }))
         window.localStorage.setItem('Uuid', response.data)
       }).catch((error) => {
-        console.log(error.response.data.message)
         toast.error(error.response.data.message)
       })
   }

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,8 +9,11 @@ import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import axios from 'axios'
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Copyright() {
   return (
@@ -56,8 +59,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignIn() {
+function SignIn({ setCurrentUserUuid }) {
   const classes = useStyles();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const loginUser = function (event, setCurrentUserUuid) {
+    event.preventDefault()
+
+    axios.post("http://localhost:8080/login", { email, password })
+    .then((response) => {
+      setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data }))
+      window.localStorage.setItem('Uuid', response.data)
+    }).catch((error) => {
+      toast.error(error.response.data.message)
+    })
+  }
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -81,6 +98,9 @@ function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(event) => {
+                setEmail(event.target.value)
+              }}
             />
             <TextField
               variant="outlined"
@@ -92,10 +112,9 @@ function SignIn() {
               type="password"
               id="password"
               autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              onChange={(event) => {
+                setPassword(event.target.value)
+              }}
             />
             <Button
               type="submit"
@@ -103,6 +122,7 @@ function SignIn() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={(event) => loginUser(event, setCurrentUserUuid)}
             >
               Sign In
             </Button>

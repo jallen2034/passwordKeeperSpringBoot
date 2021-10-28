@@ -2,13 +2,12 @@ import React, { useState } from 'react'
 import PasswordComposer from '../PasswordComposer/PasswordComposer';
 import PasswordContainer from '../PasswordContainer/PasswordContainer';
 
-function PasswordVault() {
-  const [passwordContainerSelected, setPasswordContainerSelected] = useState(false)
+function PasswordVault({ indexSelected, sessionUuid }) {
 
   return (
     <div>
-      {passwordContainerSelected
-        ? <PasswordContainer />
+      {indexSelected
+        ? <PasswordContainer sessionUuid={sessionUuid} />
         : <PasswordComposer />
       }
     </div>
