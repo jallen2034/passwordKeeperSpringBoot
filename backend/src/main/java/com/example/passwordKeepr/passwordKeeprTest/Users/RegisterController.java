@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
-import java.util.UUID;
 
 /* https://stackoverflow.com/questions/55468519/how-to-receive-customized-json-object-in-spring-boot-api-post-method
  * https://www.youtube.com/watch?v=hxyp_LkKDdk */
