@@ -1,14 +1,9 @@
 import { React, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import axios from 'axios'
 import { Button, Select, TextField, FormControl, MenuItem } from '@material-ui/core'
-
-// mock data from API for the current organizations the user is a part of
-const usersOrganizations = [
-  { "name": "Amazon Web Services" },
-  { "name": "Lighthouse Labs" },
-  { "name": "Google" },
-  { "name": "Microsoft" }
-]
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const categories = [
   "Social",
@@ -34,23 +29,34 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function PasswordFormTyped() {
+const saveNewPasswrod = function (event, sessionUuid, passwordText, category, url) {
+  console.log("passwordText in button click function called!")
+
+  axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
+  .then((response) => {
+    if (response) {
+      console.log(response.data)
+      toast.success(response.data)
+    }
+  }).catch((error) => {
+    if (error) {
+      console.log(error)
+    }
+  })
+}
+
+function PasswordFormTyped({ sessionUuid }) {
   const classes = useStyles();
-  const [selectedOrg, setSelectedOrg] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [urlText, setUrlText] = useState('')
+  const [category, setCategory] = useState('')
+  const [url, setUrl] = useState('')
   const [passwordText, setPasswordText] = useState('')
 
-  const handleOrgChange = (event) => {
-    setSelectedOrg(event.target.value)
-  }
-
   const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value)
+    setCategory(event.target.value)
   }
 
   const onChange = (event) => {
-    setUrlText(event.target.value)
+    setUrl(event.target.value)
   }
 
   const onPasswordTextChange = (event) => {
@@ -60,27 +66,16 @@ function PasswordFormTyped() {
   return (
     <div className={classes.divContainer}>
       <FormControl className={classes.formControl}>
-        Organization:
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={selectedOrg}
-          onChange={handleOrgChange}
-        >
-          {usersOrganizations.map((data, id) => {
-            return <MenuItem value={data.name}>{data.name}</MenuItem>
-          })}
-        </Select>
         Url:
         <TextField
-          urlText={urlText}
+          urlText={url}
           onChange={onChange}
         />
         Category:
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={selectedCategory}
+          value={category}
           onChange={handleCategoryChange}
         >
           {categories.map((data, id) => {
@@ -92,7 +87,7 @@ function PasswordFormTyped() {
           passwordText={passwordText}
           onChange={onPasswordTextChange}
         />
-        <Button>Generate Password</Button>
+        <Button onClick={(event) => saveNewPasswrod(event, sessionUuid, passwordText, category, url)}>Generate Password</Button>
       </FormControl>
     </div>
   )

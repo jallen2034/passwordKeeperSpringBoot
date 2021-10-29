@@ -1,5 +1,8 @@
 import { React, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import axios from 'axios'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   Button,
   Select,
@@ -11,14 +14,7 @@ import {
   FormControlLabel,
   MenuItem
 } from '@material-ui/core'
-
-// mock data from API for the current organizations the user is a part of
-const usersOrganizations = [
-  { "name": "Amazon Web Services" },
-  { "name": "Lighthouse Labs" },
-  { "name": "Google" },
-  { "name": "Microsoft" }
-]
+let generator = require('generate-password')
 
 const categories = [
   "Social",
@@ -44,11 +40,37 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function PasswordForm() {
+const saveNewPasswrod = function (event, sessionUuid, category, url, sliderValue, checked) {
+
+  if (!checked.numbers && !checked.symbols && !checked.lowercas && !checked.uppercase) {
+    return toast.error("You can't leave all checkboxes empty when making a password!")
+  }
+
+  const password = generator.generateMultiple(3, {
+    length: 20,
+    uppercase: checked.uppercase,
+    lowercase: checked.lowercase,
+    numbers: checked.numbers,
+    symbols: checked.symbols
+  });
+
+  axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText: password[0], category, url })
+  .then((response) => {
+    if (response) {
+      console.log(response.data)
+      toast.success(response.data)
+    }
+  }).catch((error) => {
+    if (error) {
+      console.log(error)
+    }
+  })
+}
+
+function PasswordForm({ sessionUuid }) {
   const classes = useStyles();
-  const [selectedOrg, setSelectedOrg] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [urlText, setUrlText] = useState('')
+  const [category, setCategory] = useState('')
+  const [url, setUrl] = useState('')
   const [sliderValue, setSliderValue] = useState('')
   const [checked, setChecked] = useState({
     uppercase: false,
@@ -57,12 +79,8 @@ function PasswordForm() {
     symbols: false
   })
 
-  const handleOrgChange = (event) => {
-    setSelectedOrg(event.target.value)
-  }
-
   const handleCategoryChange = (event) => {
-    setSelectedCategory(event.target.value)
+    setCategory(event.target.value)
   }
 
   const handleCheckChange = (event) => {
@@ -70,7 +88,7 @@ function PasswordForm() {
   }
 
   const onChange = (event) => {
-    setUrlText(event.target.value)
+    setUrl(event.target.value)
   }
 
   function valuetext(value) {
@@ -81,27 +99,16 @@ function PasswordForm() {
   return (
     <div className={classes.divContainer}>
       <FormControl className={classes.formControl}>
-        Organization:
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={selectedOrg}
-          onChange={handleOrgChange}
-        >
-          {usersOrganizations.map((data, id) => {
-            return <MenuItem value={data.name}>{data.name}</MenuItem>
-          })}
-        </Select>
         Url:
         <TextField
-          urlText={urlText}
+          urlText={url}
           onChange={onChange}
         />
         Category:
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={selectedCategory}
+          value={category}
           onChange={handleCategoryChange}
         >
           {categories.map((data, id) => {
@@ -154,7 +161,7 @@ function PasswordForm() {
             />
           </Grid>
         </Grid>
-        <Button>Generate Password</Button>
+        <Button onClick={(event) => saveNewPasswrod(event, sessionUuid, category, url, sliderValue, checked)} >Generate Password</Button>
       </FormControl>
     </div>
   )

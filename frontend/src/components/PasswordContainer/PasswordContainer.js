@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import axios from 'axios'
 import PasswordEntry from '../PasswordEntry/PasswordEntry'
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // styling  component
@@ -35,7 +34,6 @@ const displayPasswords = function (responseData, setDataFromApi) {
 function PasswordContainer({ sessionUuid }) {
   const [dataFromApi, setDataFromApi] = useState([])
   const classes = useStyles()
-  console.log(sessionUuid)
 
   const retrieveUsersPasswords = function (sessionUuid, setDataFromApi) {
 
