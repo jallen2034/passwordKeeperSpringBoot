@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function PasswordComposer() {
+function PasswordComposer({ sessionUuid }) {
   const classes = useStyles();
   const [customFormSelected, setCustomFormSelected] = useState(false)
 
@@ -35,8 +35,8 @@ function PasswordComposer() {
         <Button onClick={(event) => onClick(true)}>Type Password</Button>
       </div>
       {customFormSelected
-        ? <PasswordFormTyped />
-        : <PasswordForm />
+        ? <PasswordFormTyped sessionUuid={sessionUuid} />
+        : <PasswordForm sessionUuid={sessionUuid} />
       }
     </div>
   )

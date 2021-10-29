@@ -8,7 +8,7 @@ function PasswordVault({ indexSelected, sessionUuid }) {
     <div>
       {indexSelected
         ? <PasswordContainer sessionUuid={sessionUuid} />
-        : <PasswordComposer />
+        : <PasswordComposer sessionUuid={sessionUuid} />
       }
     </div>
   );

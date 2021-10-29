@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import axios from 'axios'
 import PasswordEntry from '../PasswordEntry/PasswordEntry'
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // styling  component
@@ -13,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-// callback function after AXIOS call to loop through array of retrieved passwords from the API
+/* callback function after AXIOS call to loop through array of retrieved passwords from the API
+ * https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once */
 const displayPasswords = function (responseData, setDataFromApi) {
   const passwordDivsList = []
 
@@ -50,13 +50,13 @@ function PasswordContainer({ sessionUuid }) {
       })
   }
 
-  // https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once
   useEffect(() => {
     if (sessionUuid) {
       retrieveUsersPasswords(sessionUuid, setDataFromApi);
     }
   }, [sessionUuid]);
 
+  console.log("dataFromApi.length: ", dataFromApi.length)
   return (
     <>
       {dataFromApi.length > 0
