@@ -2,14 +2,6 @@ import { React, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Select, TextField, FormControl, MenuItem } from '@material-ui/core'
 
-// mock data from API for the current organizations the user is a part of
-const usersOrganizations = [
-  { "name": "Amazon Web Services" },
-  { "name": "Lighthouse Labs" },
-  { "name": "Google" },
-  { "name": "Microsoft" }
-]
-
 const categories = [
   "Social",
   "Work Related",
