@@ -8,32 +8,38 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class CreateNewPasswordService {
+public class DeletePasswordService {
 
     private final PasswordsRepository passwordsRepository;
     private final UsersRepository usersRepository;
 
-    @Autowired CreateNewPasswordService(PasswordsRepository passwordsRepository, UsersRepository usersRepository) {
+    @Autowired
+    DeletePasswordService(PasswordsRepository passwordsRepository, UsersRepository usersRepository) {
         this.passwordsRepository = passwordsRepository;
         this.usersRepository = usersRepository;
     }
 
-    public <lookupRequestObject> String createPasswordForUser(Map<String, Object> lookupRequestObject) {
+    public <lookupRequestObject> String deletePasswordForUser(Map<String, Object> lookupRequestObject) {
         String uuid = (String) lookupRequestObject.get("sessionUuid");
         String password = (String) lookupRequestObject.get("passwordText");
-        String category = (String) lookupRequestObject.get("category");
-        String url = (String) lookupRequestObject.get("url");
         User userFromDb = usersRepository.findByUuid(uuid);
+        int id = (int) lookupRequestObject.get("id");
 
         if (userFromDb == null) {
             throw new ApiRequestException("You can't add a password for someone who doesn't exist!");
         }
 
         List passwordList = userFromDb.getPasswordList();
-        Password newPasswordToSave = new Password(0, 1, category, url, password, userFromDb);
-        passwordList.add(newPasswordToSave);
-        userFromDb.setPasswordList(passwordList);
-        usersRepository.save(userFromDb);
-        return "New password has been created!";
+
+        for(int i = 0; i < passwordList.size(); i++) {
+            Password passwordInLoop = (Password) passwordList.get(i);
+            int passwordId = passwordInLoop.getId();
+
+            if (passwordId == id) {
+                  passwordsRepository.deletePassword(id);
+                  return "The following Password has been deleted: " +  password + " ";
+            }
+        }
+        return "Uh oh, something went wrong when deleting a password!!";
     }
 }

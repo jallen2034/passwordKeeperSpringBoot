@@ -1,6 +1,7 @@
 package com.example.passwordKeepr.passwordKeeprTest.Users;
 import com.example.passwordKeepr.passwordKeeprTest.Passwords.Password;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /* https://stackoverflow.com/questions/41791802/autoincrement-id-postgresql-and-spring-boot-data-jpa
@@ -67,14 +68,5 @@ public class User {
 
     public void setPasswordList(List<Password> passwordList) {
         this.passwordList = passwordList;
-    }
-
-    // for debugging
-    @Override
-    public String toString() {
-        return "Users{" +
-                ", email='" + email + '\'' +
-                ", masterPassword='" + master_password + '\'' +
-                '}';
     }
 }
