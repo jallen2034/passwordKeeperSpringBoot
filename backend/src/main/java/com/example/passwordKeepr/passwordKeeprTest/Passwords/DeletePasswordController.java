@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+// TODO - fix this endpoint to use proper DELETE restful naming convention, can't get this working in Spring
 @RestController
 public class DeletePasswordController {
 

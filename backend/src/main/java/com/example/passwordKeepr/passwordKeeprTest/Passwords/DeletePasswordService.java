@@ -3,10 +3,12 @@ import com.example.passwordKeepr.passwordKeeprTest.Exception.ApiRequestException
 import com.example.passwordKeepr.passwordKeeprTest.Users.User;
 import com.example.passwordKeepr.passwordKeeprTest.Users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+// https://stackoverflow.com/questions/39233648/jpa-emptyresultdataaccessexception-handling
 @Service
 public class DeletePasswordService {
 
@@ -36,10 +38,16 @@ public class DeletePasswordService {
             int passwordId = passwordInLoop.getId();
 
             if (passwordId == id) {
-                  passwordsRepository.deletePassword(id);
-                  return "The following Password has been deleted: " +  password + " ";
+                try {
+                    passwordsRepository.deletePassword(id);
+                } catch (EmptyResultDataAccessException ex) {
+                    throw new ApiRequestException("Uh oh, database shenanagins!");
+                }
+
+                return "Password deleted: " +  password + " ";
             }
         }
+
         return "Uh oh, something went wrong when deleting a password!!";
     }
 }
