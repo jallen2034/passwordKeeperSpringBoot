@@ -26,8 +26,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
-function PasswordEntry({ url, passwordText, category, id, name }) {
+function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, setForceRender }) {
   const classes = useStyles();
 
   return (
@@ -37,6 +36,7 @@ function PasswordEntry({ url, passwordText, category, id, name }) {
           url={url}
           name={name}
           category={category}
+          id={id}
         />
         <TextField
           value={passwordText}
@@ -44,7 +44,7 @@ function PasswordEntry({ url, passwordText, category, id, name }) {
         <div className={classes.div}>
           <Button>Copy</Button>
           <Button>Edit</Button>
-          <Button>Delete</Button>
+          <Button onClick={(event) => deletePassword(id, passwordText, sessionUuid, id, setForceRender)}>Delete</Button>
         </div>
       </FormControl>
     </>
