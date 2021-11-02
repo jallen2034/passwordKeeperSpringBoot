@@ -46,7 +46,7 @@ public class EditPasswordService {
                     throw new ApiRequestException("Uh oh, database shenanigans!");
                 }
 
-                return "Following password: " +  password + "has been updated to " + newPassword;
+                return newPassword;
             }
         }
 
