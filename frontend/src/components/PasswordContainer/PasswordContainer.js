@@ -18,10 +18,12 @@ function makeid(length) {
   var result = '';
   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var charactersLength = characters.length;
+
   for (var i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() *
       charactersLength));
   }
+  
   return result;
 }
 
@@ -48,7 +50,7 @@ function makeid(length) {
   setDataFromApi(passwordDivsList)
 }
 
-const deletePassword = function (passwordId, passwordText, sessionUuid, id, setForceRender) {
+const deletePassword = function (passwordId, passwordText, sessionUuid, id, setForceRender, handleClose) {
 
   axios.post("http://localhost:8080/passwords/delete", { sessionUuid, passwordId, id, passwordText })
     .then((response) => {
@@ -61,11 +63,12 @@ const deletePassword = function (passwordId, passwordText, sessionUuid, id, setF
         console.log(error)
       }
     })
+
+    handleClose()
 }
 
 // https://medium.com/weekly-webtips/force-component-to-re-render-with-hooks-in-react-c57cde48dc9f
 function PasswordContainer({ sessionUuid, setForceRender, forceRender }) {
-  console.log(forceRender.value)
   const [dataFromApi, setDataFromApi] = useState([])
   const classes = useStyles()
   
@@ -73,7 +76,6 @@ function PasswordContainer({ sessionUuid, setForceRender, forceRender }) {
 
     axios.post("http://localhost:8080/passwords", { sessionUuid })
       .then((response) => {
-        console.log("I WAS ALSO CALLED")
         if (response) {
           displayPasswords(response.data, setDataFromApi, sessionUuid, setForceRender, deletePassword)
         }
