@@ -4,24 +4,24 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.Map;
 
-// TODO - fix this endpoint to use proper DELETE restful naming convention, can't get this working in Spring
 @RestController
-public class DeletePasswordController {
+public class EditPasswordController {
 
-    private final DeletePasswordService deletePasswordService;
+    private final EditPasswordService editPasswordService;
 
     @Autowired
-    public DeletePasswordController(DeletePasswordService deletePasswordService) {
-        this.deletePasswordService = deletePasswordService;
+    public EditPasswordController(EditPasswordService editPasswordService) {
+        this.editPasswordService = editPasswordService;
     }
 
     @CrossOrigin(origins = "http://localhost:3000/", maxAge = 90000)
-    @PostMapping("/passwords/delete")
-    public String deletePassword(@RequestBody Map<String, Object> lookupRequestObject) {
+    @PostMapping("/passwords/edit")
+    public String editPassword(@RequestBody Map<String, Object> lookupRequestObject) {
         System.out.println(lookupRequestObject);
-        String message = deletePasswordService.deletePasswordForUser(lookupRequestObject);
+        String message = editPasswordService.editPasswordForUser(lookupRequestObject);
         return message;
     }
 }
