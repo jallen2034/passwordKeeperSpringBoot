@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 import RelativeInformation from '../RelativeInfo/RelativeInformation'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField, Button, FormControl, Dialog } from '@material-ui/core'
@@ -30,8 +30,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, setForceRender }) {
-  const [open, setOpen] = React.useState(false);
+function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, editPasssword, setForceRender }) {
+  const [open, setOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [editField, setEditfield] = useState(passwordText)
+  const [editedPasswordFromServer, setEditedPasswordFromServer] = useState({ value: null })
+
+  const handleEditClickOpen = () => {
+    setEdit(true);
+  };
+
+  const handleEditClickClose = () => {
+    setEdit(false);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -61,7 +72,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
             <Button onClick={handleClose} color="primary">
               Go back
             </Button>
-            <Button onClick={(event) => deletePassword(id, passwordText, sessionUuid, id, setForceRender, handleClose)} color="primary" autoFocus>
+            <Button onClick={(event) => deletePassword(passwordText, sessionUuid, id, setForceRender, handleClose)} color="primary" autoFocus>
               Delete
             </Button>
           </DialogActions>
@@ -74,14 +85,37 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
           category={category}
           id={id}
         />
-        <TextField
-          value={passwordText}
-        />
-        <div className={classes.div}>
-          <Button>Copy</Button>
-          <Button>Edit</Button>
-          <Button onClick={handleClickOpen}>Delete</Button>
-        </div>
+        {edit
+          ? <>
+            <TextField
+              value={editField}
+              onChange={(event) => {
+                setEditfield(event.target.value)
+              }}
+            />
+            <div className={classes.div}>
+              <Button onClick={handleEditClickClose}>Cancel</Button>
+              <Button onClick={(event) => editPasssword(passwordText, editField, sessionUuid, id, handleEditClickClose, url, setEditedPasswordFromServer)}>Submit</Button>
+            </div>
+          </>
+          : <>
+            {editedPasswordFromServer.value
+              ?
+              <TextField
+                value={editedPasswordFromServer.value}
+              />
+              :
+              <TextField
+                value={passwordText}
+              />
+            }
+            <div className={classes.div}>
+              <Button>Copy</Button>
+              <Button onClick={handleEditClickOpen}>Edit</Button>
+              <Button onClick={handleClickOpen}>Delete</Button>
+            </div>
+          </>
+        }
       </FormControl>
     </>
   )
