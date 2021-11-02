@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const saveNewPasswrod = function (event, sessionUuid, passwordText, category, url) {
-  console.log("passwordText in button click function called!")
 
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
   .then((response) => {

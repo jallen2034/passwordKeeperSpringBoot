@@ -1,6 +1,6 @@
 import React from 'react';
 
-function RelativeInformation({url, name, category}){
+function RelativeInformation({url, name, category, id}){
 
   return (
     <>
