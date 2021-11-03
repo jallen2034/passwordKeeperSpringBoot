@@ -1,5 +1,4 @@
 package com.example.passwordKeepr.passwordKeeprTest.Users;
-import com.example.passwordKeepr.passwordKeeprTest.Exception.ApiRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,21 +56,21 @@ public class RegisterService {
 
         System.out.println("Email: " + email);
         if (email == "") {
-            throw new ApiRequestException("Must provide email!");
+            throw new IllegalStateException("Must provide email!");
         } else if (password == "") {
-            throw new ApiRequestException("Must provide password!");
+            throw new IllegalStateException("Must provide password!");
         } else if (confirmPassword == "") {
-            throw new ApiRequestException("Must provide password confirmation!");
+            throw new IllegalStateException("Must provide password confirmation!");
         } else if (password.equals(confirmPassword) == false) {
-            throw new ApiRequestException("Password and password confirmation do not match!");
+            throw new IllegalStateException("Password and password confirmation do not match!");
         } else if (duplicateFound == true) {
-            throw new ApiRequestException("You can't use that password!");
+            throw new IllegalStateException("You can't use that password!");
         }
 
         User usersFromDb = usersRepository.findByEmail(email);
 
         if (usersFromDb != null) {
-            throw new ApiRequestException("User already registered!");
+            throw new IllegalStateException("User already registered!");
         } else {
             return this.passwordVerifier(password, email);
         }
@@ -84,7 +83,7 @@ public class RegisterService {
         if (PASSWORD_PATTERN.matcher(password).matches()) {
             return this.commitNewUser(email, password);
         } else {
-            throw new ApiRequestException("Password does not meet complexity requirement!");
+            throw new IllegalStateException("Password does not meet complexity requirement!");
         }
     }
 

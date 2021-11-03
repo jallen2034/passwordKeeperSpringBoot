@@ -22,6 +22,6 @@ public class DeletePasswordController {
     public String deletePassword(@RequestBody Map<String, Object> lookupRequestObject) {
         System.out.println(lookupRequestObject);
         String message = deletePasswordService.deletePasswordForUser(lookupRequestObject);
-        return message;
+         return message;
     }
 }

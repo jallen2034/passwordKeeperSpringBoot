@@ -1,5 +1,4 @@
 package com.example.passwordKeepr.passwordKeeprTest.Passwords;
-import com.example.passwordKeepr.passwordKeeprTest.Exception.ApiRequestException;
 import com.example.passwordKeepr.passwordKeeprTest.Users.User;
 import com.example.passwordKeepr.passwordKeeprTest.Users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class DeletePasswordService {
         int id = (int) lookupRequestObject.get("id");
 
         if (userFromDb == null) {
-            throw new ApiRequestException("You can't add a password for someone who doesn't exist!");
+            throw new IllegalStateException("You can't add a password for someone who doesn't exist!");
         }
 
         List passwordList = userFromDb.getPasswordList();
@@ -41,7 +40,7 @@ public class DeletePasswordService {
                 try {
                     passwordsRepository.deletePassword(id);
                 } catch (EmptyResultDataAccessException ex) {
-                    throw new ApiRequestException("Uh oh, database shenanigans!");
+                    throw new IllegalStateException("Uh oh, database shenanigans!");
                 }
 
                 return "Password deleted: " +  password + " ";

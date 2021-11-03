@@ -24,6 +24,6 @@ public interface PasswordsRepository extends JpaRepository<Password, Integer> {
                     "update passwords " +
                     "set password_text = :newPassword " +
                     "from users " +
-                    "where users.uuid = :uuid and passwords.url = :passwordUrl")
+                    "where users.uuid = :uuid and users.id = passwords.user_id and passwords.url = :passwordUrl")
     void editPassword(@Param("uuid") String uuid, @Param("passwordUrl") String passwordUrl, @Param("newPassword") String newPassword);
 }

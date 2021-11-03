@@ -1,5 +1,4 @@
 package com.example.passwordKeepr.passwordKeeprTest.Passwords;
-import com.example.passwordKeepr.passwordKeeprTest.Exception.ApiRequestException;
 import com.example.passwordKeepr.passwordKeeprTest.Users.User;
 import com.example.passwordKeepr.passwordKeeprTest.Users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +22,13 @@ public class EditPasswordService {
 
     public <lookupRequestObject> String editPasswordForUser(Map<String, Object> lookupRequestObject) {
         String uuid = (String) lookupRequestObject.get("sessionUuid");
-        String password = (String) lookupRequestObject.get("passwordText");
         String passwordUrl = (String) lookupRequestObject.get("passwordUrl");
         String newPassword = (String) lookupRequestObject.get("newPassword");
         int id = (int) lookupRequestObject.get("id");
         User userFromDb = usersRepository.findByUuid(uuid);
 
         if (userFromDb == null) {
-            throw new ApiRequestException("You can't edit a password for someone who doesn't exist!");
+            throw new IllegalStateException("You can't edit a password for someone who doesn't exist!");
         }
 
         List passwordList = userFromDb.getPasswordList();
@@ -43,7 +41,7 @@ public class EditPasswordService {
                 try {
                     passwordsRepository.editPassword(uuid, passwordUrl, newPassword);
                 } catch (EmptyResultDataAccessException ex) {
-                    throw new ApiRequestException("Uh oh, database shenanigans!");
+                    throw new IllegalStateException("Uh oh, database shenanigans!");
                 }
 
                 return newPassword;
