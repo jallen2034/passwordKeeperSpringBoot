@@ -31,6 +31,12 @@ const useStyles = makeStyles((theme) => ({
 
 const saveNewPasswrod = function (event, sessionUuid, passwordText, category, url) {
 
+  if (!passwordText) {
+    return toast.error("You can't create an empty password!")
+  } else if (!category) {
+    return toast.error("You can't create an empty category!")
+  }
+
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
   .then((response) => {
     if (response) {
@@ -39,7 +45,8 @@ const saveNewPasswrod = function (event, sessionUuid, passwordText, category, ur
     }
   }).catch((error) => {
     if (error) {
-      console.log(error)
+      console.log(error.response.data.message)
+      toast.error(error.response.data.message)
     }
   })
 }

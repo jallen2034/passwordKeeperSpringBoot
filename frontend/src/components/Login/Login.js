@@ -70,6 +70,7 @@ function SignIn({ setCurrentUserUuid }) {
       setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data }))
       window.localStorage.setItem('Uuid', response.data)
     }).catch((error) => {
+      console.log(error.response.data.message)
       toast.error(error.response.data.message)
     })
   }

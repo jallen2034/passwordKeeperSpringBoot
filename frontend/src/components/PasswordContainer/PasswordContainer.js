@@ -61,9 +61,8 @@ const deletePassword = function (passwordText, sessionUuid, id, setForceRender, 
         setForceRender((prev) => ({ ...prev, value: makeid(5) }))
       }
     }).catch((error) => {
-      if (error) {
-        console.log(error)
-      }
+      console.log(error.response.data.message)
+      toast.error(error.response.data.message)
     })
 }
 

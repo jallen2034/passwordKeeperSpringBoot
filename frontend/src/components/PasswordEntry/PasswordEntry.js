@@ -39,7 +39,6 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
   const [edit, setEdit] = useState(false);
   const [editField, setEditfield] = useState(passwordText)
   const [editedPasswordFromServer, setEditedPasswordFromServer] = useState({ value: null })
-  const [copied, setCopied] = useState(false);
 
   const handleEditClickOpen = () => {
     setEdit(true);
@@ -47,6 +46,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
 
   const handleEditClickClose = () => {
     setEdit(false);
+    setEditfield(passwordText)
   };
 
   const handleClickOpen = () => {
@@ -115,7 +115,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
                   value={editedPasswordFromServer.value}
                 />
                 <div className={classes.div}>
-                  <CopyToClipboard text={editedPasswordFromServer.value} onCopy={() => setCopied(true)}>
+                  <CopyToClipboard text={editedPasswordFromServer.value}>
                     <Button onClick={() => handleCopyClick(editedPasswordFromServer.value)}>Copy</Button>
                   </CopyToClipboard>
                   <Button onClick={handleEditClickOpen}>Edit</Button>
@@ -128,7 +128,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
                   value={passwordText}
                 />
                 <div className={classes.div}>
-                  <CopyToClipboard text={passwordText} onCopy={() => setCopied(true)}>
+                  <CopyToClipboard text={passwordText}>
                     <Button onClick={() => handleCopyClick(passwordText)}>Copy</Button>
                   </CopyToClipboard>
                   <Button onClick={handleEditClickOpen}>Edit</Button>
