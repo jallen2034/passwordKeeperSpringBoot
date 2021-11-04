@@ -27,6 +27,14 @@ function makeid(length) {
   return result;
 }
 
+// implmented a queue to keep track of the most recent and least recent passwords updated by a user
+const passwordEditQueue = function(setEditedPasswordFromServer, editedPasswordFromServer, response) {
+  const queue = []
+  queue.unshift(editedPasswordFromServer[0])
+  queue.unshift(response.data)
+  setEditedPasswordFromServer(queue)
+}
+
 /* callback function after AXIOS call to loop through array of retrieved passwords from the API
  * https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once */
 const displayPasswords = function (responseData, setDataFromApi, sessionUuid, setForceRender, deletePassword, editPasssword) {
@@ -44,6 +52,7 @@ const displayPasswords = function (responseData, setDataFromApi, sessionUuid, se
         deletePassword={deletePassword}
         editPasssword={editPasssword}
         setForceRender={setForceRender}
+        passwordEditQueue={passwordEditQueue}
       />
     </Grid>)
   })
@@ -66,14 +75,13 @@ const deletePassword = function (passwordText, sessionUuid, id, setForceRender, 
     })
 }
 
-const editPasssword = function (passwordText, newPassword, sessionUuid, id, handleEditClickClose, passwordUrl, setEditedPasswordFromServer) {
+const editPasssword = function (passwordText, newPassword, sessionUuid, id, handleSubmitClose, passwordUrl, setEditedPasswordFromServer, editedPasswordFromServer) {
 
   axios.post("http://localhost:8080/passwords/edit", { sessionUuid, id, passwordText, passwordUrl, newPassword })
     .then((response) => {
       if (response) {
         toast.success(`Sucessfuly edited the old password: ${passwordText} to the new password: ${response.data}`)
-        handleEditClickClose()
-        setEditedPasswordFromServer((prev) => ({ ...prev, value: response.data }))
+        passwordEditQueue(setEditedPasswordFromServer, editedPasswordFromServer, response)
       }
     }).catch((error) => {
       if (error) {
