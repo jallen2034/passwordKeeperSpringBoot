@@ -2,8 +2,9 @@ import { React, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import axios from 'axios'
 import { Button, Select, TextField, FormControl, MenuItem } from '@material-ui/core'
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { saveNewPasswrod } from '../axiosCalls.js'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const categories = [
   "Social",

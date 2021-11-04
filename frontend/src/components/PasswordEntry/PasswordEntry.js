@@ -33,7 +33,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, editPasssword, setForceRender, passwordEditQueue }) {
+const textFieldManager = function (editedPasswordFromServer, setEditTextfield, passwordText) {
+
+  if ((editedPasswordFromServer.length == 2) || (editedPasswordFromServer.length == 1 && editedPasswordFromServer[0] !== '')) {
+    setEditTextfield(editedPasswordFromServer[0])
+  } else {
+    setEditTextfield(passwordText)
+  }
+}
+
+function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, editPasssword, setForceRender }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
@@ -41,42 +50,30 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
   const [editedPasswordFromServer, setEditedPasswordFromServer] = useState([""])
 
   useEffect(() => {
-     handleSubmitClose()
+    handleSubmitClose()
   }, [editedPasswordFromServer]);
 
   const handleEditClickOpen = () => {
     setEditFlag(true);
-  };
+  }
 
   const handleSubmitClose = () => {
     setEditFlag(false);
-
-    if ((editedPasswordFromServer.length == 2) || (editedPasswordFromServer.length == 1 && editedPasswordFromServer[0] !== '')) {
-      console.log("YEE")
-      setEditTextfield(editedPasswordFromServer[0])
-    } else {
-      console.log("HAW")
-      setEditTextfield(passwordText)
-    }
-  };
+    textFieldManager(editedPasswordFromServer, setEditTextfield, passwordText)
+  }
 
   const handleEditClickClose = () => {
     setEditFlag(false);
-
-    if ((editedPasswordFromServer.length == 2) || (editedPasswordFromServer.length == 1 && editedPasswordFromServer[0] !== '')) {
-      setEditTextfield(editedPasswordFromServer[0])
-    } else {
-      setEditTextfield(passwordText)
-    }
-  };
+    textFieldManager(editedPasswordFromServer, setEditTextfield, passwordText)
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
-  };
+  }
 
   const handleClose = () => {
     setOpen(false);
-  };
+  }
 
   const handleCopyClick = (password) => {
     toast.success(`Password copied to clipboard: ${password}`)
@@ -125,11 +122,11 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
             />
             <div className={classes.div}>
               <Button onClick={handleEditClickClose}>Cancel</Button>
-              <Button onClick={(event) => editPasssword(passwordText, editTextField, sessionUuid, id, handleSubmitClose, url, setEditedPasswordFromServer, editedPasswordFromServer)}>Submit</Button>
+              <Button onClick={(event) => editPasssword(passwordText, editTextField, sessionUuid, id, url, setEditedPasswordFromServer, editedPasswordFromServer)}>Submit</Button>
             </div>
           </>
           : <>
-            {(editedPasswordFromServer.length == 2) || (editedPasswordFromServer.length == 1 && editedPasswordFromServer[0] !== '')
+            {(editedPasswordFromServer.length === 2) || (editedPasswordFromServer.length === 1 && editedPasswordFromServer[0] !== '')
               ?
               <>
                 <TextField
