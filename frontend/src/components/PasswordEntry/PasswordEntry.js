@@ -129,7 +129,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
             </div>
           </>
           : <>
-            {editedPasswordFromServer.value
+            {(editedPasswordFromServer.length == 2) || (editedPasswordFromServer.length == 1 && editedPasswordFromServer[0] !== '')
               ?
               <>
                 <TextField
@@ -146,7 +146,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
               :
               <>
                 <TextField
-                  value={editedPasswordFromServer[0]}
+                  value={passwordText}
                 />
                 <div className={classes.div}>
                   <CopyToClipboard text={passwordText}>
