@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '5px',
     backgroundColor: "#f0f0f0",
     '&:hover': {
-      backgroundColor: "#ead1ff",
+      backgroundColor: "#96d3dd",
     },
   },
   buttonEdit: {
@@ -31,14 +31,15 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '5px',
     backgroundColor: "#e8e8e8",
     '&:hover': {
-      backgroundColor: "#a1ffcf",
+      backgroundColor: "#389cfb",
     },
   },
   buttonDelete: {
     padding: '5px',
+    marginRight: '5px',
     backgroundColor: "#dbdbdb",
     '&:hover': {
-      backgroundColor: "#ffb5cb",
+      backgroundColor: "#e67683",
     },
   },
   formControl: {
@@ -49,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '20px',
     paddingRight: '20px',
     '&:hover': {
-      background: "#f5f5f5",
+      background: "#f7f7f7",
     },
   },
   div: {
@@ -60,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: '15px',
   },
   textField: {
-    backgroundColor: '#c4c4c4',
+    backgroundColor: '#e9ecef',
     borderRadius: '5px',
     paddingLeft: '10px',
     paddingRight: '5px'
@@ -156,8 +157,8 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
               }}
             />
             <div className={classes.div}>
-              <Button onClick={handleEditClickClose}>Cancel</Button>
-              <Button onClick={(event) => editPasssword(passwordText, editTextField, sessionUuid, id, url, setEditedPasswordFromServer, editedPasswordFromServer)}>Submit</Button>
+              <Button className={classes.buttonDelete} onClick={handleEditClickClose}>Cancel</Button>
+              <Button className={classes.buttonEdit} onClick={(event) => editPasssword(passwordText, editTextField, sessionUuid, id, url, setEditedPasswordFromServer, editedPasswordFromServer)}>Submit</Button>
             </div>
           </>
           : <>
@@ -173,7 +174,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
                     <Button className={classes.buttonCopy} onClick={() => handleCopyClick(editedPasswordFromServer.value)}>Copy</Button>
                   </CopyToClipboard>
                   <Button className={classes.buttonEdit} onClick={handleEditClickOpen}>Edit</Button>
-                  <Button className={classes.buttonDelete}  onClick={handleClickOpen}>Delete</Button>
+                  <Button className={classes.buttonDelete} onClick={handleClickOpen}>Delete</Button>
                 </div>
               </>
               :
