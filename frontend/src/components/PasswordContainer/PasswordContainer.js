@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import axios from 'axios'
 import PasswordEntry from '../PasswordEntry/PasswordEntry'
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 // styling  component
 const useStyles = makeStyles((theme) => ({
@@ -72,8 +72,7 @@ const editPasssword = function (passwordText, newPassword, sessionUuid, id, hand
   axios.post("http://localhost:8080/passwords/edit", { sessionUuid, id, passwordText, passwordUrl, newPassword })
     .then((response) => {
       if (response) {
-        console.log(response.data)
-        toast.success(response.data)
+        toast.success(`Sucessfuly edited the old password: ${passwordText} to the new password: ${response.data}`)
         handleEditClickClose()
         setEditedPasswordFromServer((prev) => ({ ...prev, value: response.data }))
       }

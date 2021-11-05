@@ -2,10 +2,13 @@ import { useState } from 'react'
 import RelativeInformation from '../RelativeInfo/RelativeInformation'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField, Button, FormControl, Dialog } from '@material-ui/core'
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 // styling for text field component
 const useStyles = makeStyles((theme) => ({
@@ -31,10 +34,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, editPasssword, setForceRender }) {
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [editField, setEditfield] = useState(passwordText)
   const [editedPasswordFromServer, setEditedPasswordFromServer] = useState({ value: null })
+  const [copied, setCopied] = useState(false);
 
   const handleEditClickOpen = () => {
     setEdit(true);
@@ -51,8 +56,12 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
   const handleClose = () => {
     setOpen(false);
   };
-  const classes = useStyles();
 
+  const handleCopyClick = (password) => {
+    toast.success(`Password copied to clipboard: ${password}`)
+  }
+
+  // https://codezup.com/copy-data-to-clipboard-using-react-hooks-example/
   return (
     <>
       <div>
@@ -101,19 +110,32 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
           : <>
             {editedPasswordFromServer.value
               ?
-              <TextField
-                value={editedPasswordFromServer.value}
-              />
+              <>
+                <TextField
+                  value={editedPasswordFromServer.value}
+                />
+                <div className={classes.div}>
+                  <CopyToClipboard text={editedPasswordFromServer.value} onCopy={() => setCopied(true)}>
+                    <Button onClick={() => handleCopyClick(editedPasswordFromServer.value)}>Copy</Button>
+                  </CopyToClipboard>
+                  <Button onClick={handleEditClickOpen}>Edit</Button>
+                  <Button onClick={handleClickOpen}>Delete</Button>
+                </div>
+              </>
               :
-              <TextField
-                value={passwordText}
-              />
+              <>
+                <TextField
+                  value={passwordText}
+                />
+                <div className={classes.div}>
+                  <CopyToClipboard text={passwordText} onCopy={() => setCopied(true)}>
+                    <Button onClick={() => handleCopyClick(passwordText)}>Copy</Button>
+                  </CopyToClipboard>
+                  <Button onClick={handleEditClickOpen}>Edit</Button>
+                  <Button onClick={handleClickOpen}>Delete</Button>
+                </div>
+              </>
             }
-            <div className={classes.div}>
-              <Button>Copy</Button>
-              <Button onClick={handleEditClickOpen}>Edit</Button>
-              <Button onClick={handleClickOpen}>Delete</Button>
-            </div>
           </>
         }
       </FormControl>
