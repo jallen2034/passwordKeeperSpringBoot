@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   buttonEdit: {
-    padding: '5px',
+    padding: '0px',
     marginRight: '5px',
     backgroundColor: "#e8e8e8",
     '&:hover': {
@@ -56,7 +56,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: '10px'
+    paddingTop: '15px',
+    paddingBottom: '15px',
   },
   textField: {
     backgroundColor: '#c4c4c4',
