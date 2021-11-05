@@ -126,6 +126,8 @@ const saveNewPasswrod = function (event, sessionUuid, passwordText, category, ur
     return toast.error("You can't create an empty password!")
   } else if (!category) {
     return toast.error("You can't create an empty category!")
+  } else if (!url) {
+    return toast.error("You can't create a password with an empty url!")
   }
 
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
@@ -144,6 +146,8 @@ const saveNewPasswrodForm = function (event, sessionUuid, category, url, sliderV
 
   if (!checked.numbers && !checked.symbols && !checked.lowercas && !checked.uppercase) {
     return toast.error("You can't leave all checkboxes empty when making a password!")
+  } else if (!url) {
+    return toast.error("You can't create a password with an empty url!")
   }
 
   const password = generator.generateMultiple(3, {

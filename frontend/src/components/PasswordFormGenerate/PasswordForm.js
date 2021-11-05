@@ -31,10 +31,14 @@ const useStyles = makeStyles((theme) => ({
   divContainer: {
     padding: '25px',
     borderRadius: '15px',
-    backgroundColor: '#c7c7c7',
+    backgroundColor: '#e9ecef',
     display: 'flex',
     flexDirection: "column",
     width: '750px'
+  },
+  slider: {
+    marginTop: '10px',
+    marginTop: '10px'
   }
 }));
 
@@ -88,6 +92,7 @@ function PasswordForm({ sessionUuid }) {
         </Select>
         Length:
         <Slider
+          className={classes.slider}
           defaultValue={30}
           getAriaValueText={valuetext}
           aria-labelledby="discrete-slider"
