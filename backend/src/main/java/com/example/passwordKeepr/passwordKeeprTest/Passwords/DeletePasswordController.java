@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Map;
 
 // TODO - fix this endpoint to use proper DELETE restful naming convention, can't get this working in Spring
@@ -23,6 +22,6 @@ public class DeletePasswordController {
     public String deletePassword(@RequestBody Map<String, Object> lookupRequestObject) {
         System.out.println(lookupRequestObject);
         String message = deletePasswordService.deletePasswordForUser(lookupRequestObject);
-        return message;
+         return message;
     }
 }

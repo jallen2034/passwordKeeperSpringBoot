@@ -1,5 +1,4 @@
 package com.example.passwordKeepr.passwordKeeprTest.Users;
-import com.example.passwordKeepr.passwordKeeprTest.Exception.ApiRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,9 +22,9 @@ public class LoginService {
         String password = (String) lookupRequestObject.get("password");
 
         if (email == "") {
-            throw new ApiRequestException("Must provide email!");
+            throw new IllegalStateException("Must provide email!");
         } else if (password == "") {
-            throw new ApiRequestException("Must provide password!");
+            throw new IllegalStateException("Must provide password!");
         }
 
         return this.loginUser(email, password);
@@ -42,7 +41,7 @@ public class LoginService {
             System.out.println(passwordList);
             return uuid;
         } else {
-            throw new ApiRequestException("Sorry that password is incorrect!");
+            throw new IllegalStateException("Sorry that password is incorrect!");
         }
     }
 }

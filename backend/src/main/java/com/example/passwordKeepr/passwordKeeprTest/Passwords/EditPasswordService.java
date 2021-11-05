@@ -4,30 +4,31 @@ import com.example.passwordKeepr.passwordKeeprTest.Users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Map;
 
-// https://stackoverflow.com/questions/39233648/jpa-emptyresultdataaccessexception-handling
 @Service
-public class DeletePasswordService {
+public class EditPasswordService {
 
     private final PasswordsRepository passwordsRepository;
     private final UsersRepository usersRepository;
 
     @Autowired
-    DeletePasswordService(PasswordsRepository passwordsRepository, UsersRepository usersRepository) {
+    EditPasswordService(PasswordsRepository passwordsRepository, UsersRepository usersRepository) {
         this.passwordsRepository = passwordsRepository;
         this.usersRepository = usersRepository;
     }
 
-    public <lookupRequestObject> String deletePasswordForUser(Map<String, Object> lookupRequestObject) {
+    public <lookupRequestObject> String editPasswordForUser(Map<String, Object> lookupRequestObject) {
         String uuid = (String) lookupRequestObject.get("sessionUuid");
-        String password = (String) lookupRequestObject.get("passwordText");
-        User userFromDb = usersRepository.findByUuid(uuid);
+        String passwordUrl = (String) lookupRequestObject.get("passwordUrl");
+        String newPassword = (String) lookupRequestObject.get("newPassword");
         int id = (int) lookupRequestObject.get("id");
+        User userFromDb = usersRepository.findByUuid(uuid);
 
         if (userFromDb == null) {
-            throw new IllegalStateException("You can't add a password for someone who doesn't exist!");
+            throw new IllegalStateException("You can't edit a password for someone who doesn't exist!");
         }
 
         List passwordList = userFromDb.getPasswordList();
@@ -38,15 +39,15 @@ public class DeletePasswordService {
 
             if (passwordId == id) {
                 try {
-                    passwordsRepository.deletePassword(id);
+                    passwordsRepository.editPassword(uuid, passwordUrl, newPassword);
                 } catch (EmptyResultDataAccessException ex) {
                     throw new IllegalStateException("Uh oh, database shenanigans!");
                 }
 
-                return "Password deleted: " +  password + " ";
+                return newPassword;
             }
         }
 
-        return "Uh oh, something went wrong when deleting a password!!";
+        return "Uh oh, something went wrong when editing that password!";
     }
 }
