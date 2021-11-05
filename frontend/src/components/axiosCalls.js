@@ -12,8 +12,7 @@ function makeid(length) {
   let charactersLength = characters.length;
 
   for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() *
-      charactersLength));
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
 
   return result;
@@ -36,7 +35,6 @@ const loginUser = function (event, setCurrentUserUuid, email, password ) {
     setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data }))
     window.localStorage.setItem('Uuid', response.data)
   }).catch((error) => {
-    console.log(error.response.data.message)
     toast.error(error.response.data.message)
   })
 }
@@ -69,7 +67,8 @@ const deletePassword = function (passwordText, sessionUuid, id, setForceRender, 
 
 /* callback function after AXIOS call to loop through array of retrieved passwords from the API
  * https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once */
-const displayIndividualPasswords = function (responseData, setDataFromApi, sessionUuid, setForceRender, deletePassword, editPasssword) {
+const displayPasswords = function (responseData, setDataFromApi, sessionUuid, setForceRender, deletePassword, editPasssword) {
+
   const passwordDivsList = []
 
   responseData.forEach((item, index) => {
@@ -88,7 +87,7 @@ const displayIndividualPasswords = function (responseData, setDataFromApi, sessi
     </Grid>)
   })
 
-  setTimeout(function () { setDataFromApi(passwordDivsList); }, 500);
+  setTimeout(function () { setDataFromApi(passwordDivsList); }, 850);
 }
 
 const editPasssword = function (passwordText, newPassword, sessionUuid, id, passwordUrl, setEditedPasswordFromServer, editedPasswordFromServer) {
@@ -101,7 +100,7 @@ const editPasssword = function (passwordText, newPassword, sessionUuid, id, pass
       }
     }).catch((error) => {
       if (error) {
-        console.log(error)
+        toast.error(error.response.data.message)
       }
     })
 }
@@ -111,16 +110,17 @@ const retrieveUsersPasswords = function (sessionUuid, setDataFromApi, setForceRe
   axios.post("http://localhost:8080/passwords", { sessionUuid })
     .then((response) => {
       if (response) {
-        displayIndividualPasswords(response.data, setDataFromApi, sessionUuid, setForceRender, deletePassword, editPasssword)
+        displayPasswords(response.data, setDataFromApi, sessionUuid, setForceRender, deletePassword, editPasssword)
       }
     }).catch((error) => {
       if (error) {
-        console.log(error)
+        toast.error(error.response.data.message)
       }
     })
 }
 
 const saveNewPasswrod = function (event, sessionUuid, passwordText, category, url) {
+  event.preventDefault()
 
   if (!passwordText) {
     return toast.error("You can't create an empty password!")
@@ -131,12 +131,10 @@ const saveNewPasswrod = function (event, sessionUuid, passwordText, category, ur
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
   .then((response) => {
     if (response) {
-      console.log(response.data)
       toast.success(response.data)
     }
   }).catch((error) => {
     if (error) {
-      console.log(error.response.data.message)
       toast.error(error.response.data.message)
     }
   })
@@ -159,12 +157,10 @@ const saveNewPasswrodForm = function (event, sessionUuid, category, url, sliderV
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText: password[0], category, url })
   .then((response) => {
     if (response) {
-      console.log(response.data)
       toast.success(response.data)
     }
   }).catch((error) => {
     if (error) {
-      console.log(error.response.data.message)
       toast.error(error.response.data.message)
     }
   })
@@ -172,7 +168,7 @@ const saveNewPasswrodForm = function (event, sessionUuid, category, url, sliderV
 
 export { 
   deletePassword, 
-  displayIndividualPasswords as displayPasswords, 
+  displayPasswords, 
   editPasssword, 
   retrieveUsersPasswords, 
   saveNewPasswrod, 

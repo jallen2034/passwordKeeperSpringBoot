@@ -4,6 +4,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import 'react-toastify/dist/ReactToastify.css'
 import { deletePassword, displayPasswords, editPasssword, retrieveUsersPasswords } from '../axiosCalls.js'
 import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import '@fontsource/roboto';
 
 // styling  component
 const useStyles = makeStyles((theme) => ({
@@ -12,9 +14,14 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     display: 'flex',
-    '& > * + *': {
-      marginLeft: theme.spacing(2),
-    },
+    justifyContent: 'center',
+    marginTop: '50px'
+  },
+  heading: {
+    marginLeft: '65px',
+    marginTop: '30px'
+  },
+  loading: {
   },
 }))
 
@@ -32,17 +39,19 @@ function PasswordContainer({ sessionUuid }) {
 
   return (
     <>
+      <h2 className={classes.heading}> My Saved Passwords </h2>
       {dataFromApi.length > 0
-        ? 
+        ?
         <div>
-          <h2>My Saved Passwords</h2>
           <Grid container className={classes.passwordContainer}>
             {dataFromApi}
           </Grid>
         </div>
-        : 
+        :
         <div className={classes.root}>
-          <CircularProgress color="secondary" />
+          <div className={classes.loading}>
+            <CircularProgress color="secondary" />
+          </div>
         </div>
       }
     </>

@@ -63,19 +63,6 @@ function SignIn({ setCurrentUserUuid }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const loginUser = function (event, setCurrentUserUuid, email, password ) {
-    event.preventDefault()
-
-    axios.post("http://localhost:8080/login", { email, password })
-    .then((response) => {
-      setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data }))
-      window.localStorage.setItem('Uuid', response.data)
-    }).catch((error) => {
-      console.log(error.response.data.message)
-      toast.error(error.response.data.message)
-    })
-  }
-
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />

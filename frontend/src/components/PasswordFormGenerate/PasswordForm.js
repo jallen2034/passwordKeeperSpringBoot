@@ -132,7 +132,10 @@ function PasswordForm({ sessionUuid }) {
             />
           </Grid>
         </Grid>
-        <Button onClick={(event) => saveNewPasswrodForm(event, sessionUuid, category, url, sliderValue, checked)} >Generate Password</Button>
+        <Button
+          onClick={(event) => saveNewPasswrodForm(event, sessionUuid, category, url, sliderValue, checked)}
+        > Generate Password
+        </Button>
       </FormControl>
     </div>
   )

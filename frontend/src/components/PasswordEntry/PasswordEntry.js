@@ -10,7 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-// styling for text field component
+// https://stackoverflow.com/questions/52596070/materialui-custom-hover-style
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
@@ -18,18 +18,51 @@ const useStyles = makeStyles((theme) => ({
       width: '25ch',
     },
   },
-  button: {
-    padding: '5px'
+  buttonCopy: {
+    padding: '5px',
+    marginRight: '5px',
+    backgroundColor: "#f0f0f0",
+    '&:hover': {
+      backgroundColor: "#ead1ff",
+    },
+  },
+  buttonEdit: {
+    padding: '5px',
+    marginRight: '5px',
+    backgroundColor: "#e8e8e8",
+    '&:hover': {
+      backgroundColor: "#a1ffcf",
+    },
+  },
+  buttonDelete: {
+    padding: '5px',
+    backgroundColor: "#dbdbdb",
+    '&:hover': {
+      backgroundColor: "#ffb5cb",
+    },
   },
   formControl: {
-    margin: theme.spacing(1),
-    maxWidth: 380
+    margin: theme.spacing(3),
+    maxWidth: 400,
+    borderRadius: '30px',
+    backgroundColor: 'white',
+    paddingLeft: '20px',
+    paddingRight: '20px',
+    '&:hover': {
+      background: "#f5f5f5",
+    },
   },
   div: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     padding: '10px'
+  },
+  textField: {
+    backgroundColor: '#c4c4c4',
+    borderRadius: '5px',
+    paddingLeft: '10px',
+    paddingRight: '5px'
   }
 }));
 
@@ -115,6 +148,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
         {editFlag
           ? <>
             <TextField
+              
               value={editTextField}
               onChange={(event) => {
                 setEditTextfield(event.target.value)
@@ -130,27 +164,29 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
               ?
               <>
                 <TextField
+                  className={classes.textField}
                   value={editedPasswordFromServer[0]}
                 />
                 <div className={classes.div}>
                   <CopyToClipboard text={editedPasswordFromServer.value}>
-                    <Button onClick={() => handleCopyClick(editedPasswordFromServer.value)}>Copy</Button>
+                    <Button className={classes.buttonCopy} onClick={() => handleCopyClick(editedPasswordFromServer.value)}>Copy</Button>
                   </CopyToClipboard>
-                  <Button onClick={handleEditClickOpen}>Edit</Button>
-                  <Button onClick={handleClickOpen}>Delete</Button>
+                  <Button className={classes.buttonEdit} onClick={handleEditClickOpen}>Edit</Button>
+                  <Button className={classes.buttonDelete}  onClick={handleClickOpen}>Delete</Button>
                 </div>
               </>
               :
               <>
                 <TextField
+                  className={classes.textField}
                   value={passwordText}
                 />
                 <div className={classes.div}>
                   <CopyToClipboard text={passwordText}>
-                    <Button onClick={() => handleCopyClick(passwordText)}>Copy</Button>
+                    <Button className={classes.buttonCopy} onClick={() => handleCopyClick(passwordText)}>Copy</Button>
                   </CopyToClipboard>
-                  <Button onClick={handleEditClickOpen}>Edit</Button>
-                  <Button onClick={handleClickOpen}>Delete</Button>
+                  <Button className={classes.buttonEdit} onClick={handleEditClickOpen}>Edit</Button>
+                  <Button className={classes.buttonDelete} onClick={handleClickOpen}>Delete</Button>
                 </div>
               </>
             }
