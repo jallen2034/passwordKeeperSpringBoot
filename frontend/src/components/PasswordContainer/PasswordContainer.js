@@ -23,13 +23,13 @@ function makeid(length) {
     result += characters.charAt(Math.floor(Math.random() *
       charactersLength));
   }
-  
+
   return result;
 }
 
 /* callback function after AXIOS call to loop through array of retrieved passwords from the API
  * https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once */
- const displayPasswords = function (responseData, setDataFromApi, sessionUuid, setForceRender) {
+const displayPasswords = function (responseData, setDataFromApi, sessionUuid, setForceRender, deletePassword, editPasssword) {
   const passwordDivsList = []
 
   responseData.forEach((item, index) => {
@@ -42,6 +42,7 @@ function makeid(length) {
         name={item.name}
         sessionUuid={sessionUuid}
         deletePassword={deletePassword}
+        editPasssword={editPasssword}
         setForceRender={setForceRender}
       />
     </Grid>)
@@ -50,12 +51,13 @@ function makeid(length) {
   setDataFromApi(passwordDivsList)
 }
 
-const deletePassword = function (passwordId, passwordText, sessionUuid, id, setForceRender, handleClose) {
+const deletePassword = function (passwordText, sessionUuid, id, setForceRender, handleClose) {
 
-  axios.post("http://localhost:8080/passwords/delete", { sessionUuid, passwordId, id, passwordText })
+  axios.post("http://localhost:8080/passwords/delete", { sessionUuid, id, passwordText })
     .then((response) => {
       if (response) {
         toast.success(response.data)
+        handleClose()
         setForceRender((prev) => ({ ...prev, value: makeid(5) }))
       }
     }).catch((error) => {
@@ -63,21 +65,37 @@ const deletePassword = function (passwordId, passwordText, sessionUuid, id, setF
         console.log(error)
       }
     })
+}
 
-    handleClose()
+const editPasssword = function (passwordText, newPassword, sessionUuid, id, handleEditClickClose, passwordUrl, setEditedPasswordFromServer) {
+
+  axios.post("http://localhost:8080/passwords/edit", { sessionUuid, id, passwordText, passwordUrl, newPassword })
+    .then((response) => {
+      if (response) {
+        console.log(response.data)
+        toast.success(response.data)
+        handleEditClickClose()
+        setEditedPasswordFromServer((prev) => ({ ...prev, value: response.data }))
+      }
+    }).catch((error) => {
+      if (error) {
+        console.log(error)
+      }
+    })
 }
 
 // https://medium.com/weekly-webtips/force-component-to-re-render-with-hooks-in-react-c57cde48dc9f
-function PasswordContainer({ sessionUuid, setForceRender, forceRender }) {
+function PasswordContainer({ sessionUuid }) {
   const [dataFromApi, setDataFromApi] = useState([])
+  const [forceRender, setForceRender] = useState({ value: null })
   const classes = useStyles()
-  
+
   const retrieveUsersPasswords = function (sessionUuid, setDataFromApi, setForceRender) {
 
     axios.post("http://localhost:8080/passwords", { sessionUuid })
       .then((response) => {
         if (response) {
-          displayPasswords(response.data, setDataFromApi, sessionUuid, setForceRender, deletePassword)
+          displayPasswords(response.data, setDataFromApi, sessionUuid, setForceRender, deletePassword, editPasssword)
         }
       }).catch((error) => {
         if (error) {
