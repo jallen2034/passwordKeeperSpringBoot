@@ -65,6 +65,13 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '5px',
     paddingLeft: '10px',
     paddingRight: '5px'
+  },
+  textFieldNoSelect: {
+    backgroundColor: 'f7f7f7',
+    borderRadius: '5px',
+    paddingLeft: '10px',
+    paddingRight: '5px',
+    marginRight: '10px'
   }
 }));
 
@@ -142,7 +149,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
       </div>
       <FormControl className={classes.formControl}>
         <RelativeInformation
-          url={url}
+          url={url} 
           name={name}
           category={category}
           id={id}
@@ -150,7 +157,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
         {editFlag
           ? <>
             <TextField
-              
+              className={classes.textFieldNoSelect}
               value={editTextField}
               onChange={(event) => {
                 setEditTextfield(event.target.value)
@@ -167,7 +174,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
               <>
                 <TextField
                   className={classes.textField}
-                  value={editedPasswordFromServer[0]}
+                  value={editedPasswordFromServer[0]} 
                 />
                 <div className={classes.div}>
                   <CopyToClipboard text={editedPasswordFromServer.value}>

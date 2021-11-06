@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '50px'
   },
   heading: {
-    marginLeft: '65px',
+    marginLeft: '50px',
     marginTop: '30px'
   },
   loading: {
