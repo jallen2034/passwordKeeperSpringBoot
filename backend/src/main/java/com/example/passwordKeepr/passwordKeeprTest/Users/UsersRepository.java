@@ -15,12 +15,6 @@ public interface UsersRepository extends JpaRepository<User, Integer> {
     public User findByUuid(String uuid);
     public User findByVerificationCode(String code);
 
-//    @Transactional
-//    @Query(nativeQuery = true,
-//            value =
-//                    "select u from users u where u.verification_code = 'inFVFNpx9SatCyXMq2KCithcATJmYgrPBJJBR2abbFI3JFtfkWDokCPgsmktMdCs'")
-//    User findByVerificationCode(@Param("emailCode") String code);
-
     @Modifying
     @Transactional
     @Query(nativeQuery = true,

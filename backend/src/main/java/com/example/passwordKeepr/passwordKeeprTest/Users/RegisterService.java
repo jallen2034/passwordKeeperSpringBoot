@@ -111,7 +111,7 @@ public class RegisterService {
     }
 
     public void sendVerificationEmail(User newUser, HttpServletRequest request) throws UnsupportedEncodingException, MessagingException {
-        String siteUrl = Utility.getSiteUrl(request);
+        String siteUrl = "http://localhost:3000/login";
         String verifyUrl = siteUrl + "/verify?code=" + newUser.getVerificationCode();
         String subject = "Please verify your registration";
         String senderName = "PasswordKeepr Team";
