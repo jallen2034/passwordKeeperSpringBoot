@@ -44,4 +44,16 @@ public class LoginService {
             throw new IllegalStateException("Sorry that password is incorrect!");
         }
     }
+
+    public boolean verify(String verificationCode) {
+        User userToVerify = usersRepository.findByVerificationCode(verificationCode);
+        System.out.println("Got here");
+
+        if (userToVerify == null || userToVerify.getEnabled()) {
+            return false;
+        } else {
+            usersRepository.enableUser(userToVerify.getId());
+            return true;
+        }
+    }
 }
