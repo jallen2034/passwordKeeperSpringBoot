@@ -1,18 +1,13 @@
 // this is a copy of the app component purely for storybook.
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ButtonAppBar from "./Appbar/Appbar";
 import SignIn from "./Login/Login";
 import Register from "./Register/Register";
 import PasswordVault from "./PasswordVault/PasswordVault";
 import { ToastContainer } from "react-toastify";
-import { Router, Route } from "react-router";
+import { BrowserRouter as Router, Route, Switch, useHistory } from "react-router-dom";
 
-function LoginPage({
-  setCurrentUserUuid,
-  currentUserUuid,
-  register,
-  setRegister,
-}) {
+function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister }) {
   return (
     <>
       <div className="App">
@@ -31,12 +26,7 @@ function LoginPage({
   );
 }
 
-function RegisterPage({
-  setCurrentUserUuid,
-  currentUserUuid,
-  register,
-  setRegister,
-}) {
+function RegisterPage({ setCurrentUserUuid, currentUserUuid, register, setRegister }) {
   return (
     <>
       <div className="App">
@@ -55,14 +45,7 @@ function RegisterPage({
   );
 }
 
-function VaultPage({
-  setCurrentUserUuid,
-  currentUserUuid,
-  register,
-  setRegister,
-  setIndexSelected,
-  indexSelected
-}) {
+function VaultPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, indexSelected }) {
   return (
     <>
       <div className="App">
@@ -88,6 +71,7 @@ function VaultPage({
 function App() {
   /* usestate our app will use we will drill down into our components
    * this is a hardcoded value for now */
+  const history = useHistory()
   const sessionUuid = window.localStorage.getItem("Uuid");
   const [register, setRegister] = useState(false);
   const [indexSelected, setIndexSelected] = useState(true);
@@ -95,54 +79,44 @@ function App() {
     uuid: sessionUuid || null,
   });
 
-  // https://developer.mozilla.org/en-US/docs/Web/API/History/pushState
   if (!register && !currentUserUuid.uuid) {
-    window.history.pushState("/login", "login");
+    history.push("/login")
   } else if (register && !currentUserUuid.uuid) {
-    window.history.pushState("/register", "register");
+    history.push("/register")
   } else {
-    window.history.pushState("/vault", "vault");
+    history.push("/vault")
   }
 
   return (
     <>
-      <Router>
-        <Route
-          path="/login"
-          component={
-            <LoginPage
-              setCurrentUserUuid={setCurrentUserUuid}
-              currentUserUuid={currentUserUuid}
-              register={register}
-              setRegister={setRegister}
-            />
-          }
-        />
-        <Route
-          path="/register"
-          component={
-            <RegisterPage
-              setCurrentUserUuid={setCurrentUserUuid}
-              currentUserUuid={currentUserUuid}
-              register={register}
-              setRegister={setRegister}
-            />
-          }
-        />
-        <Route
-          path="/vault"
-          component={
-            <VaultPage
-              setCurrentUserUuid={setCurrentUserUuid}
-              currentUserUuid={currentUserUuid}
-              register={register}
-              setRegister={setRegister}
-              setIndexSelected={setIndexSelected}
-              indexSelected={indexSelected}
-            />
-          }
-        />
-      </Router>
+      <Switch>
+        <Route path="/login">
+          <LoginPage
+            setCurrentUserUuid={setCurrentUserUuid}
+            currentUserUuid={currentUserUuid}
+            register={register}
+            setRegister={setRegister}
+          />
+        </Route>
+        <Route path="/register">
+          <RegisterPage
+            setCurrentUserUuid={setCurrentUserUuid}
+            currentUserUuid={currentUserUuid}
+            register={register}
+            setRegister={setRegister}
+          />
+        </Route>
+        <Route path="/vault">
+          <VaultPage
+            setCurrentUserUuid={setCurrentUserUuid}
+            currentUserUuid={currentUserUuid}
+            register={register}
+            setRegister={setRegister}
+            setIndexSelected={setIndexSelected}
+            indexSelected={indexSelected}
+          />
+        </Route>
+      </Switch>
     </>
   );
 }

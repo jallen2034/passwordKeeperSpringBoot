@@ -17,6 +17,9 @@ const buttonClick = function (setCurrentUserUuid, currentUserUuid, register, set
       break;
     default:
 
+      console.log("register before")
+      console.log(register)
+
       if (!register) {
         setRegister(true)
       } else if (register) {
