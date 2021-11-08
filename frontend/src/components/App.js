@@ -1,13 +1,48 @@
 // this is a copy of the app component purely for storybook.
 import { useState, useEffect } from "react";
 import ButtonAppBar from "./Appbar/Appbar";
+import { Button, IconButton, Typography, Toolbar, AppBar } from '@material-ui/core'
 import SignIn from "./Login/Login";
 import Register from "./Register/Register";
 import PasswordVault from "./PasswordVault/PasswordVault";
-import { ToastContainer } from "react-toastify";
-import { BrowserRouter as Router, Route, Switch, useHistory } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { BrowserRouter as Router, Route, Switch, useHistory, useParams } from "react-router-dom";
+import { verifyUser } from './axiosCalls';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister }) {
+const buttonClick = function (setVerified, history) {
+  setVerified(null)
+  history.push("/login")
+}
+
+// https://www.youtube.com/watch?v=y_pr4lRoUto
+function VerificationPage({ verified, setVerified, history }) {
+  const params = useParams()
+  verifyUser(params.code, setVerified)
+
+  return (
+    <>
+      <div className="App">
+        {verified
+          ?
+          <h1>
+            {verified}
+          </h1>
+          :
+          <div>
+            <CircularProgress color="secondary" />
+          </div>}
+        <Button
+          color="inherit"
+          onClick={() => buttonClick(setVerified, history)}
+        > Go Back to Login
+        </Button>
+      </div>
+    </>
+  )
+}
+
+function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history }) {
   return (
     <>
       <div className="App">
@@ -16,6 +51,7 @@ function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister 
           currentUserUuid={currentUserUuid}
           register={register}
           setRegister={setRegister}
+          history={history}
         />
         <SignIn setCurrentUserUuid={setCurrentUserUuid}></SignIn>
       </div>
@@ -26,7 +62,7 @@ function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister 
   );
 }
 
-function RegisterPage({ setCurrentUserUuid, currentUserUuid, register, setRegister }) {
+function RegisterPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history }) {
   return (
     <>
       <div className="App">
@@ -35,6 +71,7 @@ function RegisterPage({ setCurrentUserUuid, currentUserUuid, register, setRegist
           currentUserUuid={currentUserUuid}
           register={register}
           setRegister={setRegister}
+          history={history}
         />
         <Register setCurrentUserUuid={setCurrentUserUuid}></Register>
       </div>
@@ -45,7 +82,7 @@ function RegisterPage({ setCurrentUserUuid, currentUserUuid, register, setRegist
   );
 }
 
-function VaultPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, indexSelected }) {
+function VaultPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, indexSelected, history }) {
   return (
     <>
       <div className="App">
@@ -55,6 +92,7 @@ function VaultPage({ setCurrentUserUuid, currentUserUuid, register, setRegister,
           register={register}
           setRegister={setRegister}
           setIndexSelected={setIndexSelected}
+          history={history}
         />
         <PasswordVault
           indexSelected={indexSelected}
@@ -72,18 +110,15 @@ function App() {
   /* usestate our app will use we will drill down into our components
    * this is a hardcoded value for now */
   const history = useHistory()
-  const sessionUuid = window.localStorage.getItem("Uuid");
-  const [register, setRegister] = useState(false);
-  const [indexSelected, setIndexSelected] = useState(true);
+  const sessionUuid = window.localStorage.getItem("Uuid")
+  const [register, setRegister] = useState(false)
+  const [verified, setVerified] = useState(null)
+  const [indexSelected, setIndexSelected] = useState(true)
   const [currentUserUuid, setCurrentUserUuid] = useState({
     uuid: sessionUuid || null,
   });
 
-  if (!register && !currentUserUuid.uuid) {
-    history.push("/login")
-  } else if (register && !currentUserUuid.uuid) {
-    history.push("/register")
-  } else {
+  if (currentUserUuid.uuid) {
     history.push("/vault")
   }
 
@@ -96,6 +131,7 @@ function App() {
             currentUserUuid={currentUserUuid}
             register={register}
             setRegister={setRegister}
+            history={history}
           />
         </Route>
         <Route path="/register">
@@ -104,6 +140,7 @@ function App() {
             currentUserUuid={currentUserUuid}
             register={register}
             setRegister={setRegister}
+            history={history}
           />
         </Route>
         <Route path="/vault">
@@ -114,6 +151,14 @@ function App() {
             setRegister={setRegister}
             setIndexSelected={setIndexSelected}
             indexSelected={indexSelected}
+            history={history}
+          />
+        </Route>
+        <Route path="/verify:code">
+          <VerificationPage
+            verified={verified}
+            setVerified={setVerified}
+            history={history}
           />
         </Route>
       </Switch>

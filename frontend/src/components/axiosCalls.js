@@ -27,16 +27,16 @@ const passwordEditQueue = function (setEditedPasswordFromServer, editedPasswordF
 }
 
 
-const loginUser = function (event, setCurrentUserUuid, email, password ) {
+const loginUser = function (event, setCurrentUserUuid, email, password) {
   event.preventDefault()
 
   axios.post("http://localhost:8080/login", { email, password })
-  .then((response) => {
-    setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data }))
-    window.localStorage.setItem('Uuid', response.data)
-  }).catch((error) => {
-    toast.error(error.response.data.message)
-  })
+    .then((response) => {
+      setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data }))
+      window.localStorage.setItem('Uuid', response.data)
+    }).catch((error) => {
+      toast.error(error.response.data.message)
+    })
 }
 
 const registerUser = function (event, setCurrentUserUuid, email, password, passwordConfirm) {
@@ -131,15 +131,15 @@ const saveNewPasswrod = function (event, sessionUuid, passwordText, category, ur
   }
 
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
-  .then((response) => {
-    if (response) {
-      toast.success(response.data)
-    }
-  }).catch((error) => {
-    if (error) {
-      toast.error(error.response.data.message)
-    }
-  })
+    .then((response) => {
+      if (response) {
+        toast.success(response.data)
+      }
+    }).catch((error) => {
+      if (error) {
+        toast.error(error.response.data.message)
+      }
+    })
 }
 
 const saveNewPasswrodForm = function (event, sessionUuid, category, url, sliderValue, checked) {
@@ -159,24 +159,37 @@ const saveNewPasswrodForm = function (event, sessionUuid, category, url, sliderV
   });
 
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText: password[0], category, url })
-  .then((response) => {
-    if (response) {
-      toast.success(response.data)
-    }
-  }).catch((error) => {
-    if (error) {
-      toast.error(error.response.data.message)
-    }
-  })
+    .then((response) => {
+      if (response) {
+        toast.success(response.data)
+      }
+    }).catch((error) => {
+      if (error) {
+        toast.error(error.response.data.message)
+      }
+    })
 }
 
-export { 
-  deletePassword, 
-  displayPasswords, 
-  editPasssword, 
-  retrieveUsersPasswords, 
-  saveNewPasswrod, 
-  saveNewPasswrodForm, 
-  loginUser, 
-  registerUser 
+const verifyUser = function (params, setVerified) {
+  console.log("GOT HERE")
+  console.log(params)
+
+  axios.post("http://localhost:8080/verify", { params })
+    .then((response) => {
+      console.log(response)
+      setVerified(response.data)
+    }).catch((error) => {
+    })
+}
+
+export {
+  deletePassword,
+  displayPasswords,
+  editPasssword,
+  retrieveUsersPasswords,
+  saveNewPasswrod,
+  saveNewPasswrodForm,
+  loginUser,
+  registerUser,
+  verifyUser
 }
