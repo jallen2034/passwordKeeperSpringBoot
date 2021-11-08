@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import RelativeInformation from '../RelativeInfo/RelativeInformation'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField, Button, FormControl, Dialog } from '@material-ui/core'
@@ -33,20 +33,41 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, editPasssword, setForceRender }) {
+function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, editPasssword, setForceRender, passwordEditQueue }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [edit, setEdit] = useState(false);
-  const [editField, setEditfield] = useState(passwordText)
-  const [editedPasswordFromServer, setEditedPasswordFromServer] = useState({ value: null })
-  const [copied, setCopied] = useState(false);
+  const [editFlag, setEditFlag] = useState(false);
+  const [editTextField, setEditTextfield] = useState(passwordText)
+  const [editedPasswordFromServer, setEditedPasswordFromServer] = useState([""])
+
+  useEffect(() => {
+     handleSubmitClose()
+  }, [editedPasswordFromServer]);
 
   const handleEditClickOpen = () => {
-    setEdit(true);
+    setEditFlag(true);
+  };
+
+  const handleSubmitClose = () => {
+    setEditFlag(false);
+
+    if ((editedPasswordFromServer.length == 2) || (editedPasswordFromServer.length == 1 && editedPasswordFromServer[0] !== '')) {
+      console.log("YEE")
+      setEditTextfield(editedPasswordFromServer[0])
+    } else {
+      console.log("HAW")
+      setEditTextfield(passwordText)
+    }
   };
 
   const handleEditClickClose = () => {
-    setEdit(false);
+    setEditFlag(false);
+
+    if ((editedPasswordFromServer.length == 2) || (editedPasswordFromServer.length == 1 && editedPasswordFromServer[0] !== '')) {
+      setEditTextfield(editedPasswordFromServer[0])
+    } else {
+      setEditTextfield(passwordText)
+    }
   };
 
   const handleClickOpen = () => {
@@ -94,28 +115,28 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
           category={category}
           id={id}
         />
-        {edit
+        {editFlag
           ? <>
             <TextField
-              value={editField}
+              value={editTextField}
               onChange={(event) => {
-                setEditfield(event.target.value)
+                setEditTextfield(event.target.value)
               }}
             />
             <div className={classes.div}>
               <Button onClick={handleEditClickClose}>Cancel</Button>
-              <Button onClick={(event) => editPasssword(passwordText, editField, sessionUuid, id, handleEditClickClose, url, setEditedPasswordFromServer)}>Submit</Button>
+              <Button onClick={(event) => editPasssword(passwordText, editTextField, sessionUuid, id, handleSubmitClose, url, setEditedPasswordFromServer, editedPasswordFromServer)}>Submit</Button>
             </div>
           </>
           : <>
-            {editedPasswordFromServer.value
+            {(editedPasswordFromServer.length == 2) || (editedPasswordFromServer.length == 1 && editedPasswordFromServer[0] !== '')
               ?
               <>
                 <TextField
-                  value={editedPasswordFromServer.value}
+                  value={editedPasswordFromServer[0]}
                 />
                 <div className={classes.div}>
-                  <CopyToClipboard text={editedPasswordFromServer.value} onCopy={() => setCopied(true)}>
+                  <CopyToClipboard text={editedPasswordFromServer.value}>
                     <Button onClick={() => handleCopyClick(editedPasswordFromServer.value)}>Copy</Button>
                   </CopyToClipboard>
                   <Button onClick={handleEditClickOpen}>Edit</Button>
@@ -128,7 +149,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
                   value={passwordText}
                 />
                 <div className={classes.div}>
-                  <CopyToClipboard text={passwordText} onCopy={() => setCopied(true)}>
+                  <CopyToClipboard text={passwordText}>
                     <Button onClick={() => handleCopyClick(passwordText)}>Copy</Button>
                   </CopyToClipboard>
                   <Button onClick={handleEditClickOpen}>Edit</Button>
