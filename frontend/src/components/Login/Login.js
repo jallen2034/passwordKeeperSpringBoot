@@ -1,17 +1,18 @@
 import { useState } from 'react'
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import TextField from '@material-ui/core/TextField'
+import Link from '@material-ui/core/Link'
+import Paper from '@material-ui/core/Paper'
+import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
+import { loginUser } from '../axiosCalls.js'
 import axios from 'axios'
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Copyright() {
   return (
@@ -62,19 +63,6 @@ function SignIn({ setCurrentUserUuid }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const loginUser = function (event, setCurrentUserUuid) {
-    event.preventDefault()
-
-    axios.post("http://localhost:8080/login", { email, password })
-    .then((response) => {
-      setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data }))
-      window.localStorage.setItem('Uuid', response.data)
-    }).catch((error) => {
-      console.log(error.response.data.message)
-      toast.error(error.response.data.message)
-    })
-  }
-
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -121,7 +109,7 @@ function SignIn({ setCurrentUserUuid }) {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={(event) => loginUser(event, setCurrentUserUuid)}
+              onClick={(event) => loginUser(event, setCurrentUserUuid, email, password )}
             >
               Sign In
             </Button>

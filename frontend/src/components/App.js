@@ -11,9 +11,7 @@ function App() {
   /* usestate our app will use we will drill down into our components
    * this is a hardcoded value for now */
   const sessionUuid = window.localStorage.getItem('Uuid')
-  const [clickedPassword, setClickedPassword] = useState('')
   const [register, setRegister] = useState(false)
-  const [key, setKey] = useState(false)
   const [indexSelected, setIndexSelected] = useState(true)
   const [currentUserUuid, setCurrentUserUuid] = useState({
     uuid: sessionUuid || null
@@ -75,7 +73,7 @@ function App() {
                 />
                 <PasswordVault
                   indexSelected={indexSelected}
-                  sessionUuid={sessionUuid}
+                  sessionUuid={currentUserUuid.uuid}
                 ></PasswordVault>
               </div>
               <div>
