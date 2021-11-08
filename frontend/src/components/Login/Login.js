@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignIn({ setCurrentUserUuid }) {
+function SignIn({ setCurrentUserUuid, setEnabledUser, currentUserUuid, enabledUser, history }) {
   const classes = useStyles();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -107,7 +107,7 @@ function SignIn({ setCurrentUserUuid }) {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={(event) => loginUser(event, setCurrentUserUuid, email, password)}
+              onClick={(event) => loginUser(event, setCurrentUserUuid, email, password, setEnabledUser, currentUserUuid, enabledUser, history)}
             >
               Sign In
             </Button>

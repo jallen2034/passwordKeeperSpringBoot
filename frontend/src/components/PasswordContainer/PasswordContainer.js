@@ -26,16 +26,17 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // https://medium.com/weekly-webtips/force-component-to-re-render-with-hooks-in-react-c57cde48dc9f
-function PasswordContainer({ sessionUuid }) {
+function PasswordContainer({ sessionUuid, enabledUser, currentUserUuid }) {
   const [dataFromApi, setDataFromApi] = useState([])
   const [forceRender, setForceRender] = useState({ value: null })
   const classes = useStyles()
 
   useEffect(() => {
     if (sessionUuid) {
-      retrieveUsersPasswords(sessionUuid, setDataFromApi, setForceRender);
+      console.log("IM GETTING CALLED MOO")
+      retrieveUsersPasswords(sessionUuid, setDataFromApi, setForceRender, currentUserUuid);
     }
-  }, [sessionUuid, forceRender.value]);
+  }, [sessionUuid, forceRender.value, enabledUser.enabled]);
 
   return (
     <>

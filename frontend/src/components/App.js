@@ -42,7 +42,7 @@ function VerificationPage({ verified, setVerified, history }) {
   )
 }
 
-function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history }) {
+function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history, setEnabledUser, enabledUser }) {
   return (
     <>
       <div className="App">
@@ -52,8 +52,15 @@ function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister,
           register={register}
           setRegister={setRegister}
           history={history}
+          setEnabledUser={setEnabledUser}
         />
-        <SignIn setCurrentUserUuid={setCurrentUserUuid}></SignIn>
+        <SignIn
+          setCurrentUserUuid={setCurrentUserUuid}
+          setEnabledUser={setEnabledUser}
+          currentUserUuid={currentUserUuid}
+          enabledUser={enabledUser}
+          history={history}
+        />
       </div>
       <div>
         <ToastContainer position="bottom-center" autoClose={4000} />
@@ -82,7 +89,7 @@ function RegisterPage({ setCurrentUserUuid, currentUserUuid, register, setRegist
   );
 }
 
-function VaultPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, indexSelected, history }) {
+function VaultPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, indexSelected, history, setEnabledUser, enabledUser }) {
   return (
     <>
       <div className="App">
@@ -93,10 +100,13 @@ function VaultPage({ setCurrentUserUuid, currentUserUuid, register, setRegister,
           setRegister={setRegister}
           setIndexSelected={setIndexSelected}
           history={history}
+          setEnabledUser={setEnabledUser}
         />
         <PasswordVault
           indexSelected={indexSelected}
           sessionUuid={currentUserUuid.uuid}
+          enabledUser={enabledUser}
+          currentUserUuid={currentUserUuid}
         ></PasswordVault>
       </div>
       <div>
@@ -111,16 +121,16 @@ function App() {
    * this is a hardcoded value for now */
   const history = useHistory()
   const sessionUuid = window.localStorage.getItem("Uuid")
+  const enabled = window.localStorage.getItem("enabled")
   const [register, setRegister] = useState(false)
   const [verified, setVerified] = useState(null)
   const [indexSelected, setIndexSelected] = useState(true)
   const [currentUserUuid, setCurrentUserUuid] = useState({
     uuid: sessionUuid || null,
   });
-
-  if (currentUserUuid.uuid) {
-    history.push("/vault")
-  }
+  const [enabledUser, setEnabledUser] = useState({
+    enabled: enabled,
+  });
 
   return (
     <>
@@ -132,6 +142,8 @@ function App() {
             register={register}
             setRegister={setRegister}
             history={history}
+            setEnabledUser={setEnabledUser}
+            enabledUser={enabledUser}
           />
         </Route>
         <Route path="/register">
@@ -152,6 +164,8 @@ function App() {
             setIndexSelected={setIndexSelected}
             indexSelected={indexSelected}
             history={history}
+            setEnabledUser={setEnabledUser}
+            enabledUser={enabledUser}
           />
         </Route>
         <Route path="/verify:code">

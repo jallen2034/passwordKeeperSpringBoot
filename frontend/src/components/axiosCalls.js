@@ -27,13 +27,20 @@ const passwordEditQueue = function (setEditedPasswordFromServer, editedPasswordF
 }
 
 
-const loginUser = function (event, setCurrentUserUuid, email, password) {
+const loginUser = function (event, setCurrentUserUuid, email, password, setEnabledUser, currentUserUuid, enabledUser, history) {
   event.preventDefault()
 
   axios.post("http://localhost:8080/login", { email, password })
     .then((response) => {
-      setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data }))
-      window.localStorage.setItem('Uuid', response.data)
+
+      if (response.data.enabled === 'true') {
+        window.localStorage.setItem('Uuid', response.data.uuid)
+        window.localStorage.setItem('enabled', response.data.enabled)
+        setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data.uuid }))
+        history.push("/vault")
+      } else {
+        toast.error("Uh oh, doesn't look like you verified your account yet. Please check your email inbox!")
+      }
     }).catch((error) => {
       toast.error(error.response.data.message)
     })
@@ -105,12 +112,14 @@ const editPasssword = function (passwordText, newPassword, sessionUuid, id, pass
     })
 }
 
-const retrieveUsersPasswords = function (sessionUuid, setDataFromApi, setForceRender) {
+const retrieveUsersPasswords = function (sessionUuid, setDataFromApi, setForceRender, currentUserUuid) {
+  console.log("MMMM")
+  console.log(currentUserUuid.uuid)
 
   axios.post("http://localhost:8080/passwords", { sessionUuid })
     .then((response) => {
       if (response) {
-        displayPasswords(response.data, setDataFromApi, sessionUuid, setForceRender, deletePassword, editPasssword)
+        displayPasswords(response.data, setDataFromApi, sessionUuid, setForceRender, deletePassword, editPasssword, currentUserUuid)
       }
     }).catch((error) => {
       if (error) {
@@ -171,12 +180,9 @@ const saveNewPasswrodForm = function (event, sessionUuid, category, url, sliderV
 }
 
 const verifyUser = function (params, setVerified) {
-  console.log("GOT HERE")
-  console.log(params)
 
   axios.post("http://localhost:8080/verify", { params })
     .then((response) => {
-      console.log(response)
       setVerified(response.data)
     }).catch((error) => {
     })
