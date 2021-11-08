@@ -6,7 +6,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +18,8 @@ import java.util.regex.Pattern;
 
 /* https://stackoverflow.com/questions/32801008/how-to-find-out-if-an-email-already-exist-with-jpa-spring-and-sending-some-error
  * https://mkyong.com/regular-expressions/how-to-validate-password-with-regular-expression/
- * contains regex to validate a 8-20 character password with at least one digit, one
- * lowercase letter, one uppercase letter, one special character with no white spaces */
+ * regex to validate a 8-20 character password with at least one digit, one lowercase
+ * letter, one uppercase letter, one special character with no white spaces */
 @Service
 public class RegisterService {
 
@@ -29,7 +28,6 @@ public class RegisterService {
 
     @Autowired
     private JavaMailSender mailSender;
-
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
     private boolean duplicateFound = false;
     private PasswordEncoder passwordEncoder;
@@ -40,7 +38,6 @@ public class RegisterService {
     }
 
     public <lookupRequestObject> String registerUser(Map<String, Object> lookupRequestObject, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
-
         String email = (String) lookupRequestObject.get("email");
         String password = (String) lookupRequestObject.get("password");
         String confirmPassword = (String) lookupRequestObject.get("passwordConfirm");
@@ -111,12 +108,11 @@ public class RegisterService {
     }
 
     public void sendVerificationEmail(User newUser, HttpServletRequest request) throws UnsupportedEncodingException, MessagingException {
-        String siteUrl = "http://localhost:3000/login";
-        String verifyUrl = siteUrl + "/verify?code=" + newUser.getVerificationCode();
+        String siteUrl = "http:/localhost:3000";
+        String verifyUrl = siteUrl + "/verify" + newUser.getVerificationCode();
         String subject = "Please verify your registration";
         String senderName = "PasswordKeepr Team";
         String mailContent = "<p>Dear " + newUser.getEmail() + ", </p>";
-
         mailContent += "<p>Please click the link below to verify your registration and access passWordKeepr's features!</p>";
         mailContent += "<h3><a =\"href=" + verifyUrl + "\">VERIFY</a></h3>";
         mailContent += "<p>Thank you, The PasswordKeepr team</p>";
