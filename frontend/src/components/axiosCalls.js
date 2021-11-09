@@ -37,12 +37,13 @@ const loginUser = function (event, setCurrentUserUuid, email, password, setEnabl
         window.localStorage.setItem('Uuid', response.data.uuid)
         window.localStorage.setItem('enabled', response.data.enabled)
         setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data.uuid }))
+        setEnabledUser((prev) => ({ ...prev, enabled: true }))
         history.push("/vault")
       } else {
         toast.error("Uh oh, doesn't look like you verified your account yet. Please check your email inbox!")
       }
     }).catch((error) => {
-      toast.error(error.response.data.message)
+      // toast.error(error.response.data.message)
     })
 }
 

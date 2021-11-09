@@ -29,7 +29,10 @@ const buttonClick = function (setCurrentUserUuid, currentUserUuid, register, set
       if (currentUserUuid.uuid) {
         setCurrentUserUuid((prev) => ({ ...prev, uuid: null }))
         window.localStorage.removeItem('Uuid')
-        setEnabledUser(false)
+        window.localStorage.removeItem('enabled')
+        setRegister(false)
+        setEnabledUser((prev) => ({ ...prev, enabled: null }))
+        history.push("/login")
       }
   }
 }
