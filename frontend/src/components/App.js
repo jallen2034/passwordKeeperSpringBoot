@@ -16,35 +16,48 @@ const buttonClick = function (setVerified, history) {
 }
 
 // https://www.youtube.com/watch?v=y_pr4lRoUto
-function VerificationPage({ verified, setVerified, history }) {
+function VerificationPage({ verified, setVerified, history, sessionUuid, enabled }) {
   const params = useParams()
-  verifyUser(params.code, setVerified)
 
-  return (
-    <>
-      <div className="App">
-        {verified
-          ?
-          <h1>
-            {verified}
-          </h1>
-          :
-          <div>
-            <CircularProgress color="secondary" />
-          </div>}
-        <Button
-          color="inherit"
-          onClick={() => buttonClick(setVerified, history)}
-        > Go Back to Login
-        </Button>
-      </div>
-    </>
-  )
+  if (!verified) {
+    verifyUser(params.code, setVerified)
+  }
+
+  if (params) {
+    return (
+      <>
+        <div className="App">
+          {verified
+            ?
+            <h1>
+              {verified}
+            </h1>
+            :
+            <div>
+              <CircularProgress color="secondary" />
+            </div>}
+          <Button
+            color="inherit"
+            onClick={() => buttonClick(setVerified, history)}
+          > Go Back to Login
+          </Button>
+        </div>
+      </>
+    )
+  } else if (sessionUuid, enabled) {
+    return (
+      <Redirect to={{ pathname: '/vault' }} />
+    )
+  } else {
+    return (
+      <Redirect to={{ pathname: '/login' }} />
+    )
+  }
 }
 
-function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history, setEnabledUser, enabledUser }) {
+function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history, setEnabledUser, sessionUuid, enabled, enabledUser }) {
 
-  if (!enabledUser.enabled && !currentUserUuid.uuid) {
+  if (!enabled && !sessionUuid) {
     return (
       <>
         <div className="App">
@@ -76,8 +89,8 @@ function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister,
   }
 }
 
-function RegisterPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history, enabledUser }) {
-  if (!enabledUser.enabled && !currentUserUuid.uuid) {
+function RegisterPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history, enabled, sessionUuid }) {
+  if (!enabled && !sessionUuid) {
     return (
       <>
         <div className="App">
@@ -162,6 +175,8 @@ function App() {
             setRegister={setRegister}
             history={history}
             setEnabledUser={setEnabledUser}
+            sessionUuid={sessionUuid}
+            enabled={enabled}
             enabledUser={enabledUser}
           />
         </Route>
@@ -172,7 +187,8 @@ function App() {
             register={register}
             setRegister={setRegister}
             history={history}
-            enabledUser={enabledUser}
+            sessionUuid={sessionUuid}
+            enabled={enabled}
           />
         </Route>
         <Route path="/vault">
@@ -195,6 +211,8 @@ function App() {
             verified={verified}
             setVerified={setVerified}
             history={history}
+            sessionUuid={sessionUuid}
+            enabled={enabled}
           />
         </Route>
       </Switch>
