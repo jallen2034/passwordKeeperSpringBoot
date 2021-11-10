@@ -104,10 +104,10 @@ public class RegisterService {
         User newUser = new User(0, email, encodedPassword, uuid, false, randomVerificationCode);
         usersRepository.save(newUser);
         sendVerificationEmail(newUser, request);
-        return uuid;
+        return "User successfully registered! Check your email to verify your new account!";
     }
 
-    public void sendVerificationEmail(User newUser, HttpServletRequest request) throws UnsupportedEncodingException, MessagingException {
+    private void sendVerificationEmail(User newUser, HttpServletRequest request) throws UnsupportedEncodingException, MessagingException {
         String siteUrl = "http:/localhost:3000";
         String verifyUrl = siteUrl + "/verify" + newUser.getVerificationCode();
         String subject = "Please verify your registration";

@@ -24,7 +24,7 @@ public class RegisterController {
     @CrossOrigin(origins = "http://localhost:3000/", maxAge = 90000)
     @PostMapping("/register")
     public String registerUsers(@RequestBody Map<String, Object> lookupRequestObject, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
-        String uuidToClient = regiserService.registerUser(lookupRequestObject, request);
-        return uuidToClient;
+        String messageToClient = regiserService.registerUser(lookupRequestObject, request);
+        return messageToClient;
     }
 }
