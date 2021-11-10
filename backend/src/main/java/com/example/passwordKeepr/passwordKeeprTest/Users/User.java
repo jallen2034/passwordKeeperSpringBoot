@@ -1,7 +1,6 @@
 package com.example.passwordKeepr.passwordKeeprTest.Users;
 import com.example.passwordKeepr.passwordKeeprTest.Passwords.Password;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /* https://stackoverflow.com/questions/41791802/autoincrement-id-postgresql-and-spring-boot-data-jpa
@@ -18,6 +17,8 @@ public class User {
     private String email;
     private String master_password;
     private String uuid;
+    private Boolean enabled;
+    private String verificationCode;
 
     @OneToMany(fetch = FetchType.LAZY,
         mappedBy = "user",
@@ -27,11 +28,13 @@ public class User {
     public User() {
     }
 
-    public User(int id, String email, String master_password, String uuid) {
+    public User(int id, String email, String master_password, String uuid, Boolean enabled, String verificationCode) {
         this.id = id;
         this.email = email;
         this.master_password = master_password;
         this.uuid = uuid;
+        this.enabled = enabled;
+        this.verificationCode = verificationCode;
     }
 
     public int getId() {
@@ -64,6 +67,22 @@ public class User {
 
     public List<Password> getPasswordList() {
         return passwordList;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verification_code) {
+        this.verificationCode = verification_code;
     }
 
     public void setPasswordList(List<Password> passwordList) {

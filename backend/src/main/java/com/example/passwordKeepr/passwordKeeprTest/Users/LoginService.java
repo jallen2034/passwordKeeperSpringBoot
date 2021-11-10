@@ -44,4 +44,18 @@ public class LoginService {
             throw new IllegalStateException("Sorry that password is incorrect!");
         }
     }
+
+    public String verify(String verificationCode) {
+        User userToVerify = usersRepository.findByVerificationCode(verificationCode);
+        System.out.println("Got here");
+
+        if (userToVerify == null) {
+            return "Oops, doesn't look like a valid account exists for this request!";
+        } else if (userToVerify.getEnabled()) {
+            return "This user has already been verified! Go log in!";
+        } else {
+            usersRepository.enableUser(userToVerify.getId());
+            return "Account succesfuly verified! Go log in!";
+        }
+    }
 }
