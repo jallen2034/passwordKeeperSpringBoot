@@ -8,10 +8,8 @@ import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import { loginUser } from '../axiosCalls.js'
-import axios from 'axios'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 function Copyright() {
@@ -58,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignIn({ setCurrentUserUuid }) {
+function SignIn({ setCurrentUserUuid, setEnabledUser, currentUserUuid, enabledUser, history }) {
   const classes = useStyles();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -109,7 +107,7 @@ function SignIn({ setCurrentUserUuid }) {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={(event) => loginUser(event, setCurrentUserUuid, email, password )}
+              onClick={(event) => loginUser(event, setCurrentUserUuid, email, password, setEnabledUser, currentUserUuid, enabledUser, history)}
             >
               Sign In
             </Button>
