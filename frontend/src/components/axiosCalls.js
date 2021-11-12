@@ -37,6 +37,7 @@ const loginUser = function (event, setCurrentUserUuid, email, password, setEnabl
         window.localStorage.setItem('Uuid', response.data.uuid)
         window.localStorage.setItem('enabled', response.data.enabled)
         setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data.uuid }))
+        setEnabledUser((prev) => ({ ...prev, enabled: true }))
         history.push("/vault")
       } else {
         toast.error("Uh oh, doesn't look like you verified your account yet. Please check your email inbox!")
@@ -51,8 +52,7 @@ const registerUser = function (event, setCurrentUserUuid, email, password, passw
 
   axios.post("http://localhost:8080/register", { email, password, passwordConfirm })
     .then((response) => {
-      setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data }))
-      window.localStorage.setItem('Uuid', response.data)
+      toast.success(response.data)
     }).catch((error) => {
       toast.error(error.response.data.message)
     })
@@ -75,7 +75,6 @@ const deletePassword = function (passwordText, sessionUuid, id, setForceRender, 
 /* callback function after AXIOS call to loop through array of retrieved passwords from the API
  * https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once */
 const displayPasswords = function (responseData, setDataFromApi, sessionUuid, setForceRender, deletePassword, editPasssword) {
-
   const passwordDivsList = []
 
   responseData.forEach((item, index) => {
@@ -113,8 +112,6 @@ const editPasssword = function (passwordText, newPassword, sessionUuid, id, pass
 }
 
 const retrieveUsersPasswords = function (sessionUuid, setDataFromApi, setForceRender, currentUserUuid) {
-  console.log("MMMM")
-  console.log(currentUserUuid.uuid)
 
   axios.post("http://localhost:8080/passwords", { sessionUuid })
     .then((response) => {
@@ -184,7 +181,11 @@ const verifyUser = function (params, setVerified) {
   axios.post("http://localhost:8080/verify", { params })
     .then((response) => {
       setVerified(response.data)
+      console.log("HEEEE")
+      console.log(response.data)
+      return true
     }).catch((error) => {
+      return false
     })
 }
 

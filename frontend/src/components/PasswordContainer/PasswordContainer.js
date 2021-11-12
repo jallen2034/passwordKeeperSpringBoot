@@ -33,7 +33,6 @@ function PasswordContainer({ sessionUuid, enabledUser, currentUserUuid }) {
 
   useEffect(() => {
     if (sessionUuid) {
-      console.log("IM GETTING CALLED MOO")
       retrieveUsersPasswords(sessionUuid, setDataFromApi, setForceRender, currentUserUuid);
     }
   }, [sessionUuid, forceRender.value, enabledUser.enabled]);

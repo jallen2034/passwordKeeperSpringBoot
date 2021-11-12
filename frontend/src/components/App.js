@@ -6,7 +6,7 @@ import SignIn from "./Login/Login";
 import Register from "./Register/Register";
 import PasswordVault from "./PasswordVault/PasswordVault";
 import { ToastContainer, toast } from "react-toastify";
-import { BrowserRouter as Router, Route, Switch, useHistory, useParams } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, useHistory, useParams, Redirect } from "react-router-dom";
 import { verifyUser } from './axiosCalls';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -16,109 +16,140 @@ const buttonClick = function (setVerified, history) {
 }
 
 // https://www.youtube.com/watch?v=y_pr4lRoUto
-function VerificationPage({ verified, setVerified, history }) {
+function VerificationPage({ verified, setVerified, history, sessionUuid, enabled }) {
   const params = useParams()
-  verifyUser(params.code, setVerified)
 
-  return (
-    <>
-      <div className="App">
-        {verified
-          ?
-          <h1>
-            {verified}
-          </h1>
-          :
-          <div>
-            <CircularProgress color="secondary" />
-          </div>}
-        <Button
-          color="inherit"
-          onClick={() => buttonClick(setVerified, history)}
-        > Go Back to Login
-        </Button>
-      </div>
-    </>
-  )
+  if (!verified) {
+    verifyUser(params.code, setVerified)
+  }
+
+  if (params) {
+    return (
+      <>
+        <div className="App">
+          {verified
+            ?
+            <h1>
+              {verified}
+            </h1>
+            :
+            <div>
+              <CircularProgress color="secondary" />
+            </div>}
+          <Button
+            color="inherit"
+            onClick={() => buttonClick(setVerified, history)}
+          > Go Back to Login
+          </Button>
+        </div>
+      </>
+    )
+  } else if (sessionUuid, enabled) {
+    return (
+      <Redirect to={{ pathname: '/vault' }} />
+    )
+  } else {
+    return (
+      <Redirect to={{ pathname: '/login' }} />
+    )
+  }
 }
 
-function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history, setEnabledUser, enabledUser }) {
-  return (
-    <>
-      <div className="App">
-        <ButtonAppBar
-          setCurrentUserUuid={setCurrentUserUuid}
-          currentUserUuid={currentUserUuid}
-          register={register}
-          setRegister={setRegister}
-          history={history}
-          setEnabledUser={setEnabledUser}
-        />
-        <SignIn
-          setCurrentUserUuid={setCurrentUserUuid}
-          setEnabledUser={setEnabledUser}
-          currentUserUuid={currentUserUuid}
-          enabledUser={enabledUser}
-          history={history}
-        />
-      </div>
-      <div>
-        <ToastContainer position="bottom-center" autoClose={4000} />
-      </div>
-    </>
-  );
+function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history, setEnabledUser, sessionUuid, enabled, enabledUser }) {
+
+  if (!enabled && !sessionUuid) {
+    return (
+      <>
+        <div className="App">
+          <ButtonAppBar
+            setCurrentUserUuid={setCurrentUserUuid}
+            currentUserUuid={currentUserUuid}
+            register={register}
+            setRegister={setRegister}
+            history={history}
+            setEnabledUser={setEnabledUser}
+          />
+          <SignIn
+            setCurrentUserUuid={setCurrentUserUuid}
+            setEnabledUser={setEnabledUser}
+            currentUserUuid={currentUserUuid}
+            enabledUser={enabledUser}
+            history={history}
+          />
+        </div>
+        <div>
+          <ToastContainer position="bottom-center" autoClose={4000} />
+        </div>
+      </>
+    )
+  } else {
+    return (
+      <Redirect to={{ pathname: '/vault' }} />
+    )
+  }
 }
 
-function RegisterPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history }) {
-  return (
-    <>
-      <div className="App">
-        <ButtonAppBar
-          setCurrentUserUuid={setCurrentUserUuid}
-          currentUserUuid={currentUserUuid}
-          register={register}
-          setRegister={setRegister}
-          history={history}
-        />
-        <Register setCurrentUserUuid={setCurrentUserUuid}></Register>
-      </div>
-      <div>
-        <ToastContainer position="bottom-center" autoClose={4000} />
-      </div>
-    </>
-  );
+function RegisterPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history, enabled, sessionUuid }) {
+  if (!enabled && !sessionUuid) {
+    return (
+      <>
+        <div className="App">
+          <ButtonAppBar
+            setCurrentUserUuid={setCurrentUserUuid}
+            currentUserUuid={currentUserUuid}
+            register={register}
+            setRegister={setRegister}
+            history={history}
+          />
+          <Register setCurrentUserUuid={setCurrentUserUuid}></Register>
+        </div>
+        <div>
+          <ToastContainer position="bottom-center" autoClose={4000} />
+        </div>
+      </>
+    )
+  } else {
+    return (
+      <Redirect to={{ pathname: '/vault' }} />
+    )
+  }
 }
 
-function VaultPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, indexSelected, history, setEnabledUser, enabledUser }) {
-  return (
-    <>
-      <div className="App">
-        <ButtonAppBar
-          setCurrentUserUuid={setCurrentUserUuid}
-          currentUserUuid={currentUserUuid}
-          register={register}
-          setRegister={setRegister}
-          setIndexSelected={setIndexSelected}
-          history={history}
-          setEnabledUser={setEnabledUser}
-        />
-        <PasswordVault
-          indexSelected={indexSelected}
-          sessionUuid={currentUserUuid.uuid}
-          enabledUser={enabledUser}
-          currentUserUuid={currentUserUuid}
-        ></PasswordVault>
-      </div>
-      <div>
-        <ToastContainer position="bottom-center" autoClose={4000} />
-      </div>
-    </>
-  );
+function VaultPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, indexSelected, history, setEnabledUser, enabledUser, sessionUuid, enabled }) {
+
+  if (enabled && sessionUuid) {
+    return (
+      <>
+        <div className="App">
+          <ButtonAppBar
+            setCurrentUserUuid={setCurrentUserUuid}
+            currentUserUuid={currentUserUuid}
+            register={register}
+            setRegister={setRegister}
+            setIndexSelected={setIndexSelected}
+            history={history}
+            setEnabledUser={setEnabledUser}
+          />
+          <PasswordVault
+            indexSelected={indexSelected}
+            sessionUuid={currentUserUuid.uuid}
+            enabledUser={enabledUser}
+            currentUserUuid={currentUserUuid}
+          ></PasswordVault>
+        </div>
+        <div>
+          <ToastContainer position="bottom-center" autoClose={4000} />
+        </div>
+      </>
+    )
+  } else {
+    return (
+      <Redirect to={{ pathname: '/login' }} />
+    )
+  }
 }
 
 function App() {
-  /* usestate our app will use we will drill down into our components
-   * this is a hardcoded value for now */
   const history = useHistory()
   const sessionUuid = window.localStorage.getItem("Uuid")
   const enabled = window.localStorage.getItem("enabled")
@@ -126,11 +157,12 @@ function App() {
   const [verified, setVerified] = useState(null)
   const [indexSelected, setIndexSelected] = useState(true)
   const [currentUserUuid, setCurrentUserUuid] = useState({
-    uuid: sessionUuid || null,
-  });
+    uuid: sessionUuid || null
+  })
+
   const [enabledUser, setEnabledUser] = useState({
-    enabled: enabled,
-  });
+    enabled: enabled || null
+  })
 
   return (
     <>
@@ -143,6 +175,8 @@ function App() {
             setRegister={setRegister}
             history={history}
             setEnabledUser={setEnabledUser}
+            sessionUuid={sessionUuid}
+            enabled={enabled}
             enabledUser={enabledUser}
           />
         </Route>
@@ -153,6 +187,8 @@ function App() {
             register={register}
             setRegister={setRegister}
             history={history}
+            sessionUuid={sessionUuid}
+            enabled={enabled}
           />
         </Route>
         <Route path="/vault">
@@ -166,6 +202,8 @@ function App() {
             history={history}
             setEnabledUser={setEnabledUser}
             enabledUser={enabledUser}
+            sessionUuid={sessionUuid}
+            enabled={enabled}
           />
         </Route>
         <Route path="/verify:code">
@@ -173,6 +211,8 @@ function App() {
             verified={verified}
             setVerified={setVerified}
             history={history}
+            sessionUuid={sessionUuid}
+            enabled={enabled}
           />
         </Route>
       </Switch>
