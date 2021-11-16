@@ -25,6 +25,10 @@ function Copyright() {
   );
 }
 
+const openResetPasswordPage = function (history) {
+  history.push("/resetPassword")
+}
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
@@ -111,6 +115,12 @@ function SignIn({ setCurrentUserUuid, setEnabledUser, currentUserUuid, enabledUs
             >
               Sign In
             </Button>
+            <Link
+              variant="body2"
+              onClick={(event) => openResetPasswordPage(history)}
+            >
+              {"Forgot password?"}
+            </Link>
             <Box mt={5}>
               <Copyright />
             </Box>

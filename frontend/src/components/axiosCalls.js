@@ -181,12 +181,34 @@ const verifyUser = function (params, setVerified) {
   axios.post("http://localhost:8080/verify", { params })
     .then((response) => {
       setVerified(response.data)
-      console.log("HEEEE")
-      console.log(response.data)
       return true
     }).catch((error) => {
       return false
     })
+}
+
+const sendPasswordResetEmail = function (passwordResetEmail) {
+
+  axios.post("http://localhost:8080/resetPasswordSendEmail", { passwordResetEmail })
+    .then((response) => {
+      console.log("GOT TO CALL")
+    }).catch((error) => {
+    })
+}
+
+const resetUsersPassword = function (newPassword, newConfirmPassword, paramsCode) {
+  console.log("Got to where I want to make my axios call!")
+  console.log(newPassword)
+  console.log(newConfirmPassword)
+  console.log(paramsCode)
+
+  if (!newPassword) {
+    return toast.error("You can't leave the new password field empty!")
+  } else if (!newConfirmPassword) {
+    return toast.error("You can't leave the confirm new password field empty!")
+  }
+
+
 }
 
 export {
@@ -198,5 +220,7 @@ export {
   saveNewPasswrodForm,
   loginUser,
   registerUser,
-  verifyUser
+  verifyUser,
+  sendPasswordResetEmail,
+  resetUsersPassword
 }

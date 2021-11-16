@@ -1,18 +1,137 @@
 // this is a copy of the app component purely for storybook.
-import { useState, useEffect } from "react";
-import ButtonAppBar from "./Appbar/Appbar";
+import { useState, useEffect } from "react"
+import ButtonAppBar from "./Appbar/Appbar"
 import { Button, IconButton, Typography, Toolbar, AppBar } from '@material-ui/core'
-import SignIn from "./Login/Login";
-import Register from "./Register/Register";
-import PasswordVault from "./PasswordVault/PasswordVault";
-import { ToastContainer, toast } from "react-toastify";
-import { BrowserRouter as Router, Route, Switch, useHistory, useParams, Redirect } from "react-router-dom";
-import { verifyUser } from './axiosCalls';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import SignIn from "./Login/Login"
+import Register from "./Register/Register"
+import PasswordVault from "./PasswordVault/PasswordVault"
+import { ToastContainer, toast } from "react-toastify"
+import { BrowserRouter as Router, Route, Switch, useHistory, useParams, Redirect } from "react-router-dom"
+import TextField from '@material-ui/core/TextField'
+import Paper from '@material-ui/core/Paper'
+import { verifyUser, sendPasswordResetEmail, resetUsersPassword } from './axiosCalls'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { makeStyles } from '@material-ui/core/styles'
 
-const buttonClick = function (setVerified, history) {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(1),
+      width: theme.spacing(60),
+      height: theme.spacing(38),
+    },
+  },
+}))
+
+const buttonClick = function (setVerified, history, setPasswordResetEmail) {
   setVerified(null)
+  setPasswordResetEmail(null)
   history.push("/login")
+}
+
+function PwResetForm({ verified, setVerified, newPassword, setNewPassword, newConfirmPassword, setNewConfirmPassword, history, setPasswordResetEmail }) {
+  const classes = useStyles()
+  const params = useParams()
+  console.log("VERIFIED!")
+  console.log(verified)
+
+  return (
+    <>
+      <div className={classes.root}>
+        <Paper elevation={3}>
+          <h4>Change Password</h4>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="new password"
+            label="new password"
+            type="new password"
+            id="new-password"
+            autoComplete="new-password"
+            onChange={(event) => {
+              setNewPassword(event.target.value)
+            }}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="confirm new password"
+            label="confirm new password"
+            type="confirm new password"
+            id="confirm-new-password"
+            autoComplete="confirm-new-password"
+            onChange={(event) => {
+              setNewConfirmPassword(event.target.value)
+            }}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={() => resetUsersPassword(newPassword, newConfirmPassword, params.code)}
+          >
+            Send
+          </Button>
+          <Button
+            color="inherit"
+            onClick={() => buttonClick(setVerified, history, setPasswordResetEmail)}
+          > Go Back to Login
+          </Button>
+        </Paper>
+      </div>
+    </>
+  )
+}
+
+function PwResetPage({ setVerified, history, setPasswordResetEmail, passwordResetEmail }) {
+  const classes = useStyles()
+
+  return (
+    <>
+      <div className={classes.root}>
+        <Paper elevation={3}>
+          <h4>Forgot your password? Please enter your username or email address. You will receive a link to create a new password via email if an account exists for it.</h4>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="email address"
+            label="email address"
+            type="email address"
+            id="email-address"
+            autoComplete="current-password"
+            onChange={(event) => {
+              setPasswordResetEmail(event.target.value)
+            }}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={() => sendPasswordResetEmail(passwordResetEmail)}
+          >
+            Reset Password
+          </Button>
+          <Button
+            color="inherit"
+            onClick={() => buttonClick(setVerified, history, setPasswordResetEmail)}
+          > Go Back to Login
+          </Button>
+        </Paper>
+      </div>
+    </>
+  )
 }
 
 // https://www.youtube.com/watch?v=y_pr4lRoUto
@@ -55,7 +174,8 @@ function VerificationPage({ verified, setVerified, history, sessionUuid, enabled
   }
 }
 
-function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history, setEnabledUser, sessionUuid, enabled, enabledUser }) {
+function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history, setEnabledUser, sessionUuid, enabled, enabledUser, setVerified }) {
+  setVerified(null)
 
   if (!enabled && !sessionUuid) {
     return (
@@ -155,6 +275,9 @@ function App() {
   const enabled = window.localStorage.getItem("enabled")
   const [register, setRegister] = useState(false)
   const [verified, setVerified] = useState(null)
+  const [passwordResetEmail, setPasswordResetEmail] = useState(null)
+  const [newPassword, setNewPassword] = useState(null)
+  const [newConfirmPassword, setNewConfirmPassword] = useState(null)
   const [indexSelected, setIndexSelected] = useState(true)
   const [currentUserUuid, setCurrentUserUuid] = useState({
     uuid: sessionUuid || null
@@ -178,6 +301,7 @@ function App() {
             sessionUuid={sessionUuid}
             enabled={enabled}
             enabledUser={enabledUser}
+            setVerified={setVerified}
           />
         </Route>
         <Route path="/register">
@@ -215,9 +339,28 @@ function App() {
             enabled={enabled}
           />
         </Route>
+        <Route path="/resetPassword">
+          <PwResetPage
+            setVerified={setVerified}
+            history={history}
+            setPasswordResetEmail={setPasswordResetEmail}
+            passwordResetEmail={passwordResetEmail}
+          />
+        </Route>
+        <Route path="/resetPasswordForm:code">
+          <PwResetForm
+            verified={verified}
+            setVerified={setVerified}
+            newPassword={newPassword}
+            setNewPassword={setNewPassword}
+            newConfirmPassword={newConfirmPassword}
+            setNewConfirmPassword={setNewConfirmPassword}
+            history={history}
+          />
+        </Route>
       </Switch>
     </>
-  );
+  )
 }
 
 export default App;
