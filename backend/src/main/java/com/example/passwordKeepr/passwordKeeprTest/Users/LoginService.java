@@ -1,16 +1,21 @@
 package com.example.passwordKeepr.passwordKeeprTest.Users;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
 public class LoginService {
 
+    @Autowired
+    private JavaMailSender mailSender;
     private final UsersRepository usersRepository;
     private PasswordEncoder passwordEncoder;
 
@@ -49,8 +54,6 @@ public class LoginService {
             HashMap<String, String> map = new HashMap<>();
             map.put("uuid", uuid);
             map.put("enabled", enabled);
-            List passwordList = userFromDb.getPasswordList();
-            System.out.println(passwordList);
             return map;
         } else {
             throw new IllegalStateException("Sorry that password is incorrect!");
@@ -59,7 +62,6 @@ public class LoginService {
 
     public String verify(String verificationCode) {
         User userToVerify = usersRepository.findByVerificationCode(verificationCode);
-        System.out.println("Got here");
 
         if (userToVerify == null) {
             return "Oops, doesn't look like a valid account exists for this request!";
@@ -69,5 +71,29 @@ public class LoginService {
             usersRepository.enableUser(userToVerify.getId());
             return "Account successfully verified! Go log in!";
         }
+    }
+
+    public void resetPasswordEmail(Map<String, Object> lookupRequestObject) throws UnsupportedEncodingException, MessagingException {
+        String email = (String) lookupRequestObject.get("passwordResetEmail");
+        User userFromDb = usersRepository.findByEmail(email);
+
+        String siteUrl = "http:/localhost:3000";
+        String verifyUrl = siteUrl + "/resetPasswordForm" + userFromDb.getVerificationCode();
+        String subject = "Please click on the following link to reset your password";
+        String senderName = "PasswordKeepr Team";
+        String mailContent = "<p>Dear " + userFromDb.getEmail() + ", </p>";
+        mailContent += "<p>Please click the link below to reset your master password and access passWordKeepr's features!</p>";
+        mailContent += "<h3><a =\"href=" + verifyUrl + "\">VERIFY</a></h3>";
+        mailContent += "<p>Thank you, The PasswordKeepr team</p>";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom("jallen209972@gmail.com", senderName);
+        helper.setTo(userFromDb.getEmail());
+        helper.setSubject(subject);
+        helper.setText(mailContent, true);
+
+        mailSender.send(message);
     }
 }
