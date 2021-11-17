@@ -1,5 +1,4 @@
 package com.example.passwordKeepr.passwordKeeprTest.Passwords;
-import com.example.passwordKeepr.passwordKeeprTest.Exception.ApiRequestException;
 import com.example.passwordKeepr.passwordKeeprTest.Users.User;
 import com.example.passwordKeepr.passwordKeeprTest.Users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +25,24 @@ public class CreateNewPasswordService {
         User userFromDb = usersRepository.findByUuid(uuid);
 
         if (userFromDb == null) {
-            throw new ApiRequestException("You can't add a password for someone who doesn't exist!");
+            throw new IllegalStateException("You can't add a password for someone who doesn't exist!");
         }
 
         List passwordList = userFromDb.getPasswordList();
+
+        for (int i = 0; i < passwordList.size(); i++) {
+            Password passwordInLoop = (Password) passwordList.get(i);
+            String passwordUrlFromDb = passwordInLoop.getUrl();
+
+            if (passwordUrlFromDb.equals(url)) {
+                throw new IllegalStateException("You already created a password for that website!");
+            }
+        }
+
         Password newPasswordToSave = new Password(0, 1, category, url, password, userFromDb);
         passwordList.add(newPasswordToSave);
         userFromDb.setPasswordList(passwordList);
         usersRepository.save(userFromDb);
-        return "New password has been created!\n";
+        return "New password has been created!";
     }
 }

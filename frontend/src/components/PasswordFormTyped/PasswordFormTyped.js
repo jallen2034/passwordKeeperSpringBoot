@@ -2,8 +2,9 @@ import { React, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import axios from 'axios'
 import { Button, Select, TextField, FormControl, MenuItem } from '@material-ui/core'
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import { saveNewPasswrod } from '../axiosCalls.js'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const categories = [
   "Social",
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   divContainer: {
     padding: '25px',
     borderRadius: '15px',
-    backgroundColor: '#c7c7c7',
+    backgroundColor: '#e9ecef',
     display: 'flex',
     flexDirection: "column",
     width: '750px'
@@ -30,7 +31,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const saveNewPasswrod = function (event, sessionUuid, passwordText, category, url) {
-  console.log("passwordText in button click function called!")
+
+  if (!passwordText) {
+    return toast.error("You can't create an empty password!")
+  } else if (!category) {
+    return toast.error("You can't create an empty category!")
+  }
 
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
   .then((response) => {
@@ -40,7 +46,8 @@ const saveNewPasswrod = function (event, sessionUuid, passwordText, category, ur
     }
   }).catch((error) => {
     if (error) {
-      console.log(error)
+      console.log(error.response.data.message)
+      toast.error(error.response.data.message)
     }
   })
 }

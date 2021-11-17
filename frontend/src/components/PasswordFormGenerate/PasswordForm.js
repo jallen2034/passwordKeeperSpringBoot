@@ -1,8 +1,7 @@
 import { React, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import axios from 'axios'
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { saveNewPasswrodForm } from '../axiosCalls.js'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   Button,
   Select,
@@ -14,7 +13,6 @@ import {
   FormControlLabel,
   MenuItem
 } from '@material-ui/core'
-let generator = require('generate-password')
 
 const categories = [
   "Social",
@@ -33,39 +31,16 @@ const useStyles = makeStyles((theme) => ({
   divContainer: {
     padding: '25px',
     borderRadius: '15px',
-    backgroundColor: '#c7c7c7',
+    backgroundColor: '#e9ecef',
     display: 'flex',
     flexDirection: "column",
     width: '750px'
+  },
+  slider: {
+    marginTop: '10px',
+    marginTop: '10px'
   }
 }));
-
-const saveNewPasswrod = function (event, sessionUuid, category, url, sliderValue, checked) {
-
-  if (!checked.numbers && !checked.symbols && !checked.lowercas && !checked.uppercase) {
-    return toast.error("You can't leave all checkboxes empty when making a password!")
-  }
-
-  const password = generator.generateMultiple(3, {
-    length: 20,
-    uppercase: checked.uppercase,
-    lowercase: checked.lowercase,
-    numbers: checked.numbers,
-    symbols: checked.symbols
-  });
-
-  axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText: password[0], category, url })
-  .then((response) => {
-    if (response) {
-      console.log(response.data)
-      toast.success(response.data)
-    }
-  }).catch((error) => {
-    if (error) {
-      console.log(error)
-    }
-  })
-}
 
 function PasswordForm({ sessionUuid }) {
   const classes = useStyles();
@@ -117,6 +92,7 @@ function PasswordForm({ sessionUuid }) {
         </Select>
         Length:
         <Slider
+          className={classes.slider}
           defaultValue={30}
           getAriaValueText={valuetext}
           aria-labelledby="discrete-slider"
@@ -161,7 +137,10 @@ function PasswordForm({ sessionUuid }) {
             />
           </Grid>
         </Grid>
-        <Button onClick={(event) => saveNewPasswrod(event, sessionUuid, category, url, sliderValue, checked)} >Generate Password</Button>
+        <Button
+          onClick={(event) => saveNewPasswrodForm(event, sessionUuid, category, url, sliderValue, checked)}
+        > Generate Password
+        </Button>
       </FormControl>
     </div>
   )

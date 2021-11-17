@@ -14,9 +14,14 @@ const useStyles = makeStyles((theme) => ({
   },
   div: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
     padding: '10px'
+  },
+  formButtons: {
+    marginBottom: "10px",
+    marginTop: "5px"
   }
 }));
 
@@ -29,8 +34,8 @@ function PasswordComposer({ sessionUuid }) {
   }
 
   return (
-    <div>
-      <div className={classes.div}>
+    <div className={classes.div}>
+      <div className={classes.formButtons}>
         <Button onClick={(event) => onClick(false)}>Generate Password</Button>
         <Button onClick={(event) => onClick(true)}>Type Password</Button>
       </div>

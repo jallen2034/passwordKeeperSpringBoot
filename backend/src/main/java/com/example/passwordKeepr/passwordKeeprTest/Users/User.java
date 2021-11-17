@@ -17,6 +17,8 @@ public class User {
     private String email;
     private String master_password;
     private String uuid;
+    private Boolean enabled;
+    private String verificationCode;
 
     @OneToMany(fetch = FetchType.LAZY,
         mappedBy = "user",
@@ -26,11 +28,13 @@ public class User {
     public User() {
     }
 
-    public User(int id, String email, String master_password, String uuid) {
+    public User(int id, String email, String master_password, String uuid, Boolean enabled, String verificationCode) {
         this.id = id;
         this.email = email;
         this.master_password = master_password;
         this.uuid = uuid;
+        this.enabled = enabled;
+        this.verificationCode = verificationCode;
     }
 
     public int getId() {
@@ -65,16 +69,23 @@ public class User {
         return passwordList;
     }
 
-    public void setPasswordList(List<Password> passwordList) {
-        this.passwordList = passwordList;
+    public Boolean getEnabled() {
+        return enabled;
     }
 
-    // for debugging
-    @Override
-    public String toString() {
-        return "Users{" +
-                ", email='" + email + '\'' +
-                ", masterPassword='" + master_password + '\'' +
-                '}';
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verification_code) {
+        this.verificationCode = verification_code;
+    }
+
+    public void setPasswordList(List<Password> passwordList) {
+        this.passwordList = passwordList;
     }
 }

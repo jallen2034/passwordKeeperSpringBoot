@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid'
 import axios from 'axios'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
+import { registerUser } from '../axiosCalls.js'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -60,22 +61,10 @@ const useStyles = makeStyles((theme) => ({
 
 // https://stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
 function Register({ setCurrentUserUuid }) {
-  const classes = useStyles();
+  const classes = useStyles()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
-
-  const registerUser = function (event, setCurrentUserUuid) {
-    event.preventDefault()
-
-    axios.post("http://localhost:8080/register", { email, password, passwordConfirm })
-      .then((response) => {
-        setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data }))
-        window.localStorage.setItem('Uuid', response.data)
-      }).catch((error) => {
-        toast.error(error.response.data.message)
-      })
-  }
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -137,7 +126,7 @@ function Register({ setCurrentUserUuid }) {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={(event) => registerUser(event, setCurrentUserUuid)}
+              onClick={(event) => registerUser(event, setCurrentUserUuid, email, password, passwordConfirm)}
             >
               Register
             </Button>
