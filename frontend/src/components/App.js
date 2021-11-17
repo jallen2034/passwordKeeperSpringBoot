@@ -34,8 +34,6 @@ const buttonClick = function (setVerified, history, setPasswordResetEmail) {
 function PwResetForm({ verified, setVerified, newPassword, setNewPassword, newConfirmPassword, setNewConfirmPassword, history, setPasswordResetEmail }) {
   const classes = useStyles()
   const params = useParams()
-  console.log("VERIFIED!")
-  console.log(verified)
 
   return (
     <>
@@ -86,6 +84,9 @@ function PwResetForm({ verified, setVerified, newPassword, setNewPassword, newCo
           > Go Back to Login
           </Button>
         </Paper>
+        <div>
+          <ToastContainer position="bottom-center" autoClose={4000} />
+        </div>
       </div>
     </>
   )
@@ -363,4 +364,4 @@ function App() {
   )
 }
 
-export default App;
+export default App

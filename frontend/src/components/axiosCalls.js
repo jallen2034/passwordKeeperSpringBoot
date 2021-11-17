@@ -7,15 +7,15 @@ let generator = require('generate-password')
 
 // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
 function makeid(length) {
-  let result = '';
-  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let charactersLength = characters.length;
+  let result = ''
+  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let charactersLength = characters.length
 
   for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    result += characters.charAt(Math.floor(Math.random() * charactersLength))
   }
 
-  return result;
+  return result
 }
 
 // implmented a queue to keep track of the most recent and least recent passwords updated by a user
@@ -93,7 +93,7 @@ const displayPasswords = function (responseData, setDataFromApi, sessionUuid, se
     </Grid>)
   })
 
-  setTimeout(function () { setDataFromApi(passwordDivsList); }, 850);
+  setTimeout(function () { setDataFromApi(passwordDivsList) }, 850)
 }
 
 const editPasssword = function (passwordText, newPassword, sessionUuid, id, passwordUrl, setEditedPasswordFromServer, editedPasswordFromServer) {
@@ -162,7 +162,7 @@ const saveNewPasswrodForm = function (event, sessionUuid, category, url, sliderV
     lowercase: checked.lowercase,
     numbers: checked.numbers,
     symbols: checked.symbols
-  });
+  })
 
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText: password[0], category, url })
     .then((response) => {
@@ -191,24 +191,28 @@ const sendPasswordResetEmail = function (passwordResetEmail) {
 
   axios.post("http://localhost:8080/resetPasswordSendEmail", { passwordResetEmail })
     .then((response) => {
-      console.log("GOT TO CALL")
     }).catch((error) => {
     })
 }
 
-const resetUsersPassword = function (newPassword, newConfirmPassword, paramsCode) {
-  console.log("Got to where I want to make my axios call!")
-  console.log(newPassword)
-  console.log(newConfirmPassword)
-  console.log(paramsCode)
+const resetUsersPassword = function (newPassword, newPasswordConfirm, paramsCode) {
 
   if (!newPassword) {
-    return toast.error("You can't leave the new password field empty!")
-  } else if (!newConfirmPassword) {
-    return toast.error("You can't leave the confirm new password field empty!")
+    toast.error("You can't leave the new password field empty!")
+  } else if (!newPasswordConfirm) {
+    toast.error("You can't leave the confirm new password field empty!")
   }
 
-
+  axios.post("http://localhost:8080/resetUsersPassword", { verificationCode: paramsCode, newPassword, newPasswordConfirm })
+    .then((response) => {
+      if (response) {
+        toast.success(response.data)
+      }
+    }).catch((error) => {
+      if (error) {
+        toast.error(error.response.data.message)
+      }
+    })
 }
 
 export {
