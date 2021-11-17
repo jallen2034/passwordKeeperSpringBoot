@@ -7,20 +7,42 @@ import Register from "./Register/Register"
 import PasswordVault from "./PasswordVault/PasswordVault"
 import { ToastContainer, toast } from "react-toastify"
 import { BrowserRouter as Router, Route, Switch, useHistory, useParams, Redirect } from "react-router-dom"
+import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField'
 import Paper from '@material-ui/core/Paper'
 import { verifyUser, sendPasswordResetEmail, resetUsersPassword } from './axiosCalls'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
+import '@fontsource/roboto/300.css';
 
+// https://stackoverflow.com/questions/60969224/how-to-override-muipaper-root-style-in-material-table
 const useStyles = makeStyles((theme) => ({
   root: {
+    height: '100vh',
+    backgroundImage: 'url(https://www.metacompliance.com/wp-content/uploads/2021/03/Password-Policy-Best-Practices-2021.jpg)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
     display: 'flex',
-    flexWrap: 'wrap',
+    justifyContent: 'center',
     '& > *': {
-      margin: theme.spacing(1),
-      width: theme.spacing(60),
-      height: theme.spacing(38),
+      margin: theme.spacing(10),
+      width: theme.spacing(70),
+      height: theme.spacing(32),
+    },
+    "& .MuiPaper-root": {
+      paddingTop: "35px",
+      paddingLeft: "45px",
+      paddingRight: "45px",
+      paddingBottom: "45px",
+    },
+  },
+  buttonBack: {
+    backgroundColor: "#ebebeb",
+    '&:hover': {
+      backgroundColor: "#96d3dd",
     },
   },
 }))
@@ -39,7 +61,7 @@ function PwResetForm({ verified, setVerified, newPassword, setNewPassword, newCo
     <>
       <div className={classes.root}>
         <Paper elevation={3}>
-          <h4>Change Password</h4>
+          <Typography component="h1" variant="h2">Change Password</Typography>
           <TextField
             variant="outlined"
             margin="normal"
@@ -79,14 +101,15 @@ function PwResetForm({ verified, setVerified, newPassword, setNewPassword, newCo
             Send
           </Button>
           <Button
+            className={classes.buttonBack}
             color="inherit"
             onClick={() => buttonClick(setVerified, history, setPasswordResetEmail)}
-          > Go Back to Login
+          > Back to Login
           </Button>
         </Paper>
-        <div>
-          <ToastContainer position="bottom-center" autoClose={4000} />
-        </div>
+      </div>
+      <div>
+        <ToastContainer position="bottom-center" autoClose={4000} />
       </div>
     </>
   )
@@ -99,36 +122,43 @@ function PwResetPage({ setVerified, history, setPasswordResetEmail, passwordRese
     <>
       <div className={classes.root}>
         <Paper elevation={3}>
-          <h4>Forgot your password? Please enter your username or email address. You will receive a link to create a new password via email if an account exists for it.</h4>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="email address"
-            label="email address"
-            type="email address"
-            id="email-address"
-            autoComplete="current-password"
-            onChange={(event) => {
-              setPasswordResetEmail(event.target.value)
-            }}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={() => sendPasswordResetEmail(passwordResetEmail)}
-          >
-            Reset Password
-          </Button>
-          <Button
-            color="inherit"
-            onClick={() => buttonClick(setVerified, history, setPasswordResetEmail)}
-          > Go Back to Login
-          </Button>
+          <Typography component="h1" variant="subtitle1">Forgot your password? Enter your username or email address. You will receive a link to create a new password via email if an account exists for it.</Typography>
+          <Box m={0} pt={2}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="email address"
+              label="email address"
+              type="email address"
+              id="email-address"
+              autoComplete="current-password"
+              onChange={(event) => {
+                setPasswordResetEmail(event.target.value)
+              }}
+            />
+          </Box>
+          <Box m={0} pt={3}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={() => sendPasswordResetEmail(passwordResetEmail)}
+            >
+              Reset Password
+            </Button>
+          </Box>
+          <Box m={0} pt={3}>
+            <Button
+              className={classes.buttonBack}
+              color="inherit"
+              onClick={() => buttonClick(setVerified, history, setPasswordResetEmail)}
+            > Back to Login
+            </Button>
+          </Box>
         </Paper>
       </div>
     </>
