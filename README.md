@@ -85,9 +85,9 @@ Reset password email:
 
 !["Reset pw email pw"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/passwordResetEmail.png)
 
-Reset password failure:
+Reset password Error:
 
-!["Reset pw failure pw"](hhttps://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/resetPasswordError.png)
+!["Reset pw failure pw"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/resetPasswordError.png)
 
 Reset password success:
 
