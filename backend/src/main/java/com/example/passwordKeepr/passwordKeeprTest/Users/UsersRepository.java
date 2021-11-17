@@ -21,6 +21,4 @@ public interface UsersRepository extends JpaRepository<User, Integer> {
             value =
                     "update users set enabled = true where id = :id")
     void enableUser(@Param("id") int id);
-
-
 }
