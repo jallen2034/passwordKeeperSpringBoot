@@ -14,7 +14,7 @@ If a user needs to log in to a specific website (e.g. Facebook) they can go into
 ## Features
 
 - Full user registration and login.
-- Encryption us users master password using Bcrypt.
+- Encryption of all users master passwords using Bcrypt.
 - Email verification of user accounts upon creation.
 - Users can create, edit and delete passwords from their password vault.
 - Sections of the app are protected from improper use/access with React Router.
