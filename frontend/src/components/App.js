@@ -30,13 +30,35 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       margin: theme.spacing(10),
       width: theme.spacing(70),
-      height: theme.spacing(32),
+      height: theme.spacing(46),
     },
     "& .MuiPaper-root": {
       paddingTop: "35px",
       paddingLeft: "45px",
       paddingRight: "45px",
       paddingBottom: "45px",
+    },
+  },
+  reset: {
+    height: '100vh',
+    backgroundImage: 'url(https://www.metacompliance.com/wp-content/uploads/2021/03/Password-Policy-Best-Practices-2021.jpg)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    '& > *': {
+      margin: theme.spacing(10),
+      width: theme.spacing(70),
+      height: theme.spacing(36),
+    },
+    "& .MuiPaper-root": {
+      paddingTop: "35px",
+      paddingLeft: "45px",
+      paddingRight: "45px",
+      paddingBottom: "55px",
     },
   },
   buttonBack: {
@@ -59,53 +81,61 @@ function PwResetForm({ verified, setVerified, newPassword, setNewPassword, newCo
 
   return (
     <>
-      <div className={classes.root}>
+      <div className={classes.reset}>
         <Paper elevation={3}>
-          <Typography component="h1" variant="h2">Change Password</Typography>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="new password"
-            label="new password"
-            type="new password"
-            id="new-password"
-            autoComplete="new-password"
-            onChange={(event) => {
-              setNewPassword(event.target.value)
-            }}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="confirm new password"
-            label="confirm new password"
-            type="confirm new password"
-            id="confirm-new-password"
-            autoComplete="confirm-new-password"
-            onChange={(event) => {
-              setNewConfirmPassword(event.target.value)
-            }}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={() => resetUsersPassword(newPassword, newConfirmPassword, params.code)}
-          >
-            Send
-          </Button>
-          <Button
-            className={classes.buttonBack}
-            color="inherit"
-            onClick={() => buttonClick(setVerified, history, setPasswordResetEmail)}
-          > Back to Login
-          </Button>
+          <Typography component="h1" variant="h5">Change Password</Typography>
+          <Box m={0} pt={1}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="new password"
+              label="new password"
+              type="new password"
+              id="new-password"
+              autoComplete="new-password"
+              onChange={(event) => {
+                setNewPassword(event.target.value)
+              }}
+            />
+          </Box>
+          <Box m={0} pt={0}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="confirm new password"
+              label="confirm new password"
+              type="confirm new password"
+              id="confirm-new-password"
+              autoComplete="confirm-new-password"
+              onChange={(event) => {
+                setNewConfirmPassword(event.target.value)
+              }}
+            />
+          </Box>
+          <Box m={0} pt={2}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={() => resetUsersPassword(newPassword, newConfirmPassword, params.code)}
+            >
+              Send
+            </Button>
+          </Box>
+          <Box m={0} pt={3}>
+            <Button
+              className={classes.buttonBack}
+              color="inherit"
+              onClick={() => buttonClick(setVerified, history, setPasswordResetEmail)}
+            > Back to Login
+            </Button>
+          </Box>
         </Paper>
       </div>
       <div>
@@ -122,7 +152,7 @@ function PwResetPage({ setVerified, history, setPasswordResetEmail, passwordRese
     <>
       <div className={classes.root}>
         <Paper elevation={3}>
-          <Typography component="h1" variant="subtitle1">Forgot your password? Enter your username or email address. You will receive a link to create a new password via email if an account exists for it.</Typography>
+          <Typography component="h1" variant="subtitle1">Forgot your password? Enter your email address. You will receive a link to create a new password via email if an account exists for it.</Typography>
           <Box m={0} pt={2}>
             <TextField
               variant="outlined"
@@ -159,6 +189,9 @@ function PwResetPage({ setVerified, history, setPasswordResetEmail, passwordRese
             > Back to Login
             </Button>
           </Box>
+          <div>
+            <ToastContainer position="bottom-center" autoClose={4000} />
+          </div>
         </Paper>
       </div>
     </>
@@ -387,6 +420,7 @@ function App() {
             newConfirmPassword={newConfirmPassword}
             setNewConfirmPassword={setNewConfirmPassword}
             history={history}
+            setPasswordResetEmail={setPasswordResetEmail}
           />
         </Route>
       </Switch>

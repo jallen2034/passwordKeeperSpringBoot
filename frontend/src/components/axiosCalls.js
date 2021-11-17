@@ -191,7 +191,9 @@ const sendPasswordResetEmail = function (passwordResetEmail) {
 
   axios.post("http://localhost:8080/resetPasswordSendEmail", { passwordResetEmail })
     .then((response) => {
+      toast.success(response.data)
     }).catch((error) => {
+      toast.error(error.response.data.message)
     })
 }
 
