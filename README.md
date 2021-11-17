@@ -33,6 +33,10 @@ Register Success:
 
 !["Register success"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/registerSuccess.png)
 
+Register Email:
+
+!["Register success"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/emailRegister.png)
+
 Login page:
 
 !["Login page"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/login.png)
@@ -68,6 +72,10 @@ Edited password in the vault:
 Deleting password in the vault:
 
 !["Deleting pw"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/deletingPassword.png)
+
+Password deleted in the vault:
+
+!["Deleted pw"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/passwordDeleted.png)
 
 Reset password email page:
 
