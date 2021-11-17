@@ -7,8 +7,20 @@ PasswordKeepR is a storage system for passwords for personal use. The app will l
 If a user needs to log in to a specific website (e.g. Facebook) they can go into the app, find the appropriate password, they can also click a button which copies the password into the clipboard, and log in.
 
 ## Tech stack
+
+Programming Languages:
+
+- Java 11
+- JavaScript
+- SQL
+
+Libraries and Frameworks
+
 - React with Material-UI
-- Spring Boot with Spring Data JPA and Spring Security  
+- Spring Boot with Spring Data JPA and Spring Security
+
+Database:
+
 - PostgreSQL
 
 ## Features
