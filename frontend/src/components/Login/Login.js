@@ -17,12 +17,16 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        PassWord Keepr
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
   );
+}
+
+const openResetPasswordPage = function (history) {
+  history.push("/resetPassword")
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -111,6 +115,12 @@ function SignIn({ setCurrentUserUuid, setEnabledUser, currentUserUuid, enabledUs
             >
               Sign In
             </Button>
+            <Link
+              variant="body2"
+              onClick={(event) => openResetPasswordPage(history)}
+            >
+              {"Forgot password?"}
+            </Link>
             <Box mt={5}>
               <Copyright />
             </Box>

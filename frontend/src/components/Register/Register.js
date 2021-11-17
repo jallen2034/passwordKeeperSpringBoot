@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 
 // https://stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
 function Register({ setCurrentUserUuid }) {
-  const classes = useStyles();
+  const classes = useStyles()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')

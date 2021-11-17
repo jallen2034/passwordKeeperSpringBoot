@@ -11,7 +11,7 @@ function PasswordVault({ indexSelected, sessionUuid, enabledUser, currentUserUui
         : <PasswordComposer sessionUuid={sessionUuid} />
       }
     </div>
-  );
+  )
 }
 
 export default PasswordVault;
