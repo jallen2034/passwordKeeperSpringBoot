@@ -37,51 +37,51 @@ Login page:
 
 !["Login page"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/login.png)
 
-Login failure
+Login failure:
 
 !["Login fail"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/loginFail.png)
 
-Create Password Generation
+Create Password Generation:
 
 !["Create PW"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/createPasswordGenerate.png)
 
-Create Password Input Error
+Create Password Input Error:
 
 !["Create I Error"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/createPasswordDuplicateError.png)
 
-Create Password Duplicate Error
+Create Password Duplicate Error:
 
 !["Create PW dup error "](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/createPasswordInputError.png)
 
-Create Password Typed
+Create Password Typed:
 
 !["Create PW typed"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/createPasswordTyped.png)
 
-Editing a password in the vault
+Editing a password in the vault:
 
 !["Editing pw"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/editingPassword.png)
 
-Edited password in the vault
+Edited password in the vault:
 
 !["Edited pw"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/editedPassword.png)
 
-Deleting password in the vault
+Deleting password in the vault:
 
 !["Deleting pw"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/deletingPassword.png)
 
-Reset password email page
+Reset password email page:
 
 !["Reset pw email"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/resetPasswordEmail.png)
 
-Reset password email
+Reset password email:
 
 !["Reset pw email pw"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/passwordResetEmail.png)
 
-Reset password failure
+Reset password failure:
 
 !["Reset pw failure pw"](hhttps://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/resetPasswordError.png)
 
-Reset password success
+Reset password success:
 
 !["Reset pw failure pw"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/passwordResetSuccess.png)
 
