@@ -3,6 +3,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +19,7 @@ public class LoginService {
         this.usersRepository = usersRepository;
     }
 
-    public <lookupRequestObject> String loginUser(Map<String, Object> lookupRequestObject) {
+    public <lookupRequestObject> HashMap<String, String> loginUser(Map<String, Object> lookupRequestObject) {
         String email = (String) lookupRequestObject.get("email");
         String password = (String) lookupRequestObject.get("password");
 
@@ -30,16 +32,26 @@ public class LoginService {
         return this.loginUser(email, password);
     }
 
-    private String loginUser(String email, String password) {
+    // https://stackoverflow.com/questions/32129123/how-to-convert-boolean-true-or-false-to-string-value-in-groovy
+    private HashMap<String, String> loginUser(String email, String password) {
         this.passwordEncoder = new BCryptPasswordEncoder();
         User userFromDb = usersRepository.findByEmail(email);
+
+        if (userFromDb == null) {
+            throw new IllegalStateException("We couldn't find an account with that email!");
+        }
+
         boolean matches = passwordEncoder.matches(password, userFromDb.getMasterPassword());
 
         if (matches == true) {
             String uuid = userFromDb.getUuid();
+            String enabled = String.valueOf(userFromDb.getEnabled());
+            HashMap<String, String> map = new HashMap<>();
+            map.put("uuid", uuid);
+            map.put("enabled", enabled);
             List passwordList = userFromDb.getPasswordList();
             System.out.println(passwordList);
-            return uuid;
+            return map;
         } else {
             throw new IllegalStateException("Sorry that password is incorrect!");
         }
@@ -55,7 +67,7 @@ public class LoginService {
             return "This user has already been verified! Go log in!";
         } else {
             usersRepository.enableUser(userToVerify.getId());
-            return "Account succesfuly verified! Go log in!";
+            return "Account successfully verified! Go log in!";
         }
     }
 }
