@@ -31,6 +31,16 @@ Database:
 - Users can create, edit and delete passwords from their password vault.
 - Sections of the app are protected from improper use/access with React Router.
 
+## TODO
+
+- Fully encrypt all of a users stored passwords in the vault.
+- Encrypt the users email addresses with Bcrypt so they are not stored in the database as plaintext.
+- Implement a timeout on the password request email when sent.
+- Refactor backend Java code to be more clear and readable.
+- Write unit tests for my API using Junit.
+- Clean up clutter/unnecessary files in repo.
+- Refactor react frontend code to be more clear and readable.
+
 ## Screenshots
 
 Register page:
