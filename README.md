@@ -43,6 +43,7 @@ Database:
 - Refactor react frontend code to be more clear and readable.
 - Setup a way to handle database migrations from one version to the next.
 - Fix styling on frontend to make app responsive on all screen sizes.
+- Add search bar to password vault.
 
 ## Screenshots
 
