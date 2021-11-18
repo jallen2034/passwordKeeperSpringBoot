@@ -36,10 +36,12 @@ Database:
 - Fully encrypt all of a users stored passwords in the vault.
 - Encrypt the users email addresses with Bcrypt so they are not stored in the database as plaintext.
 - Implement a timeout on the password request email when sent.
-- Refactor backend Java code to be more clear and readable.
 - Write unit tests for my API using Junit.
+- Setup a CI pipeline for testing.
 - Clean up clutter/unnecessary files in repo.
+- Refactor backend Java code to be more clear and readable.
 - Refactor react frontend code to be more clear and readable.
+- Setup a way to handle database migrations from one version to the next.
 
 ## Screenshots
 
