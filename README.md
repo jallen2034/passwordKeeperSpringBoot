@@ -1,6 +1,6 @@
 ## Project Description
 
-Created by Jacob Allen.
+Created by Jacob Allen. This project is a work in progress.
 
 PasswordKeepR is a storage system for passwords for personal use. The app will let a user generate a new password for their logged in account (just like LastPass). Users will be able to generate a password based on the options the form will provide. Some of the options are: password length, contains lowercase, contairs uppercase, contains numbers, and contains symbols.
 
