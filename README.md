@@ -8,7 +8,7 @@ If a user needs to log in to a specific website (e.g. Facebook) they can go into
 
 ## Tech stack
 
-Programming Languages:
+Languages:
 
 - Java 11
 - JavaScript

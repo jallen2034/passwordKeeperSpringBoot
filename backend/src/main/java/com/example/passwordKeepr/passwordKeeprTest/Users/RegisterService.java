@@ -63,7 +63,6 @@ public class RegisterService {
             }
         }
 
-        System.out.println("Email: " + email);
         if (email == "") {
             throw new IllegalStateException("Must provide email!");
         } else if (password == "") {
