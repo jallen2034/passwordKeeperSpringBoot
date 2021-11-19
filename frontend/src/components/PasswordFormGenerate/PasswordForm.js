@@ -40,10 +40,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '10px',
     marginTop: '10px'
   }
-}));
+}))
 
 function PasswordForm({ sessionUuid }) {
-  const classes = useStyles();
+  const classes = useStyles()
   const [category, setCategory] = useState('')
   const [url, setUrl] = useState('')
   const [sliderValue, setSliderValue] = useState('')
@@ -68,7 +68,7 @@ function PasswordForm({ sessionUuid }) {
 
   function valuetext(value) {
     setSliderValue(value)
-    return { value };
+    return { value }
   }
 
   return (
@@ -146,4 +146,4 @@ function PasswordForm({ sessionUuid }) {
   )
 }
 
-export default PasswordForm;
+export default PasswordForm

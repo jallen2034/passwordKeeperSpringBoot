@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress'
 import 'react-toastify/dist/ReactToastify.css'
-import { deletePassword, displayPasswords, editPasssword, retrieveUsersPasswords } from '../axiosCalls.js'
+import { retrieveUsersPasswords } from '../axiosCalls.js'
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import '@fontsource/roboto';
+import '@fontsource/roboto'
 
 // styling  component
 const useStyles = makeStyles((theme) => ({
@@ -33,9 +32,9 @@ function PasswordContainer({ sessionUuid, enabledUser, currentUserUuid }) {
 
   useEffect(() => {
     if (sessionUuid) {
-      retrieveUsersPasswords(sessionUuid, setDataFromApi, setForceRender, currentUserUuid);
+      retrieveUsersPasswords(sessionUuid, setDataFromApi, setForceRender, currentUserUuid)
     }
-  }, [sessionUuid, forceRender.value, enabledUser.enabled]);
+  }, [sessionUuid, forceRender.value, enabledUser.enabled])
 
   return (
     <>

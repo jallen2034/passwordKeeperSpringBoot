@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '5px',
     marginRight: '10px'
   }
-}));
+}))
 
 const textFieldManager = function (editedPasswordFromServer, setEditTextfield, passwordText) {
 
@@ -85,36 +85,36 @@ const textFieldManager = function (editedPasswordFromServer, setEditTextfield, p
 }
 
 function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, editPasssword, setForceRender }) {
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const [editFlag, setEditFlag] = useState(false);
+  const classes = useStyles()
+  const [open, setOpen] = useState(false)
+  const [editFlag, setEditFlag] = useState(false)
   const [editTextField, setEditTextfield] = useState(passwordText)
   const [editedPasswordFromServer, setEditedPasswordFromServer] = useState([""])
 
   useEffect(() => {
     handleSubmitClose()
-  }, [editedPasswordFromServer]);
+  }, [editedPasswordFromServer])
 
   const handleEditClickOpen = () => {
-    setEditFlag(true);
+    setEditFlag(true)
   }
 
   const handleSubmitClose = () => {
-    setEditFlag(false);
+    setEditFlag(false)
     textFieldManager(editedPasswordFromServer, setEditTextfield, passwordText)
   }
 
   const handleEditClickClose = () => {
-    setEditFlag(false);
+    setEditFlag(false)
     textFieldManager(editedPasswordFromServer, setEditTextfield, passwordText)
   }
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpen(true)
   }
 
   const handleClose = () => {
-    setOpen(false);
+    setOpen(false)
   }
 
   const handleCopyClick = (password) => {
@@ -149,7 +149,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
       </div>
       <FormControl className={classes.formControl}>
         <RelativeInformation
-          url={url} 
+          url={url}
           name={name}
           category={category}
           id={id}
@@ -174,7 +174,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
               <>
                 <TextField
                   className={classes.textField}
-                  value={editedPasswordFromServer[0]} 
+                  value={editedPasswordFromServer[0]}
                 />
                 <div className={classes.div}>
                   <CopyToClipboard text={editedPasswordFromServer.value}>
