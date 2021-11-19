@@ -2,7 +2,6 @@ import { ToastContainer, toast } from "react-toastify"
 import { Redirect } from "react-router-dom"
 import PasswordVault from "../PasswordVault/PasswordVault"
 import ButtonAppBar from "../Appbar/Appbar"
-
 import '@fontsource/roboto/300.css'
 
 function VaultPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, indexSelected, history, setEnabledUser, enabledUser, sessionUuid, enabled }) {

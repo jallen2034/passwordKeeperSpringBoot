@@ -4,7 +4,7 @@ import { Button, Typography } from '@material-ui/core'
 import { resetUsersPassword } from '../axiosCalls'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
-import Box from '@material-ui/core/Box';
+import Box from '@material-ui/core/Box'
 import '@fontsource/roboto/300.css'
 import { makeStyles } from '@material-ui/core/styles'
 

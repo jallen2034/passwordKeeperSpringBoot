@@ -1,7 +1,7 @@
 import React from 'react'
-import PasswordComposer from '../PasswordComposer/PasswordComposer';
-import PasswordContainer from '../PasswordContainer/PasswordContainer';
-import 'react-toastify/dist/ReactToastify.css';
+import PasswordComposer from '../PasswordComposer/PasswordComposer'
+import PasswordContainer from '../PasswordContainer/PasswordContainer'
+import 'react-toastify/dist/ReactToastify.css'
 
 function PasswordVault({ indexSelected, sessionUuid, enabledUser, currentUserUuid, setInitalLogin }) {
   return (
@@ -14,4 +14,4 @@ function PasswordVault({ indexSelected, sessionUuid, enabledUser, currentUserUui
   )
 }
 
-export default PasswordVault;
+export default PasswordVault

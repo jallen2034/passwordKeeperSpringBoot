@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-function RelativeInformation({url, name, category, id}){
+function RelativeInformation({ url, name, category, id }) {
 
   return (
     <>
@@ -10,7 +10,7 @@ function RelativeInformation({url, name, category, id}){
         <h5>{name}</h5>
       </div>
     </>
-  );
+  )
 }
 
 export default RelativeInformation

@@ -1,13 +1,13 @@
 // this is a copy of the app component purely for storybook.
 import { useState } from "react"
 import LoginPage from "./LoginPage/Loginpage"
-import RegisterPage from "./RegisterPage/RegisterPage";
-import VaultPage from "./VaultPage/VaultPage";
-import VerificationPage from "./VerificationPage/VerificationPage";
-import PwResetPage from "./PwResetPage/PwResetPage";
-import PwResetForm from "./PwResetForm/PwResetForm";
+import RegisterPage from "./RegisterPage/RegisterPage"
+import VaultPage from "./VaultPage/VaultPage"
+import VerificationPage from "./VerificationPage/VerificationPage"
+import PwResetPage from "./PwResetPage/PwResetPage"
+import PwResetForm from "./PwResetForm/PwResetForm"
 import { Route, Switch, useHistory } from "react-router-dom"
-import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/300.css'
 
 function App() {
   const history = useHistory()

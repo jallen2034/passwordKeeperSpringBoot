@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PasswordFormTyped from '../PasswordFormTyped/PasswordFormTyped'
-import PasswordForm from '../PasswordFormGenerate/PasswordForm';
+import PasswordForm from '../PasswordFormGenerate/PasswordForm'
 import { Button } from '@material-ui/core'
 
-// styling for text field component
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
@@ -23,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "10px",
     marginTop: "5px"
   }
-}));
+}))
 
 function PasswordComposer({ sessionUuid }) {
-  const classes = useStyles();
+  const classes = useStyles()
   const [customFormSelected, setCustomFormSelected] = useState(false)
 
   const onClick = (buttonType) => {
@@ -47,4 +46,4 @@ function PasswordComposer({ sessionUuid }) {
   )
 }
 
-export default PasswordComposer;
+export default PasswordComposer

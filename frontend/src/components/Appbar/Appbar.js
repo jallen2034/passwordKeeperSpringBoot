@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 import { Button, IconButton, Typography, Toolbar, AppBar } from '@material-ui/core'
 
 const buttonClick = function (setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, switcherButton, history, setEnabledUser) {
@@ -6,10 +6,10 @@ const buttonClick = function (setCurrentUserUuid, currentUserUuid, register, set
   switch (switcherButton) {
     case "view":
       setIndexSelected(true)
-      break;
+      break
     case "create":
       setIndexSelected(false)
-      break;
+      break
     default:
 
       if (!register) {
@@ -41,11 +41,11 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   }
-}));
+}))
 
 function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, history, setEnabledUser }) {
-  const classes = useStyles();
-  let switcherButton;
+  const classes = useStyles()
+  let switcherButton
 
   // for storybook testing of this component - hardcoed values - will be removed later when developing actual react app
   if (!currentUserUuid && !register) {
@@ -104,7 +104,7 @@ function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegist
         </Toolbar>
       </AppBar>
     </div>
-  );
+  )
 }
 
-export default ButtonAppBar;
+export default ButtonAppBar
