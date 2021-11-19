@@ -26,7 +26,6 @@ const passwordEditQueue = function (setEditedPasswordFromServer, editedPasswordF
   setEditedPasswordFromServer(queue)
 }
 
-
 const loginUser = function (event, setCurrentUserUuid, email, password, setEnabledUser, currentUserUuid, enabledUser, history) {
   event.preventDefault()
 

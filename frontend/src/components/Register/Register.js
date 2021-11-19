@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -8,11 +7,9 @@ import Link from '@material-ui/core/Link'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
-import axios from 'axios'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import { registerUser } from '../axiosCalls.js'
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Copyright() {
@@ -140,4 +137,4 @@ function Register({ setCurrentUserUuid }) {
   );
 }
 
-export default Register;
+export default Register

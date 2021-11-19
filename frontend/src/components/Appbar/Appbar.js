@@ -1,12 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, IconButton, Typography, Toolbar, AppBar } from '@material-ui/core'
-import { BrowserRouter as Router, Route, Switch, useHistory, useParams } from "react-router-dom";
-// import MenuIcon from '@material-ui/icons/Menu'; this is broken for some reason TODO - FIX
 
-/* test test
- * for now set the users uuid to null if this functionis called and the current uuid is not null
- * set a hardcoded uuid for when a user logs in (for now)
- * this is currently a really sucky implementation and needs refactoring */
 const buttonClick = function (setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, switcherButton, history, setEnabledUser) {
 
   switch (switcherButton) {
@@ -64,7 +58,6 @@ function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegist
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            {/* <MenuIcon /> this is broken for some reason TODO - FIX */}
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             PasswordKeeper
