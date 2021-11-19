@@ -2,7 +2,6 @@ import { React, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import axios from 'axios'
 import { Button, Select, TextField, FormControl, MenuItem } from '@material-ui/core'
-// import { saveNewPasswrod } from '../axiosCalls.js'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -28,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     width: '750px'
   }
-}));
+}))
 
 const saveNewPasswrod = function (event, sessionUuid, passwordText, category, url) {
 
@@ -39,21 +38,21 @@ const saveNewPasswrod = function (event, sessionUuid, passwordText, category, ur
   }
 
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
-  .then((response) => {
-    if (response) {
-      console.log(response.data)
-      toast.success(response.data)
-    }
-  }).catch((error) => {
-    if (error) {
-      console.log(error.response.data.message)
-      toast.error(error.response.data.message)
-    }
-  })
+    .then((response) => {
+      if (response) {
+        console.log(response.data)
+        toast.success(response.data)
+      }
+    }).catch((error) => {
+      if (error) {
+        console.log(error.response.data.message)
+        toast.error(error.response.data.message)
+      }
+    })
 }
 
 function PasswordFormTyped({ sessionUuid }) {
-  const classes = useStyles();
+  const classes = useStyles()
   const [category, setCategory] = useState('')
   const [url, setUrl] = useState('')
   const [passwordText, setPasswordText] = useState('')
@@ -100,4 +99,4 @@ function PasswordFormTyped({ sessionUuid }) {
   )
 }
 
-export default PasswordFormTyped;
+export default PasswordFormTyped

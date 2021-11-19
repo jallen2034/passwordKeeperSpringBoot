@@ -22,7 +22,7 @@ function Copyright() {
       {new Date().getFullYear()}
       {'.'}
     </Typography>
-  );
+  )
 }
 
 const openResetPasswordPage = function (history) {
@@ -58,10 +58,10 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-}));
+}))
 
 function SignIn({ setCurrentUserUuid, setEnabledUser, currentUserUuid, enabledUser, history }) {
-  const classes = useStyles();
+  const classes = useStyles()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -128,7 +128,7 @@ function SignIn({ setCurrentUserUuid, setEnabledUser, currentUserUuid, enabledUs
         </div>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default SignIn;
+export default SignIn

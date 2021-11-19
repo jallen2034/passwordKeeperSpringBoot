@@ -10,17 +10,17 @@ const useStyles = makeStyles((theme) => ({
       width: '25ch',
     },
   },
-}));
+}))
 
 // component itself
 function BasicTextFields({ passwordText }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
       <TextField id="filled-basic" label="Filled" variant="filled" />
     </form>
-  );
+  )
 }
 
-export default BasicTextFields;
+export default BasicTextFields

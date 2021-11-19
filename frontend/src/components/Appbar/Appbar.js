@@ -1,21 +1,15 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 import { Button, IconButton, Typography, Toolbar, AppBar } from '@material-ui/core'
-import { BrowserRouter as Router, Route, Switch, useHistory, useParams } from "react-router-dom";
-// import MenuIcon from '@material-ui/icons/Menu'; this is broken for some reason TODO - FIX
 
-/* test test
- * for now set the users uuid to null if this functionis called and the current uuid is not null
- * set a hardcoded uuid for when a user logs in (for now)
- * this is currently a really sucky implementation and needs refactoring */
 const buttonClick = function (setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, switcherButton, history, setEnabledUser) {
 
   switch (switcherButton) {
     case "view":
       setIndexSelected(true)
-      break;
+      break
     case "create":
       setIndexSelected(false)
-      break;
+      break
     default:
 
       if (!register) {
@@ -47,11 +41,11 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   }
-}));
+}))
 
 function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, history, setEnabledUser }) {
-  const classes = useStyles();
-  let switcherButton;
+  const classes = useStyles()
+  let switcherButton
 
   // for storybook testing of this component - hardcoed values - will be removed later when developing actual react app
   if (!currentUserUuid && !register) {
@@ -64,7 +58,6 @@ function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegist
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            {/* <MenuIcon /> this is broken for some reason TODO - FIX */}
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             PasswordKeeper
@@ -111,7 +104,7 @@ function ButtonAppBar({ setCurrentUserUuid, currentUserUuid, register, setRegist
         </Toolbar>
       </AppBar>
     </div>
-  );
+  )
 }
 
-export default ButtonAppBar;
+export default ButtonAppBar

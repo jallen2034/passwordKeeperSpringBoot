@@ -1,11 +1,11 @@
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 
-function SimpleButton({type}) {
-    return (
-        <Button variant="contained" color="primary" disableElevation>
-            {type}
-        </Button>
-    );
+function SimpleButton({ type }) {
+  return (
+    <Button variant="contained" color="primary" disableElevation>
+      {type}
+    </Button>
+  )
 }
 
-export default SimpleButton;
+export default SimpleButton
