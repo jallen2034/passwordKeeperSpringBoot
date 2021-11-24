@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,6 +77,9 @@ public class LoginService {
     public void resetPasswordEmail(Map<String, Object> lookupRequestObject) throws UnsupportedEncodingException, MessagingException {
         String email = (String) lookupRequestObject.get("passwordResetEmail");
         User userFromDb = usersRepository.findByEmail(email);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        userFromDb.setTimestamp_pw_reset(currentDateTime);
+        usersRepository.save(userFromDb);
 
         String siteUrl = "http:/localhost:3000";
         String verifyUrl = siteUrl + "/resetPasswordForm" + userFromDb.getVerificationCode();

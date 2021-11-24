@@ -3,12 +3,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 /* data access layer
- * the service layer is mostly responsible for business logic, we are using the N-Tier design pattern here */
+ * the service layer is mostly responsible for business logic, we are using the N-Tier design pattern here
+ * https://stackoverflow.com/questions/44650075/localdatetime-in-seconds */
 @Service
 public class UsersService {
 
@@ -67,5 +69,26 @@ public class UsersService {
         userToUpdatePassword.setMasterPassword(encodedPassword);
         usersRepository.save(userToUpdatePassword);
         return "Your password was successfully updated! Please use it to login";
+    }
+
+    public boolean verifyResetFormValid(Map<String, Object> lookupRequestObject) {
+        String verificationCode = (String) lookupRequestObject.get("verificationCode");
+        User userFromDbToVerify = usersRepository.findByVerificationCode(verificationCode);
+        long currentDateTimeSecondDuration = getMinuteDuration(LocalDateTime.now());
+        long emailCreationTimestampSecondDuration = getMinuteDuration(userFromDbToVerify.getTimestamp_pw_reset());
+        long minutesDifference =  currentDateTimeSecondDuration - emailCreationTimestampSecondDuration;
+
+        if (minutesDifference > 20) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private long getMinuteDuration(LocalDateTime t) {
+        long hour = t.getHour();
+        long minute = t.getMinute();
+        long second = t.getSecond();
+        return  ((hour * 3600) + (minute * 60) + second) / 60;
     }
 }
