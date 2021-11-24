@@ -216,6 +216,17 @@ const resetUsersPassword = function (newPassword, newPasswordConfirm, paramsCode
     })
 }
 
+const verifyResetFormValid = function (paramsCode, setEmailValid) {
+
+  axios.post("http://localhost:8080/verifyResetFormValid", { verificationCode: paramsCode })
+    .then((response) => {
+      if (response) {
+        response.data ? setEmailValid(true) : setEmailValid(false)
+      }
+    }).catch((error) => {
+    })
+}
+
 export {
   deletePassword,
   displayPasswords,
@@ -227,5 +238,6 @@ export {
   registerUser,
   verifyUser,
   sendPasswordResetEmail,
-  resetUsersPassword
+  resetUsersPassword,
+  verifyResetFormValid
 }
