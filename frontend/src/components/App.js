@@ -77,6 +77,7 @@ function App() {
             history={history}
             sessionUuid={sessionUuid}
             enabled={enabled}
+            setPasswordResetEmail={setPasswordResetEmail}
           />
         </Route>
         <Route path="/resetPassword">
