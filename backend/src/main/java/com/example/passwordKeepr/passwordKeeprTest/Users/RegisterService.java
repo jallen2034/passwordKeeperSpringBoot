@@ -100,7 +100,7 @@ public class RegisterService {
         String randomVerificationCode = RandomString.make(64);
         this.passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = this.passwordEncoder.encode(password);
-        User newUser = new User(0, email, encodedPassword, uuid, false, randomVerificationCode);
+        User newUser = new User(0, email, encodedPassword, uuid, false, randomVerificationCode, null);
         usersRepository.save(newUser);
         sendVerificationEmail(newUser, request);
         return "User successfully registered! Check your email to verify your new account!";
