@@ -34,7 +34,7 @@ Database:
 ## TODO
 
 - Fully encrypt all of a users stored passwords in the vault.
-- Encrypt the users email addresses with Bcrypt so they are not stored in the database as plaintext.
+- Encrypt the users email addresses with so they are not stored in the database as plaintext.
 - Implement a timeout on the password request email when sent.
 - Write unit tests for my API using Junit.
 - Setup a CI pipeline for testing.
