@@ -98,8 +98,9 @@ public class RegisterService {
     private String commitNewUser(String email, String password, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
         String uuid = UUID.randomUUID().toString();
         String randomVerificationCode = RandomString.make(64);
+        String emailPassword = email + password;
         this.passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = this.passwordEncoder.encode(password);
+        String encodedPassword = this.passwordEncoder.encode(emailPassword);
         User newUser = new User(0, email, encodedPassword, uuid, false, randomVerificationCode, null);
         usersRepository.save(newUser);
         sendVerificationEmail(newUser, request);

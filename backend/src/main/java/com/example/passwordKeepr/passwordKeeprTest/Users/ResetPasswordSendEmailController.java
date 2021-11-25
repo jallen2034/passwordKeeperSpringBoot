@@ -22,6 +22,6 @@ public class ResetPasswordSendEmailController {
     @PostMapping("/resetPasswordSendEmail")
     public String resetPasswordEmail(@RequestBody Map<String, Object> lookupRequestObject) throws MessagingException, UnsupportedEncodingException {
         loginService.resetPasswordEmail(lookupRequestObject);
-        return "Please check your email inbox for the password reset link!";
+        return "If an account exists under this email, please check your email inbox for the password reset link!";
     }
 }

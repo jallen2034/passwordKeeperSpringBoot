@@ -42,12 +42,13 @@ public class LoginService {
     private HashMap<String, String> loginUser(String email, String password) {
         this.passwordEncoder = new BCryptPasswordEncoder();
         User userFromDb = usersRepository.findByEmail(email);
+        String emailPassword = email + password;
 
         if (userFromDb == null) {
             throw new IllegalStateException("We couldn't find an account with that email!");
         }
 
-        boolean matches = passwordEncoder.matches(password, userFromDb.getMasterPassword());
+        boolean matches = passwordEncoder.matches(emailPassword, userFromDb.getMasterPassword());
 
         if (matches == true) {
             String uuid = userFromDb.getUuid();
@@ -77,6 +78,11 @@ public class LoginService {
     public void resetPasswordEmail(Map<String, Object> lookupRequestObject) throws UnsupportedEncodingException, MessagingException {
         String email = (String) lookupRequestObject.get("passwordResetEmail");
         User userFromDb = usersRepository.findByEmail(email);
+
+        if (userFromDb == null) {
+            throw new IllegalStateException("Uh oh! Doesn't look like that's a valid email address! Did you make a typo?");
+        }
+
         LocalDateTime currentDateTime = LocalDateTime.now();
         userFromDb.setTimestamp_pw_reset(currentDateTime);
         usersRepository.save(userFromDb);
