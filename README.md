@@ -36,6 +36,7 @@ Database:
 
 - Fully encrypt all of a users stored passwords in the vault.
 - Encrypt the users email addresses with so they are not stored in the database as plaintext.
+- Add a limit on how many times a user can attempt ot login with an incorrect password. Lock out their account on too many attempts for 20 minutes.
 - Write unit tests for my API using Junit.
 - Setup a CI pipeline for testing.
 - Clean up clutter/unnecessary files in repo.
@@ -118,6 +119,3 @@ Reset password Error:
 Reset password success:
 
 !["Reset pw failure pw"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/passwordResetSuccess.png)
-
-
-
