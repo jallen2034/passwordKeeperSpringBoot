@@ -28,6 +28,7 @@ Database:
 - Full user registration and login.
 - Encryption of all users master passwords using Bcrypt.
 - Email verification of user accounts upon creation.
+- 20 minute timeout on the password request email when sent before it is invalid.
 - Users can create, edit and delete passwords from their password vault.
 - Sections of the app are protected from improper use/access with React Router.
 
@@ -35,7 +36,6 @@ Database:
 
 - Fully encrypt all of a users stored passwords in the vault.
 - Encrypt the users email addresses with so they are not stored in the database as plaintext.
-- Implement a timeout on the password request email when sent.
 - Write unit tests for my API using Junit.
 - Setup a CI pipeline for testing.
 - Clean up clutter/unnecessary files in repo.
