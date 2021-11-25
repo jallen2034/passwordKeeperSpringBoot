@@ -26,7 +26,7 @@ Database:
 ## Features
 
 - Full user registration and login.
-- Encryption of all users master passwords using Bcrypt.
+- Encryption of all users master passwords using Bcrypt and a salt being the users email address (like LastPass).
 - Email verification of user accounts upon creation.
 - 20 minute timeout on the password request email when sent before it is invalid.
 - Users can create, edit and delete passwords from their password vault.
