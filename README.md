@@ -27,6 +27,7 @@ Database:
 
 - Full user registration and login.
 - Encryption of all users master passwords using Bcrypt and a salt being the users email address (like LastPass).
+- Added a limit on how many times a user can attempt ot login with an incorrect password. Lock out their account on too many attempts for 20 minutes. Preventing brute force attacks.
 - Email verification of user accounts upon creation.
 - 20 minute timeout on the password request email when sent before it is invalid.
 - Users can create, edit and delete passwords from their password vault.
@@ -36,7 +37,6 @@ Database:
 
 - Fully encrypt all of a users stored passwords in the vault.
 - Encrypt the users email addresses with so they are not stored in the database as plaintext.
-- Add a limit on how many times a user can attempt ot login with an incorrect password. Lock out their account on too many attempts for 20 minutes.
 - Write unit tests for my API using Junit.
 - Setup a CI pipeline for testing.
 - Clean up clutter/unnecessary files in repo.
