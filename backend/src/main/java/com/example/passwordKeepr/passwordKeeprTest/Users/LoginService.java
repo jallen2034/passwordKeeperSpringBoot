@@ -43,6 +43,8 @@ public class LoginService {
         this.passwordEncoder = new BCryptPasswordEncoder();
         User userFromDb = usersRepository.findByEmail(email);
         String emailPassword = email + password;
+        long accountFirstFailedAttemptTimestamp = 0;
+        long accountLockedTimestamp = 0;
 
         if (userFromDb == null) {
             throw new IllegalStateException("We couldn't find an account with that email!");
@@ -50,29 +52,31 @@ public class LoginService {
 
         boolean matches = passwordEncoder.matches(emailPassword, userFromDb.getMasterPassword());
 
+        if (userFromDb.getFirst_failed_attempt_time() != null) {
+            accountFirstFailedAttemptTimestamp = getMinuteDuration(userFromDb.getFirst_failed_attempt_time());
+        }
+
+        if (userFromDb.getLock_time() != null) {
+            accountLockedTimestamp = getMinuteDuration(userFromDb.getLock_time());
+        }
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        long currentDateTimeSecondDuration = getMinuteDuration(LocalDateTime.now());
+        long minutesDifferenceFirstFailedAttempt = currentDateTimeSecondDuration - accountFirstFailedAttemptTimestamp;
+        long minutesDifferenceSinceAccountLock = currentDateTimeSecondDuration - accountLockedTimestamp;
+
         if (matches == true) {
-            String uuid = userFromDb.getUuid();
-            String enabled = String.valueOf(userFromDb.getEnabled());
-            HashMap<String, String> map = new HashMap<>();
-            map.put("uuid", uuid);
-            map.put("enabled", enabled);
-            return map;
+            verifyAccountIsStillLocked(userFromDb, minutesDifferenceSinceAccountLock, currentDateTime, true);
+            return loginUser(userFromDb);
         } else {
-            throw new IllegalStateException("Sorry that password is incorrect!");
-        }
-    }
 
-    public String verify(String verificationCode) {
-        User userToVerify = usersRepository.findByVerificationCode(verificationCode);
-
-        if (userToVerify == null) {
-            return "Oops, doesn't look like a valid account exists for this request!";
-        } else if (userToVerify.getEnabled()) {
-            return "This user has already been verified! Go log in!";
-        } else {
-            usersRepository.enableUser(userToVerify.getId());
-            return "Account successfully verified! Go log in!";
+            if (accountLockedTimestamp != 0) {
+                verifyAccountIsStillLocked(userFromDb, minutesDifferenceSinceAccountLock, currentDateTime, false);
+            }
+            verifyLoginAttempts(userFromDb, currentDateTime, minutesDifferenceFirstFailedAttempt);
         }
+
+        return null;
     }
 
     public void resetPasswordEmail(Map<String, Object> lookupRequestObject) throws UnsupportedEncodingException, MessagingException {
@@ -105,5 +109,78 @@ public class LoginService {
         helper.setText(mailContent, true);
 
         mailSender.send(message);
+    }
+
+    public String verify(String verificationCode) {
+        User userToVerify = usersRepository.findByVerificationCode(verificationCode);
+
+        if (userToVerify == null) {
+            return "Oops, doesn't look like a valid account exists for this request!";
+        } else if (userToVerify.getEnabled()) {
+            return "This user has already been verified! Go log in!";
+        } else {
+            usersRepository.enableUser(userToVerify.getId());
+            return "Account successfully verified! Go log in!";
+        }
+    }
+
+    private long getMinuteDuration(LocalDateTime t) {
+        long hour = t.getHour();
+        long minute = t.getMinute();
+        long second = t.getSecond();
+        return  ((hour * 3600) + (minute * 60) + second) / 60;
+    }
+
+    private void verifyAccountIsStillLocked(User userFromDb, long minutesDifferenceSinceAccountLock, LocalDateTime currentDateTime, boolean loginSuccess) {
+
+        if (userFromDb.getAccount_locked() == true && minutesDifferenceSinceAccountLock < 60) {
+            throw new IllegalStateException("Sorry your account is locked for 1 hour!");
+        } else if (userFromDb.getAccount_locked() == true && minutesDifferenceSinceAccountLock > 60 && loginSuccess == false) {
+            userFromDb.setAccount_locked(false);
+            userFromDb.setFailed_attempt(1);
+            userFromDb.setFirst_failed_attempt_time(currentDateTime);
+            usersRepository.save(userFromDb);
+            throw new IllegalStateException("Sorry that password is incorrect!");
+        } else if(userFromDb.getAccount_locked() == true && minutesDifferenceSinceAccountLock > 60 && loginSuccess == true) {
+            userFromDb.setAccount_locked(false);
+            userFromDb.setFailed_attempt(0);
+            userFromDb.setFirst_failed_attempt_time(null);
+            usersRepository.save(userFromDb);
+        }
+
+        return;
+    }
+
+    private void verifyLoginAttempts(User userFromDb, LocalDateTime currentDateTime, long minutesDifferenceFirstFailedAttempt) {
+
+        if (userFromDb.getFailed_attempt() == 0) {
+            int updatedFailedAttempt = userFromDb.getFailed_attempt() + 1;
+            userFromDb.setFirst_failed_attempt_time(currentDateTime);
+            userFromDb.setFailed_attempt(updatedFailedAttempt);
+        } else if (userFromDb.getFailed_attempt() < 3 && minutesDifferenceFirstFailedAttempt < 20) {
+            int updatedFailedAttempt = userFromDb.getFailed_attempt() + 1;
+            userFromDb.setFailed_attempt(updatedFailedAttempt);
+        } else if (userFromDb.getFailed_attempt() < 3 && minutesDifferenceFirstFailedAttempt > 20) {
+            userFromDb.setFirst_failed_attempt_time(currentDateTime);
+            userFromDb.setFailed_attempt(1);
+        } else if (userFromDb.getFailed_attempt() >= 3) {
+            userFromDb.setAccount_locked(true);
+            userFromDb.setLock_time(currentDateTime);
+            userFromDb.setFailed_attempt(0);
+        }
+
+        usersRepository.save(userFromDb);
+        throw new IllegalStateException("Sorry that password is incorrect!");
+    }
+
+    private HashMap loginUser(User userFromDb) {
+        userFromDb.setFailed_attempt(0);
+        String uuid = userFromDb.getUuid();
+        String enabled = String.valueOf(userFromDb.getEnabled());
+        HashMap<String, String> map = new HashMap<>();
+        map.put("uuid", uuid);
+        map.put("enabled", enabled);
+        usersRepository.save(userFromDb);
+        return map;
     }
 }

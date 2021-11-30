@@ -21,6 +21,10 @@ public class User {
     private Boolean enabled;
     private String verificationCode;
     private LocalDateTime timestamp_pw_reset;
+    private int failed_attempt;
+    private Boolean account_locked;
+    private LocalDateTime lock_time;
+    private LocalDateTime first_failed_attempt_time;
 
     @OneToMany(fetch = FetchType.LAZY,
         mappedBy = "user",
@@ -30,7 +34,7 @@ public class User {
     public User() {
     }
 
-    public User(int id, String email, String master_password, String uuid, Boolean enabled, String verificationCode, LocalDateTime timestamp_pw_reset) {
+    public User(int id, String email, String master_password, String uuid, Boolean enabled, String verificationCode, LocalDateTime timestamp_pw_reset, int failed_attempt, Boolean account_locked, LocalDateTime lock_time, LocalDateTime first_failed_attempt_time) {
         this.id = id;
         this.email = email;
         this.master_password = master_password;
@@ -38,6 +42,10 @@ public class User {
         this.enabled = enabled;
         this.verificationCode = verificationCode;
         this.timestamp_pw_reset = timestamp_pw_reset;
+        this.failed_attempt = failed_attempt;
+        this.account_locked = account_locked;
+        this.lock_time = lock_time;
+        this.first_failed_attempt_time = first_failed_attempt_time;
     }
 
     public int getId() {
@@ -98,5 +106,37 @@ public class User {
 
     public void setTimestamp_pw_reset(LocalDateTime timestamp_pw_reset) {
         this.timestamp_pw_reset = timestamp_pw_reset;
+    }
+
+    public int getFailed_attempt() {
+        return failed_attempt;
+    }
+
+    public void setFailed_attempt(int failed_attempt) {
+        this.failed_attempt = failed_attempt;
+    }
+
+    public Boolean getAccount_locked() {
+        return account_locked;
+    }
+
+    public void setAccount_locked(Boolean account_non_locked) {
+        this.account_locked = account_non_locked;
+    }
+
+    public LocalDateTime getLock_time() {
+        return lock_time;
+    }
+
+    public void setLock_time(LocalDateTime lock_time) {
+        this.lock_time = lock_time;
+    }
+
+    public LocalDateTime getFirst_failed_attempt_time() {
+        return first_failed_attempt_time;
+    }
+
+    public void setFirst_failed_attempt_time(LocalDateTime first_failed_attempt_time) {
+        this.first_failed_attempt_time = first_failed_attempt_time;
     }
 }
