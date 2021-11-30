@@ -29,6 +29,7 @@ Database:
 - Encryption of all users master passwords using Bcrypt and a salt being the users email address (like LastPass).
 - Added a limit on how many times a user can attempt ot login with an incorrect password. Lock out their account on too many attempts for 20 minutes. Preventing brute force attacks.
 - Email verification of user accounts upon creation.
+- Users can reset their master password via their email if they forget it.
 - 20 minute timeout on the password request email when sent before it is invalid.
 - Users can create, edit and delete passwords from their password vault.
 - Sections of the app are protected from improper use/access with React Router.
