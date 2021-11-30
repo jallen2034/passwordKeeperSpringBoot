@@ -60,42 +60,23 @@ public class LoginService {
             accountLockedTimestamp = getMinuteDuration(userFromDb.getLock_time());
         }
 
-        long currentDateTimeSecondDuration = getMinuteDuration(LocalDateTime.now());
         LocalDateTime currentDateTime = LocalDateTime.now();
+        long currentDateTimeSecondDuration = getMinuteDuration(LocalDateTime.now());
         long minutesDifferenceFirstFailedAttempt = currentDateTimeSecondDuration - accountFirstFailedAttemptTimestamp;
         long minutesDifferenceSinceAccountLock = currentDateTimeSecondDuration - accountLockedTimestamp;
 
         if (matches == true) {
-            userFromDb.setFailed_attempt(0);
-            String uuid = userFromDb.getUuid();
-            String enabled = String.valueOf(userFromDb.getEnabled());
-            HashMap<String, String> map = new HashMap<>();
-            map.put("uuid", uuid);
-            map.put("enabled", enabled);
-            usersRepository.save(userFromDb);
-            return map;
+            verifyAccountIsStillLocked(userFromDb, minutesDifferenceSinceAccountLock, currentDateTime, true);
+            return loginUser(userFromDb);
         } else {
 
             if (accountLockedTimestamp != 0) {
-                verifyAccountIsStillLocked(userFromDb, minutesDifferenceSinceAccountLock, currentDateTime);
+                verifyAccountIsStillLocked(userFromDb, minutesDifferenceSinceAccountLock, currentDateTime, false);
             }
             verifyLoginAttempts(userFromDb, currentDateTime, minutesDifferenceFirstFailedAttempt);
         }
 
         return null;
-    }
-
-    public String verify(String verificationCode) {
-        User userToVerify = usersRepository.findByVerificationCode(verificationCode);
-
-        if (userToVerify == null) {
-            return "Oops, doesn't look like a valid account exists for this request!";
-        } else if (userToVerify.getEnabled()) {
-            return "This user has already been verified! Go log in!";
-        } else {
-            usersRepository.enableUser(userToVerify.getId());
-            return "Account successfully verified! Go log in!";
-        }
     }
 
     public void resetPasswordEmail(Map<String, Object> lookupRequestObject) throws UnsupportedEncodingException, MessagingException {
@@ -130,6 +111,19 @@ public class LoginService {
         mailSender.send(message);
     }
 
+    public String verify(String verificationCode) {
+        User userToVerify = usersRepository.findByVerificationCode(verificationCode);
+
+        if (userToVerify == null) {
+            return "Oops, doesn't look like a valid account exists for this request!";
+        } else if (userToVerify.getEnabled()) {
+            return "This user has already been verified! Go log in!";
+        } else {
+            usersRepository.enableUser(userToVerify.getId());
+            return "Account successfully verified! Go log in!";
+        }
+    }
+
     private long getMinuteDuration(LocalDateTime t) {
         long hour = t.getHour();
         long minute = t.getMinute();
@@ -137,19 +131,24 @@ public class LoginService {
         return  ((hour * 3600) + (minute * 60) + second) / 60;
     }
 
-    private void verifyAccountIsStillLocked(User userFromDb, long minutesDifferenceSinceAccountLock, LocalDateTime currentDateTime) {
+    private void verifyAccountIsStillLocked(User userFromDb, long minutesDifferenceSinceAccountLock, LocalDateTime currentDateTime, boolean loginSuccess) {
 
         if (userFromDb.getAccount_locked() == true && minutesDifferenceSinceAccountLock < 60) {
             throw new IllegalStateException("Sorry your account is locked for 1 hour!");
-        } else if (userFromDb.getAccount_locked() == true && minutesDifferenceSinceAccountLock > 60) {
+        } else if (userFromDb.getAccount_locked() == true && minutesDifferenceSinceAccountLock > 60 && loginSuccess == false) {
             userFromDb.setAccount_locked(false);
             userFromDb.setFailed_attempt(1);
             userFromDb.setFirst_failed_attempt_time(currentDateTime);
             usersRepository.save(userFromDb);
             throw new IllegalStateException("Sorry that password is incorrect!");
-        } else {
-            return;
+        } else if(userFromDb.getAccount_locked() == true && minutesDifferenceSinceAccountLock > 60 && loginSuccess == true) {
+            userFromDb.setAccount_locked(false);
+            userFromDb.setFailed_attempt(0);
+            userFromDb.setFirst_failed_attempt_time(null);
+            usersRepository.save(userFromDb);
         }
+
+        return;
     }
 
     private void verifyLoginAttempts(User userFromDb, LocalDateTime currentDateTime, long minutesDifferenceFirstFailedAttempt) {
@@ -172,5 +171,16 @@ public class LoginService {
 
         usersRepository.save(userFromDb);
         throw new IllegalStateException("Sorry that password is incorrect!");
+    }
+
+    private HashMap loginUser(User userFromDb) {
+        userFromDb.setFailed_attempt(0);
+        String uuid = userFromDb.getUuid();
+        String enabled = String.valueOf(userFromDb.getEnabled());
+        HashMap<String, String> map = new HashMap<>();
+        map.put("uuid", uuid);
+        map.put("enabled", enabled);
+        usersRepository.save(userFromDb);
+        return map;
     }
 }
