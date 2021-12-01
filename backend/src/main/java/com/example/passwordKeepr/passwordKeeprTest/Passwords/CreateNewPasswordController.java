@@ -18,7 +18,7 @@ public class CreateNewPasswordController {
 
     @CrossOrigin(origins = "http://localhost:3000/", maxAge = 90000)
     @PostMapping("/passwords/create")
-    public String createPassword(@RequestBody Map<String, Object> lookupRequestObject) {
+    public String createPassword(@RequestBody Map<String, Object> lookupRequestObject) throws Exception {
         System.out.println(lookupRequestObject);
         String message = createNewPasswordService.createPasswordForUser(lookupRequestObject);
         return message;
