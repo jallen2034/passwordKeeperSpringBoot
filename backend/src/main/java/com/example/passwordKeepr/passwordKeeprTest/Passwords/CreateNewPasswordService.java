@@ -3,8 +3,6 @@ import com.example.passwordKeepr.passwordKeeprTest.Users.User;
 import com.example.passwordKeepr.passwordKeeprTest.Users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.security.Key;
 import java.util.List;
 import java.util.Map;
 
@@ -48,12 +46,15 @@ public class CreateNewPasswordService {
         try {
             AES AESEncryptor = new AES(usersMasterPassword);
             encryptedPassword = AESEncryptor.encrypt(password);
+
+            // test decrypting password we just encrypted
+            String decryptedPassword = AESEncryptor.decrypt(encryptedPassword);
+            System.out.println(encryptedPassword);
+            System.out.println(decryptedPassword);
         }
         catch(Exception e) {
             throw new IllegalStateException("Error encoding the password!");
         }
-
-        System.out.println(encryptedPassword);
 
         Password newPasswordToSave = new Password(0, 1, category, url, password, userFromDb);
         passwordList.add(newPasswordToSave);

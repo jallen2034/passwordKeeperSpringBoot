@@ -2,9 +2,6 @@ package com.example.passwordKeepr.passwordKeeprTest.Passwords;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.commons.codec.binary.Base64;
 
 public class AES {
@@ -41,7 +38,15 @@ public class AES {
         return new String(encyptedByteValue);
     }
 
-    public static String decrypt(String passwordToDecrypt) throws Exception {
-        return "test";
+    public static String decrypt(String encryptedValue) throws Exception {
+        Key key = generateKey();
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+
+        byte[] decodedBytes = new Base64().decode(encryptedValue.getBytes());
+        byte[] decryptedValue = cipher.doFinal(decodedBytes);
+        System.out.println("Decrypted value :: " + new String(decryptedValue));
+
+        return new String(decryptedValue);
     }
 }

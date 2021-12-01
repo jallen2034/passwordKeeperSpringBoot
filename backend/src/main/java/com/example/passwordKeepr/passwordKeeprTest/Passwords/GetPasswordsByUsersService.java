@@ -27,6 +27,9 @@ public class GetPasswordsByUsersService {
         }
 
         List passwords = userFromDb.getPasswordList();
+
+        // TODO - loop through encrypted password list here and decrypt them one by one using your AES class here before returning them to the client
+
         System.out.println(passwords);
         return passwords;
     }
