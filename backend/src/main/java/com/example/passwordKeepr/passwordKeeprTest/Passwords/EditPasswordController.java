@@ -19,7 +19,7 @@ public class EditPasswordController {
 
     @CrossOrigin(origins = "http://localhost:3000/", maxAge = 90000)
     @PostMapping("/passwords/edit")
-    public String editPassword(@RequestBody Map<String, Object> lookupRequestObject) {
+    public String editPassword(@RequestBody Map<String, Object> lookupRequestObject) throws Exception {
         System.out.println(lookupRequestObject);
         String message = editPasswordService.editPasswordForUser(lookupRequestObject);
         return message;

@@ -19,12 +19,13 @@ public class EditPasswordService {
         this.usersRepository = usersRepository;
     }
 
-    public <lookupRequestObject> String editPasswordForUser(Map<String, Object> lookupRequestObject) {
+    public <lookupRequestObject> String editPasswordForUser(Map<String, Object> lookupRequestObject) throws Exception {
         String uuid = (String) lookupRequestObject.get("sessionUuid");
         String passwordUrl = (String) lookupRequestObject.get("passwordUrl");
         String newPassword = (String) lookupRequestObject.get("newPassword");
         int id = (int) lookupRequestObject.get("id");
         User userFromDb = usersRepository.findByUuid(uuid);
+        String usersMastePassword = userFromDb.getMasterPassword();
 
         if (userFromDb == null) {
             throw new IllegalStateException("You can't edit a password for someone who doesn't exist!");
@@ -38,7 +39,8 @@ public class EditPasswordService {
 
             if (passwordId == id) {
                 try {
-                    passwordsRepository.editPassword(uuid, passwordUrl, newPassword);
+                    String encryptedPassword = encryptPassword(newPassword, usersMastePassword);
+                    passwordsRepository.editPassword(uuid, passwordUrl, encryptedPassword);
                 } catch (EmptyResultDataAccessException ex) {
                     throw new IllegalStateException("Uh oh, database shenanigans!");
                 }
@@ -48,5 +50,11 @@ public class EditPasswordService {
         }
 
         return "Uh oh, something went wrong when editing that password!";
+    }
+
+    private String encryptPassword(String newPassword, String Key) throws Exception {
+        AES AESEncryptor = new AES(Key);
+        String decryptedPassword = AESEncryptor.encrypt(newPassword);
+        return decryptedPassword;
     }
 }
