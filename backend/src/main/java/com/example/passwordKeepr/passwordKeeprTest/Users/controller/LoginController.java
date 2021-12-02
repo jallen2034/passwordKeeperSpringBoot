@@ -1,4 +1,5 @@
-package com.example.passwordKeepr.passwordKeeprTest.Users;
+package com.example.passwordKeepr.passwordKeeprTest.Users.controller;
+import com.example.passwordKeepr.passwordKeeprTest.Users.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;

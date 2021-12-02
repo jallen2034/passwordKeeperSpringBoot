@@ -1,4 +1,6 @@
-package com.example.passwordKeepr.passwordKeeprTest.Users;
+package com.example.passwordKeepr.passwordKeeprTest.Users.service;
+import com.example.passwordKeepr.passwordKeeprTest.Users.entity.User;
+import com.example.passwordKeepr.passwordKeeprTest.Users.repository.UsersRepository;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;

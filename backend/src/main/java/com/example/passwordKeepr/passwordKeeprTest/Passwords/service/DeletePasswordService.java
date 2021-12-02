@@ -1,6 +1,8 @@
-package com.example.passwordKeepr.passwordKeeprTest.Passwords;
-import com.example.passwordKeepr.passwordKeeprTest.Users.User;
-import com.example.passwordKeepr.passwordKeeprTest.Users.UsersRepository;
+package com.example.passwordKeepr.passwordKeeprTest.Passwords.service;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.entity.Password;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.repository.PasswordsRepository;
+import com.example.passwordKeepr.passwordKeeprTest.Users.entity.User;
+import com.example.passwordKeepr.passwordKeeprTest.Users.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;

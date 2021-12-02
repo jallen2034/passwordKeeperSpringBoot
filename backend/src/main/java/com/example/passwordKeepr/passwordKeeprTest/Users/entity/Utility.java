@@ -1,4 +1,4 @@
-package com.example.passwordKeepr.passwordKeeprTest.Users;
+package com.example.passwordKeepr.passwordKeeprTest.Users.entity;
 import javax.servlet.http.HttpServletRequest;
 
 public class Utility {

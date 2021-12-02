@@ -1,6 +1,9 @@
-package com.example.passwordKeepr.passwordKeeprTest.Passwords;
-import com.example.passwordKeepr.passwordKeeprTest.Users.User;
-import com.example.passwordKeepr.passwordKeeprTest.Users.UsersRepository;
+package com.example.passwordKeepr.passwordKeeprTest.Passwords.service;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.AES;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.entity.Password;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.repository.PasswordsRepository;
+import com.example.passwordKeepr.passwordKeeprTest.Users.entity.User;
+import com.example.passwordKeepr.passwordKeeprTest.Users.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -12,11 +15,13 @@ public class CreateNewPasswordService {
     private final PasswordsRepository passwordsRepository;
     private final UsersRepository usersRepository;
     private String encryptedPassword;
+    private String encryptedUrl;
 
     @Autowired CreateNewPasswordService(PasswordsRepository passwordsRepository, UsersRepository usersRepository) {
         this.passwordsRepository = passwordsRepository;
         this.usersRepository = usersRepository;
         this.encryptedPassword = null;
+        this.encryptedUrl= null;
     }
 
     public <lookupRequestObject> String createPasswordForUser(Map<String, Object> lookupRequestObject) throws Exception {
@@ -46,11 +51,12 @@ public class CreateNewPasswordService {
         try {
             AES AESEncryptor = new AES(usersMasterPassword);
             encryptedPassword = AESEncryptor.encrypt(password);
+            encryptedUrl = AESEncryptor.encrypt(url);
         } catch(Exception e) {
             throw new IllegalStateException("Error encoding the password!");
         }
 
-        Password newPasswordToSave = new Password(0, 1, category, url, encryptedPassword, userFromDb);
+        Password newPasswordToSave = new Password(0, 1, category, encryptedUrl, encryptedPassword, userFromDb);
         passwordList.add(newPasswordToSave);
         userFromDb.setPasswordList(passwordList);
         usersRepository.save(userFromDb);

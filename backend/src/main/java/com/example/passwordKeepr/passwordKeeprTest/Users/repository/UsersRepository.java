@@ -1,4 +1,5 @@
-package com.example.passwordKeepr.passwordKeeprTest.Users;
+package com.example.passwordKeepr.passwordKeeprTest.Users.repository;
+import com.example.passwordKeepr.passwordKeeprTest.Users.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

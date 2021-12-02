@@ -1,6 +1,9 @@
-package com.example.passwordKeepr.passwordKeeprTest.Passwords;
-import com.example.passwordKeepr.passwordKeeprTest.Users.User;
-import com.example.passwordKeepr.passwordKeeprTest.Users.UsersRepository;
+package com.example.passwordKeepr.passwordKeeprTest.Passwords.service;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.AES;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.entity.Password;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.repository.PasswordsRepository;
+import com.example.passwordKeepr.passwordKeeprTest.Users.entity.User;
+import com.example.passwordKeepr.passwordKeeprTest.Users.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -33,8 +36,11 @@ public class GetPasswordsByUsersService {
         for (int i = 0; i < passwords.size(); i++) {
             Password password = (Password) passwords.get(i);
             String passwordText = password.getPassword_text();
+            String url = password.getUrl();
             String decryptedPassword = AESEncryptor.decrypt(passwordText);
+            String decryptedUrl = AESEncryptor.decrypt(url);
             password.setPassword_text(decryptedPassword);
+            password.setUrl(decryptedUrl);
         }
 
         return passwords;

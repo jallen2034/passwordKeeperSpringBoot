@@ -1,5 +1,5 @@
-package com.example.passwordKeepr.passwordKeeprTest.Users;
-import com.example.passwordKeepr.passwordKeeprTest.Passwords.Password;
+package com.example.passwordKeepr.passwordKeeprTest.Users.entity;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.entity.Password;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
