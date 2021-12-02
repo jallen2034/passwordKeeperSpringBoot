@@ -175,6 +175,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
                 <TextField
                   className={classes.textField}
                   value={editedPasswordFromServer[0]}
+                  type="password"
                 />
                 <div className={classes.div}>
                   <CopyToClipboard text={editedPasswordFromServer.value}>
