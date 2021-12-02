@@ -40,7 +40,7 @@ Database:
 - Fully encrypt and decrypt all users email addresses and website urls using AES like I did for their password vaults. So my database has zero plaintext in it entirely. Added security.
 - Write unit tests for my API using Junit.
 - Setup a CI pipeline for testing.
-- Use the Have I Been Pwned API to determine if a password a user attempts to create for a website has been compromised on any other website. If it has, Doesn't allow the user to add it to their vault. Use a compromised data table to achieve this.
+- Use the Have I Been Pwned API to determine if a website that user has a password on has been compromised or not. If so notify the user they MUST change it immediatly.
 - Clean up clutter/unnecessary files in repo.
 - Refactor backend Java code to be more clear and readable.
 - Refactor react frontend code to be more clear and readable.
