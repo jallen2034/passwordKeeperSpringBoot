@@ -4,6 +4,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import org.apache.commons.codec.binary.Base64;
 
+// https://stackoverflow.com/questions/10831801/getting-exception-java-security-invalidkeyexception-invalid-aes-key-length-29/10831960
 public class AES {
 
     private static byte[] keyValue = null;
@@ -13,7 +14,7 @@ public class AES {
         this.keyValue = secretKey.getBytes();
     }
 
-    // only take the first 16 characters or bytes from the password to hashed users email to generate the key
+    // take first 16 chars/bytes from the hashed users email + pw to generate the key
     private static Key generateKey() throws Exception {
 
         for (int i = 0; i < 16; i++) {
@@ -21,19 +22,15 @@ public class AES {
             FinalByteArray[i] = keyValue[i];
         }
 
-        System.out.println(FinalByteArray);
         return new SecretKeySpec(FinalByteArray, "AES");
     }
 
-    // https://stackoverflow.com/questions/10831801/getting-exception-java-security-invalidkeyexception-invalid-aes-key-length-29/10831960
     public static String encrypt(String passwordToEncrypt) throws Exception {
         Key key = generateKey();
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, key);
-
         byte[] encryptedValue = cipher.doFinal(passwordToEncrypt.getBytes());
         byte[] encyptedByteValue = new Base64().encode(encryptedValue);
-        System.out.println("Encrypted value :: " + new String(encyptedByteValue));
 
         return new String(encyptedByteValue);
     }
@@ -42,7 +39,6 @@ public class AES {
         Key key = generateKey();
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, key);
-
         byte[] decodedBytes = new Base64().decode(encryptedValue.getBytes());
         byte[] decryptedValue = cipher.doFinal(decodedBytes);
         System.out.println("Decrypted value :: " + new String(decryptedValue));

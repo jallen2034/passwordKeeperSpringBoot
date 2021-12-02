@@ -18,7 +18,7 @@ public class ResetPasswordController {
 
     @CrossOrigin(origins = "http://localhost:3000/", maxAge = 90000)
     @PostMapping("/resetUsersPassword")
-    public String resetUsersPassword(@RequestBody Map<String, Object> lookupRequestObject) {
+    public String resetUsersPassword(@RequestBody Map<String, Object> lookupRequestObject) throws Exception {
         return usersService.updateUsersPassword(lookupRequestObject);
     }
 }

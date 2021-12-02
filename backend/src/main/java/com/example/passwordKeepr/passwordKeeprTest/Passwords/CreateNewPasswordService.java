@@ -46,17 +46,11 @@ public class CreateNewPasswordService {
         try {
             AES AESEncryptor = new AES(usersMasterPassword);
             encryptedPassword = AESEncryptor.encrypt(password);
-
-            // test decrypting password we just encrypted
-            String decryptedPassword = AESEncryptor.decrypt(encryptedPassword);
-            System.out.println(encryptedPassword);
-            System.out.println(decryptedPassword);
-        }
-        catch(Exception e) {
+        } catch(Exception e) {
             throw new IllegalStateException("Error encoding the password!");
         }
 
-        Password newPasswordToSave = new Password(0, 1, category, url, password, userFromDb);
+        Password newPasswordToSave = new Password(0, 1, category, url, encryptedPassword, userFromDb);
         passwordList.add(newPasswordToSave);
         userFromDb.setPasswordList(passwordList);
         usersRepository.save(userFromDb);
