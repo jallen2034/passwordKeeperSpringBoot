@@ -46,7 +46,7 @@ Database:
 - Refactor react frontend code to be more clear and readable.
 - Setup a way to handle database migrations from one version to the next.
 - Fix styling on frontend to make app responsive on all screen sizes.
-- For each password displayed ot the user, tell them how strong or weak it is and if it is too weak, suggest they change it to something stronger.
+- For each password displayed to the user, tell them how strong or weak it is. If it is too weak, suggest they change it to something stronger.
 - Add search bar to password vault.
 
 ## Screenshots
