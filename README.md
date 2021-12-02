@@ -27,6 +27,7 @@ Database:
 
 - Full user registration and login.
 - Encryption of all users master passwords using Bcrypt and a salt being the users email address (like LastPass).
+- All user passwords stored in each users password vault are fully encrypted using AES. Each users master password (which is a hashed email + password using bcrypt) is used as a key to encrypt and decrypt all of the passwords in each users password vault. Better security, no more plaintext!
 - Added a limit on how many times a user can attempt ot login with an incorrect password. Lock out their account on too many attempts for 20 minutes. Preventing brute force attacks.
 - Email verification of user accounts upon creation.
 - Users can reset their master password via their email if they forget it.
@@ -36,7 +37,6 @@ Database:
 
 ## TODO
 
-- Fully encrypt all of a users stored passwords in the vault.
 - Write unit tests for my API using Junit.
 - Setup a CI pipeline for testing.
 - Clean up clutter/unnecessary files in repo.
