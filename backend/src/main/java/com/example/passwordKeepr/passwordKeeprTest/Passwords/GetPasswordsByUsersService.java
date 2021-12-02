@@ -18,16 +18,25 @@ public class GetPasswordsByUsersService {
         this.usersRepository = usersRepository;
     }
 
-    public <lookupRequestObject> List getPasswordsByUser(Map<String, Object> lookupRequestObject) {
+    public <lookupRequestObject> List getPasswordsByUser(Map<String, Object> lookupRequestObject) throws Exception {
         String uuid = (String) lookupRequestObject.get("sessionUuid");
         User userFromDb = usersRepository.findByUuid(uuid);
+        String usersMasterPassword = userFromDb.getMasterPassword();
+        AES AESEncryptor = new AES(usersMasterPassword);
 
         if (userFromDb == null) {
             throw new IllegalStateException("This user doesn't exist or have any passwords!");
         }
 
         List passwords = userFromDb.getPasswordList();
-        System.out.println(passwords);
+
+        for (int i = 0; i < passwords.size(); i++) {
+            Password password = (Password) passwords.get(i);
+            String passwordText = password.getPassword_text();
+            String decryptedPassword = AESEncryptor.decrypt(passwordText);
+            password.setPassword_text(decryptedPassword);
+        }
+
         return passwords;
     }
 }

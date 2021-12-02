@@ -1,4 +1,6 @@
 package com.example.passwordKeepr.passwordKeeprTest.Users;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.AES;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.Password;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +31,7 @@ public class UsersService {
         return usersFromDb;
     }
 
-    public String updateUsersPassword(Map<String, Object> lookupRequestObject) {
+    public String updateUsersPassword(Map<String, Object> lookupRequestObject) throws Exception {
         String newPassword = (String) lookupRequestObject.get("newPassword");
         String newPasswordConfirm = (String) lookupRequestObject.get("newPasswordConfirm");
         String verificationCode = (String) lookupRequestObject.get("verificationCode");
@@ -64,9 +66,16 @@ public class UsersService {
             throw new IllegalStateException("You can't use that password!");
         }
 
+        String email = userToUpdatePassword.getEmail();
+        String emailPassword = email + newPassword;
+        String usersOldMasterPassword = userToUpdatePassword.getMasterPassword();
+        List passwords = userToUpdatePassword.getPasswordList();
+        List decryptedUserPasswords = decryptPasswordsInVaultOldKey(passwords, usersOldMasterPassword);
         this.passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = this.passwordEncoder.encode(newPassword);
+        String encodedPassword = this.passwordEncoder.encode(emailPassword);
         userToUpdatePassword.setMasterPassword(encodedPassword);
+        List encryptedUserPasswordsNewKey = encryptPasswordsInVaultNewKey(decryptedUserPasswords, encodedPassword);
+        userToUpdatePassword.setPasswordList(encryptedUserPasswordsNewKey);
         usersRepository.save(userToUpdatePassword);
         return "Your password was successfully updated! Please use it to login";
     }
@@ -90,5 +99,31 @@ public class UsersService {
         long minute = t.getMinute();
         long second = t.getSecond();
         return  ((hour * 3600) + (minute * 60) + second) / 60;
+    }
+
+    private List decryptPasswordsInVaultOldKey(List passwords, String usersOldKey) throws Exception {
+        AES AESEncryptor = new AES(usersOldKey);
+
+        for (int i = 0; i < passwords.size(); i++) {
+            Password password = (Password) passwords.get(i);
+            String passwordText = password.getPassword_text();
+            String decryptedPassword = AESEncryptor.decrypt(passwordText);
+            password.setPassword_text(decryptedPassword);
+        }
+
+        return passwords;
+    }
+
+    private List encryptPasswordsInVaultNewKey(List passwords, String usersNewKey) throws Exception {
+        AES AESEncryptor = new AES(usersNewKey);
+
+        for (int i = 0; i < passwords.size(); i++) {
+            Password password = (Password) passwords.get(i);
+            String passwordText = password.getPassword_text();
+            String decryptedPassword = AESEncryptor.encrypt(passwordText);
+            password.setPassword_text(decryptedPassword);
+        }
+
+        return passwords;
     }
 }
