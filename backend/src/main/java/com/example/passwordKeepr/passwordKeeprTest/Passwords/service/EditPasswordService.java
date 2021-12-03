@@ -1,6 +1,9 @@
-package com.example.passwordKeepr.passwordKeeprTest.Passwords;
-import com.example.passwordKeepr.passwordKeeprTest.Users.User;
-import com.example.passwordKeepr.passwordKeeprTest.Users.UsersRepository;
+package com.example.passwordKeepr.passwordKeeprTest.Passwords.service;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.AES;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.entity.Password;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.repository.PasswordsRepository;
+import com.example.passwordKeepr.passwordKeeprTest.Users.entity.User;
+import com.example.passwordKeepr.passwordKeeprTest.Users.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -39,8 +42,9 @@ public class EditPasswordService {
 
             if (passwordId == id) {
                 try {
-                    String encryptedPassword = encryptPassword(newPassword, usersMastePassword);
-                    passwordsRepository.editPassword(uuid, passwordUrl, encryptedPassword);
+                    String encryptedPassword = encrypt(newPassword, usersMastePassword);
+                    String encryptedUrl = encrypt(passwordUrl, usersMastePassword);
+                    passwordsRepository.editPassword(uuid, encryptedUrl, encryptedPassword);
                 } catch (EmptyResultDataAccessException ex) {
                     throw new IllegalStateException("Uh oh, database shenanigans!");
                 }
@@ -52,9 +56,9 @@ public class EditPasswordService {
         return "Uh oh, something went wrong when editing that password!";
     }
 
-    private String encryptPassword(String newPassword, String Key) throws Exception {
+    private String encrypt(String text, String Key) throws Exception {
         AES AESEncryptor = new AES(Key);
-        String decryptedPassword = AESEncryptor.encrypt(newPassword);
-        return decryptedPassword;
+        String decryptedText = AESEncryptor.encrypt(text);
+        return decryptedText;
     }
 }

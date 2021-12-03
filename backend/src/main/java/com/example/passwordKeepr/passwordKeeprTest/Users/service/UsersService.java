@@ -1,6 +1,8 @@
-package com.example.passwordKeepr.passwordKeeprTest.Users;
+package com.example.passwordKeepr.passwordKeeprTest.Users.service;
 import com.example.passwordKeepr.passwordKeeprTest.Passwords.AES;
-import com.example.passwordKeepr.passwordKeeprTest.Passwords.Password;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.entity.Password;
+import com.example.passwordKeepr.passwordKeeprTest.Users.entity.User;
+import com.example.passwordKeepr.passwordKeeprTest.Users.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -106,9 +108,12 @@ public class UsersService {
 
         for (int i = 0; i < passwords.size(); i++) {
             Password password = (Password) passwords.get(i);
-            String passwordText = password.getPassword_text();
-            String decryptedPassword = AESEncryptor.decrypt(passwordText);
+            String encryptedPasswordText = password.getPassword_text();
+            String encryptedUrl = password.getUrl();
+            String decryptedPassword = AESEncryptor.decrypt(encryptedPasswordText);
+            String decryptedUrl = AESEncryptor.decrypt(encryptedUrl);
             password.setPassword_text(decryptedPassword);
+            password.setUrl(decryptedUrl);
         }
 
         return passwords;
@@ -120,8 +125,11 @@ public class UsersService {
         for (int i = 0; i < passwords.size(); i++) {
             Password password = (Password) passwords.get(i);
             String passwordText = password.getPassword_text();
-            String decryptedPassword = AESEncryptor.encrypt(passwordText);
-            password.setPassword_text(decryptedPassword);
+            String url = password.getUrl();
+            String encryptedPassword = AESEncryptor.encrypt(passwordText);
+            String encryptedUrl = AESEncryptor.encrypt(url);
+            password.setPassword_text(encryptedPassword);
+            password.setUrl(encryptedUrl);
         }
 
         return passwords;

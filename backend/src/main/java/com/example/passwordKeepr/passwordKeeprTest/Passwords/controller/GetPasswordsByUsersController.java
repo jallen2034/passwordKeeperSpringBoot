@@ -1,4 +1,5 @@
-package com.example.passwordKeepr.passwordKeeprTest.Passwords;
+package com.example.passwordKeepr.passwordKeeprTest.Passwords.controller;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.service.GetPasswordsByUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

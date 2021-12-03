@@ -25,11 +25,11 @@ public class AES {
         return new SecretKeySpec(FinalByteArray, "AES");
     }
 
-    public static String encrypt(String passwordToEncrypt) throws Exception {
+    public static String encrypt(String textToEncrypt) throws Exception {
         Key key = generateKey();
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encryptedValue = cipher.doFinal(passwordToEncrypt.getBytes());
+        byte[] encryptedValue = cipher.doFinal(textToEncrypt.getBytes());
         byte[] encyptedByteValue = new Base64().encode(encryptedValue);
 
         return new String(encyptedByteValue);
@@ -41,7 +41,6 @@ public class AES {
         cipher.init(Cipher.DECRYPT_MODE, key);
         byte[] decodedBytes = new Base64().decode(encryptedValue.getBytes());
         byte[] decryptedValue = cipher.doFinal(decodedBytes);
-        System.out.println("Decrypted value :: " + new String(decryptedValue));
 
         return new String(decryptedValue);
     }
