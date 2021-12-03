@@ -179,7 +179,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
                 />
                 <div className={classes.div}>
                   <CopyToClipboard text={editedPasswordFromServer.value}>
-                    <Button className={classes.buttonCopy} onClick={() => handleCopyClick(editedPasswordFromServer.value)}>Copy</Button>
+                    <Button className={classes.buttonCopy} onClick={() => handleCopyClick(editedPasswordFromServer[0])}>Copy</Button>
                   </CopyToClipboard>
                   <Button className={classes.buttonEdit} onClick={handleEditClickOpen}>Edit</Button>
                   <Button className={classes.buttonDelete} onClick={handleClickOpen}>Delete</Button>
