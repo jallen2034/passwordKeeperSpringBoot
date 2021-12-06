@@ -40,7 +40,6 @@ const saveNewPasswrod = function (event, sessionUuid, passwordText, category, ur
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
     .then((response) => {
       if (response) {
-        console.log(response.data)
         toast.success(response.data)
       }
     }).catch((error) => {

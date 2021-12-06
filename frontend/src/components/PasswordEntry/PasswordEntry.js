@@ -166,7 +166,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
             />
             <div className={classes.div}>
               <Button className={classes.buttonDelete} onClick={handleEditClickClose}>Cancel</Button>
-              <Button className={classes.buttonEdit} onClick={(event) => editPasssword(passwordText, editTextField, sessionUuid, id, url, setEditedPasswordFromServer, editedPasswordFromServer)}>Submit</Button>
+              <Button className={classes.buttonEdit} onClick={(event) => editPasssword(passwordText, editTextField, sessionUuid, id, url, setEditedPasswordFromServer, editedPasswordFromServer, setForceRender)}>Submit</Button>
             </div>
           </>
           : <>

@@ -22,7 +22,7 @@ function RelativeInformation({ url, name, category, id, pwned }) {
         <h5>{category}</h5>
         <h5>{name}</h5>
         {pwned &&
-          <Alert severity="error" className={classes.alert}>Password previously appeared in a data breach and should never be used, please change it!</Alert>
+          <Alert severity="error" className={classes.alert}>Password previously appeared in a data breach and should never be used.</Alert>
         }
       </div>
     </>
