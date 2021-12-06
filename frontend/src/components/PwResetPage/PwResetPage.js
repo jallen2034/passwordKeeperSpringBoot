@@ -52,7 +52,10 @@ function PwResetPage({ setVerified, history, setPasswordResetEmail, passwordRese
     <>
       <div className={classes.root}>
         <Paper elevation={3}>
-          <Typography component="h1" variant="subtitle1">Forgot your password? Enter your email address. You will receive a link to create a new password via email if an account exists for it.</Typography>
+          <Typography component="h1" variant="subtitle1">
+            Forgot your password? Enter your email address and you will receive a
+            link to create a new password via email if an account exists for it.
+          </Typography>
           <Box m={0} pt={2}>
             <TextField
               variant="outlined"
@@ -86,7 +89,8 @@ function PwResetPage({ setVerified, history, setPasswordResetEmail, passwordRese
               className={classes.buttonBack}
               color="inherit"
               onClick={() => buttonClick(setVerified, history, setPasswordResetEmail)}
-            > Back to Login
+            >
+              Back to Login
             </Button>
           </Box>
           <div>

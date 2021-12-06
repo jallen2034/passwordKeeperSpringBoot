@@ -77,14 +77,14 @@ const useStyles = makeStyles((theme) => ({
 
 const textFieldManager = function (editedPasswordFromServer, setEditTextfield, passwordText) {
 
-  if ((editedPasswordFromServer.length == 2) || (editedPasswordFromServer.length == 1 && editedPasswordFromServer[0] !== '')) {
+  if ((editedPasswordFromServer.length === 2) || (editedPasswordFromServer.length === 1 && editedPasswordFromServer[0] !== '')) {
     setEditTextfield(editedPasswordFromServer[0])
   } else {
     setEditTextfield(passwordText)
   }
 }
 
-function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, editPasssword, setForceRender }) {
+function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, editPasssword, setForceRender, pwned }) {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [editFlag, setEditFlag] = useState(false)
@@ -153,6 +153,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
           name={name}
           category={category}
           id={id}
+          pwned={pwned}
         />
         {editFlag
           ? <>
@@ -165,7 +166,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
             />
             <div className={classes.div}>
               <Button className={classes.buttonDelete} onClick={handleEditClickClose}>Cancel</Button>
-              <Button className={classes.buttonEdit} onClick={(event) => editPasssword(passwordText, editTextField, sessionUuid, id, url, setEditedPasswordFromServer, editedPasswordFromServer)}>Submit</Button>
+              <Button className={classes.buttonEdit} onClick={(event) => editPasssword(passwordText, editTextField, sessionUuid, id, url, setEditedPasswordFromServer, editedPasswordFromServer, setForceRender)}>Submit</Button>
             </div>
           </>
           : <>
@@ -175,10 +176,11 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
                 <TextField
                   className={classes.textField}
                   value={editedPasswordFromServer[0]}
+                  type="password"
                 />
                 <div className={classes.div}>
                   <CopyToClipboard text={editedPasswordFromServer.value}>
-                    <Button className={classes.buttonCopy} onClick={() => handleCopyClick(editedPasswordFromServer.value)}>Copy</Button>
+                    <Button className={classes.buttonCopy} onClick={() => handleCopyClick(editedPasswordFromServer[0])}>Copy</Button>
                   </CopyToClipboard>
                   <Button className={classes.buttonEdit} onClick={handleEditClickOpen}>Edit</Button>
                   <Button className={classes.buttonDelete} onClick={handleClickOpen}>Delete</Button>
@@ -189,6 +191,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
                 <TextField
                   className={classes.textField}
                   value={passwordText}
+                  type="password"
                 />
                 <div className={classes.div}>
                   <CopyToClipboard text={passwordText}>

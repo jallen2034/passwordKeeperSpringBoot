@@ -1,4 +1,3 @@
-// this is a copy of the app component purely for storybook.
 import { useState } from "react"
 import LoginPage from "./LoginPage/Loginpage"
 import RegisterPage from "./RegisterPage/RegisterPage"
@@ -22,7 +21,6 @@ function App() {
   const [currentUserUuid, setCurrentUserUuid] = useState({
     uuid: sessionUuid || null
   })
-
   const [enabledUser, setEnabledUser] = useState({
     enabled: enabled || null
   })
