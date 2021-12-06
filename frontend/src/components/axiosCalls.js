@@ -88,6 +88,7 @@ const displayPasswords = function (responseData, setDataFromApi, sessionUuid, se
         deletePassword={deletePassword}
         editPasssword={editPasssword}
         setForceRender={setForceRender}
+        pwned={item.pwned}
       />
     </Grid>)
   })

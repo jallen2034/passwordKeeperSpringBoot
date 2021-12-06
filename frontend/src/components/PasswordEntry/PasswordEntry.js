@@ -77,14 +77,14 @@ const useStyles = makeStyles((theme) => ({
 
 const textFieldManager = function (editedPasswordFromServer, setEditTextfield, passwordText) {
 
-  if ((editedPasswordFromServer.length == 2) || (editedPasswordFromServer.length == 1 && editedPasswordFromServer[0] !== '')) {
+  if ((editedPasswordFromServer.length === 2) || (editedPasswordFromServer.length === 1 && editedPasswordFromServer[0] !== '')) {
     setEditTextfield(editedPasswordFromServer[0])
   } else {
     setEditTextfield(passwordText)
   }
 }
 
-function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, editPasssword, setForceRender }) {
+function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, deletePassword, editPasssword, setForceRender, pwned }) {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [editFlag, setEditFlag] = useState(false)
@@ -153,6 +153,7 @@ function PasswordEntry({ url, passwordText, category, id, name, sessionUuid, del
           name={name}
           category={category}
           id={id}
+          pwned={pwned}
         />
         {editFlag
           ? <>
