@@ -30,6 +30,7 @@ Database:
 - Users email addresses are fully encrypted and decrypted using AES like I did for their passwords in the password vaults. Less plaintext.
 - All user passwords stored in each users password vault are fully encrypted using AES. Each users master password (which is a hashed email + password using bcrypt) is used as a key to encrypt and decrypt all of the passwords in each users password vault. Better security, no more plaintext!
 - Added a limit on how many times a user can attempt ot login with an incorrect password. Lock out their account on too many attempts for 20 minutes. Preventing brute force attacks.
+- Used the have i been pwned API to inform a user if any of the passwords in their password vault have been in a data breach, and urging them to change it if so. 
 - Email verification of user accounts upon creation.
 - Users can reset their master password via their email if they forget it.
 - There is a 20 minute timeout on the password reset email when sent before it is rendered invalid.
@@ -40,8 +41,6 @@ Database:
 
 - Write unit tests for my API using Junit.
 - Setup a CI pipeline for testing.
-- Use the Have I Been Pwned API on the create password page to determine if a password a user is trying to create has been compromised or not. If it has have the API throw an exception to the app preventing them from creating that password in their vault.
-- Use the Have I Been Pwned API on the password vault page to determine if a website that user has a password on has been compromised or not. If so notify the user they MUST change it immediatly.
 - Clean up clutter/unnecessary files in repo.
 - Refactor backend Java code to be more clear and readable.
 - Refactor react frontend code to be more clear and readable.
