@@ -79,6 +79,7 @@ public class UsersService {
         List encryptedUserPasswordsNewKey = encryptPasswordsInVaultNewKey(decryptedUserPasswords, encodedPassword);
         userToUpdatePassword.setPasswordList(encryptedUserPasswordsNewKey);
         usersRepository.save(userToUpdatePassword);
+
         return "Your password was successfully updated! Please use it to login";
     }
 

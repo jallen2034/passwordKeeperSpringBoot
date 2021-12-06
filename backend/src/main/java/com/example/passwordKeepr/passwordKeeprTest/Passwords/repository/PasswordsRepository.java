@@ -17,18 +17,4 @@ public interface PasswordsRepository extends JpaRepository<Password, Integer> {
             value =
                     "delete from passwords where id = :id ")
     void deletePassword(@Param("id") int id);
-
-    @Modifying
-    @Transactional
-    @Query(nativeQuery = true,
-            value =
-                    "update passwords " +
-                    "set password_text = :newPassword " +
-                    "from users " +
-                    "where users.uuid = :uuid and users.id = passwords.user_id and passwords.url = :passwordUrl")
-    void editPassword(
-            @Param("uuid") String uuid,
-            @Param("passwordUrl") String passwordUrl,
-            @Param("newPassword") String newPassword
-    );
 }

@@ -16,6 +16,7 @@ public class Password {
     private String category;
     private String url;
     private String password_text;
+    private boolean pwned;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -25,13 +26,14 @@ public class Password {
     public Password () {
     }
 
-    public Password(int id, int organisations_id, String category, String url, String password_text, User userFromdb) {
+    public Password(int id, int organisations_id, String category, String url, String password_text, User userFromdb, boolean pwned) {
         this.id = id;
         this.organisations_id = organisations_id;
         this.category = category;
         this.url = url;
         this.password_text = password_text;
         this.user = userFromdb;
+        this.pwned = pwned;
     }
 
     public int getId() {
@@ -72,5 +74,13 @@ public class Password {
 
     public void setPassword_text(String password_text) {
         this.password_text = password_text;
+    }
+
+    public boolean getPwned() {
+        return pwned;
+    }
+
+    public void setPwned(boolean pwned) {
+        this.pwned = pwned;
     }
 }
