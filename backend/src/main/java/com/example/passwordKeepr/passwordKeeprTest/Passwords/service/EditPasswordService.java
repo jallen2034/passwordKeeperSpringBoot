@@ -1,5 +1,6 @@
 package com.example.passwordKeepr.passwordKeeprTest.Passwords.service;
 import com.example.passwordKeepr.passwordKeeprTest.Passwords.AES;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.Pwned;
 import com.example.passwordKeepr.passwordKeeprTest.Passwords.entity.Password;
 import com.example.passwordKeepr.passwordKeeprTest.Passwords.repository.PasswordsRepository;
 import com.example.passwordKeepr.passwordKeeprTest.Users.entity.User;
@@ -24,17 +25,16 @@ public class EditPasswordService {
 
     public <lookupRequestObject> String editPasswordForUser(Map<String, Object> lookupRequestObject) throws Exception {
         String uuid = (String) lookupRequestObject.get("sessionUuid");
-        String passwordUrl = (String) lookupRequestObject.get("passwordUrl");
         String newPassword = (String) lookupRequestObject.get("newPassword");
         int id = (int) lookupRequestObject.get("id");
         User userFromDb = usersRepository.findByUuid(uuid);
         String usersMastePassword = userFromDb.getMasterPassword();
+        List passwordList = userFromDb.getPasswordList();
+        boolean pwned = Pwned.main(newPassword);
 
         if (userFromDb == null) {
             throw new IllegalStateException("You can't edit a password for someone who doesn't exist!");
         }
-
-        List passwordList = userFromDb.getPasswordList();
 
         for (int i = 0; i < passwordList.size(); i++) {
             Password passwordInLoop = (Password) passwordList.get(i);
@@ -43,12 +43,13 @@ public class EditPasswordService {
             if (passwordId == id) {
                 try {
                     String encryptedPassword = encrypt(newPassword, usersMastePassword);
-                    String encryptedUrl = encrypt(passwordUrl, usersMastePassword);
-                    passwordsRepository.editPassword(uuid, encryptedUrl, encryptedPassword);
+                    passwordInLoop.setPassword_text(encryptedPassword);
+                    passwordInLoop.setPwned(pwned);
                 } catch (EmptyResultDataAccessException ex) {
                     throw new IllegalStateException("Uh oh, database shenanigans!");
                 }
 
+                usersRepository.save(userFromDb);
                 return newPassword;
             }
         }

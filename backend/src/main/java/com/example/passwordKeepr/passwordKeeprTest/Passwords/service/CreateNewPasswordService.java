@@ -1,5 +1,6 @@
 package com.example.passwordKeepr.passwordKeeprTest.Passwords.service;
 import com.example.passwordKeepr.passwordKeeprTest.Passwords.AES;
+import com.example.passwordKeepr.passwordKeeprTest.Passwords.Pwned;
 import com.example.passwordKeepr.passwordKeeprTest.Passwords.entity.Password;
 import com.example.passwordKeepr.passwordKeeprTest.Passwords.repository.PasswordsRepository;
 import com.example.passwordKeepr.passwordKeeprTest.Users.entity.User;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+/* https://github.com/GideonLeGrange/haveibeenpwned
+ * https://www.youtube.com/watch?v=hhUb5iknVJs */
 @Service
 public class CreateNewPasswordService {
 
@@ -31,6 +34,7 @@ public class CreateNewPasswordService {
         String url = (String) lookupRequestObject.get("url");
         User userFromDb = usersRepository.findByUuid(uuid);
         String usersMasterPassword = userFromDb.getMasterPassword();
+        boolean pwned = Pwned.main(password);
 
         if (userFromDb == null) {
             throw new IllegalStateException("You can't add a password for someone who doesn't exist!");
@@ -56,7 +60,7 @@ public class CreateNewPasswordService {
             throw new IllegalStateException("Error encoding the password!");
         }
 
-        Password newPasswordToSave = new Password(0, 1, category, encryptedUrl, encryptedPassword, userFromDb);
+        Password newPasswordToSave = new Password(0, 1, category, encryptedUrl, encryptedPassword, userFromDb, pwned);
         passwordList.add(newPasswordToSave);
         userFromDb.setPasswordList(passwordList);
         usersRepository.save(userFromDb);
