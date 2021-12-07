@@ -41,6 +41,7 @@ public class EditPasswordService {
             int passwordId = passwordInLoop.getId();
 
             if (passwordId == id) {
+
                 try {
                     String encryptedPassword = encrypt(newPassword, usersMastePassword);
                     passwordInLoop.setPassword_text(encryptedPassword);

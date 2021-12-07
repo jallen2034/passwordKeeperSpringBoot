@@ -19,12 +19,14 @@ public class CreateNewPasswordService {
     private final UsersRepository usersRepository;
     private String encryptedPassword;
     private String encryptedUrl;
+    private String decryptedUrl;
 
     @Autowired CreateNewPasswordService(PasswordsRepository passwordsRepository, UsersRepository usersRepository) {
         this.passwordsRepository = passwordsRepository;
         this.usersRepository = usersRepository;
         this.encryptedPassword = null;
-        this.encryptedUrl= null;
+        this.encryptedUrl = null;
+        this.decryptedUrl = null;
     }
 
     public <lookupRequestObject> String createPasswordForUser(Map<String, Object> lookupRequestObject) throws Exception {
@@ -34,6 +36,7 @@ public class CreateNewPasswordService {
         String url = (String) lookupRequestObject.get("url");
         User userFromDb = usersRepository.findByUuid(uuid);
         String usersMasterPassword = userFromDb.getMasterPassword();
+        AES AESEncryptor = new AES(usersMasterPassword);
         boolean pwned = Pwned.main(password);
 
         if (userFromDb == null) {
@@ -41,22 +44,21 @@ public class CreateNewPasswordService {
         }
 
         List passwordList = userFromDb.getPasswordList();
-        String masterPasswordHash = userFromDb.getMasterPassword();
 
         for (int i = 0; i < passwordList.size(); i++) {
             Password passwordInLoop = (Password) passwordList.get(i);
             String passwordUrlFromDb = passwordInLoop.getUrl();
+            decryptedUrl = AESEncryptor.decrypt(passwordUrlFromDb);
 
-            if (passwordUrlFromDb.equals(url)) {
+            if (decryptedUrl.equals(url)) {
                 throw new IllegalStateException("You already created a password for that website!");
             }
         }
 
         try {
-            AES AESEncryptor = new AES(usersMasterPassword);
             encryptedPassword = AESEncryptor.encrypt(password);
             encryptedUrl = AESEncryptor.encrypt(url);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new IllegalStateException("Error encoding the password!");
         }
 
