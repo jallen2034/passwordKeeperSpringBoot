@@ -96,13 +96,13 @@ const displayPasswords = function (responseData, setDataFromApi, sessionUuid, se
   setTimeout(function () { setDataFromApi(passwordDivsList) }, 850)
 }
 
-const editPasssword = function (passwordText, newPassword, sessionUuid, id, passwordUrl, setEditedPasswordFromServer, editedPasswordFromServer, setForceRender) {
+const editPasssword = function (passwordText, newPassword, sessionUuid, id, passwordUrl, setEditedPasswordFromServer, editedPasswordFromServer, setForceRenderRelativeInfo) {
 
   axios.post("http://localhost:8080/passwords/edit", { sessionUuid, id, passwordText, passwordUrl, newPassword })
     .then((response) => {
       if (response) {
         toast.success(`Sucessfuly edited the old password: ${passwordText} to the new password: ${response.data}`)
-        setForceRender((prev) => ({ ...prev, value: makeid(5) }))
+        setForceRenderRelativeInfo((prev) => ({ ...prev, value: makeid(5) }))
         passwordEditQueue(setEditedPasswordFromServer, editedPasswordFromServer, response)
       }
     }).catch((error) => {
