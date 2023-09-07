@@ -5,6 +5,7 @@ import VaultPage from "./VaultPage/VaultPage"
 import VerificationPage from "./VerificationPage/VerificationPage"
 import PwResetPage from "./PwResetPage/PwResetPage"
 import PwResetForm from "./PwResetForm/PwResetForm"
+// @ts-ignore
 import { Route, Switch, useHistory } from "react-router-dom"
 import '@fontsource/roboto/300.css'
 
@@ -12,7 +13,7 @@ function App() {
   const history = useHistory()
   const sessionUuid = window.localStorage.getItem("Uuid")
   const enabled = window.localStorage.getItem("enabled")
-  const [register, setRegister] = useState(false)
+  const [register, setRegister] = useState<boolean>(false)
   const [verified, setVerified] = useState(null)
   const [passwordResetEmail, setPasswordResetEmail] = useState(null)
   const [newPassword, setNewPassword] = useState(null)

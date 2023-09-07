@@ -1,8 +1,10 @@
 import React from 'react';
+// @ts-ignore
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+// @ts-ignore
 import { BrowserRouter as Router } from "react-router-dom";
 
 
