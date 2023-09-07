@@ -50,10 +50,8 @@ const detectUsersSession = (
 
 function App() {
   const history = useHistory()
-  const sessionUuid = window.localStorage.getItem("Uuid")
-  const enabled = window.localStorage.getItem("enabled")
 
-  // Application state stores in a single clean finite state machine
+  // Application state stored in a single clean finite state machine
   const [applicationState, setApplicationState] = useState<AppState>({
     register: false,
     verified: null,
@@ -76,7 +74,6 @@ function App() {
         <Route path="/login">
           <LoginPage
             history={history}
-            enabled={enabled}
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />
@@ -84,7 +81,6 @@ function App() {
         <Route path="/register">
           <RegisterPage
             history={history}
-            enabled={enabled}
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />
@@ -92,7 +88,6 @@ function App() {
         <Route path="/vault">
           <VaultPage
             history={history}
-            enabled={enabled}
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />
@@ -100,8 +95,6 @@ function App() {
         <Route path="/verify:code">
           <VerificationPage
             history={history}
-            sessionUuid={sessionUuid}
-            enabled={enabled}
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />

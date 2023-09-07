@@ -8,7 +8,6 @@ import React from "react";
 
 type VaultPageProps = {
   history: any,
-  enabled: any,
   applicationState: AppState,
   setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 }
@@ -16,12 +15,11 @@ type VaultPageProps = {
 function VaultPage(props: VaultPageProps) {
   const {
     history,
-    enabled,
     applicationState,
     setApplicationState
   } = props;
 
-  if (enabled && applicationState.currentUserUuid) {
+  if (applicationState.enabledUser && applicationState.currentUserUuid) {
     return (
       <>
         <div className="App">

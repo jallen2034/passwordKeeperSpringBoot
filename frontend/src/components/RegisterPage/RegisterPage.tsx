@@ -8,7 +8,6 @@ import React from "react";
 
 type RegisterPageProps = {
   history: any,
-  enabled: any,
   applicationState: AppState,
   setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 }
@@ -16,12 +15,11 @@ type RegisterPageProps = {
 function RegisterPage(props: RegisterPageProps) {
   const {
     history,
-    enabled,
     applicationState,
     setApplicationState
   } = props;
 
-  if (!enabled && !applicationState.currentUserUuid) {
+  if (!applicationState.enabledUser && !applicationState.currentUserUuid) {
     return (
       <>
         <div className="App">

@@ -10,13 +10,11 @@ type LoginPageProps = {
   history: any,
   applicationState: AppState,
   setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
-  enabled: any,
 }
 
 function LoginPage( props: LoginPageProps ) {
   const {
     history,
-    enabled,
     applicationState,
     setApplicationState
   } = props;
@@ -28,7 +26,7 @@ function LoginPage( props: LoginPageProps ) {
     }));
   }, [])
 
-  if (!enabled && !applicationState.currentUserUuid) {
+  if (!applicationState.enabledUser && !applicationState.currentUserUuid) {
     return (
       <>
         <div className="App">

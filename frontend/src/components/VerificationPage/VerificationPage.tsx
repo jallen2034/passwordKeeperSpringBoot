@@ -42,8 +42,6 @@ const useStyles = makeStyles((theme) => ({
 
 type VerificationPageProps = {
   history: any,
-  sessionUuid: any,
-  enabled: any,
   applicationState: AppState,
   setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 }
@@ -64,8 +62,6 @@ const buttonClick = function (
 function VerificationPage(props: VerificationPageProps) {
   const {
     history,
-    sessionUuid,
-    enabled,
     applicationState,
     setApplicationState
   } = props;
@@ -107,7 +103,7 @@ function VerificationPage(props: VerificationPageProps) {
         </div>
       </>
     )
-  } else if (sessionUuid || enabled) {
+  } else if (applicationState.currentUserUuid || applicationState.enabledUser) {
     return (
       <Redirect to={{ pathname: '/vault' }} />
     )
