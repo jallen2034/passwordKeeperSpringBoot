@@ -1,4 +1,4 @@
-import SignIn from './Login'
+import SignIn from './login.tsx'
 
 const story = {
   title: 'SignIn',

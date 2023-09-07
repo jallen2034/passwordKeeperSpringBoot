@@ -6,6 +6,8 @@ import Paper from '@material-ui/core/Paper'
 import { sendPasswordResetEmail } from '../axiosCalls'
 import { makeStyles } from '@material-ui/core/styles'
 import '@fontsource/roboto/300.css'
+import {AppState} from "../App";
+import React from "react";
 
 // https://stackoverflow.com/questions/60969224/how-to-override-muipaper-root-style-in-material-table
 const useStyles = makeStyles((theme) => ({
@@ -39,14 +41,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const buttonClick = function (setVerified, history, setPasswordResetEmail) {
+const buttonClick = function (
+  setVerified: any,
+  history: any,
+  setPasswordResetEmail: any
+) {
   setVerified(null)
   setPasswordResetEmail(null)
   history.push("/login")
 }
 
-function PwResetPage({ setVerified, history, setPasswordResetEmail, passwordResetEmail }) {
-  const classes = useStyles()
+type PasswordResetPageProps = {
+  setVerified: any,
+  history: any,
+  setPasswordResetEmail: any,
+  passwordResetEmail: any,
+  applicationState: AppState,
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
+}
+
+function PwResetPage(props: PasswordResetPageProps) {
+  const {
+    setVerified,
+    history,
+    setPasswordResetEmail,
+    passwordResetEmail,
+  } = props;
+
+  const classes: any = useStyles()
 
   return (
     <>

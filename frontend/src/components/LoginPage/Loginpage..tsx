@@ -1,10 +1,42 @@
 import { ToastContainer } from "react-toastify"
 import { Redirect } from "react-router-dom"
 import ButtonAppBar from "../Appbar/Appbar"
-import SignIn from "../Login/Login"
+import SignIn from "../Login/login";
 import '@fontsource/roboto/300.css'
+import {AppState} from "../App";
+import React from "react";
 
-function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history, setEnabledUser, sessionUuid, enabled, enabledUser, setVerified }) {
+type LoginPageProps = {
+  setCurrentUserUuid: any,
+  currentUserUuid: any,
+  register: any,
+  setRegister: any,
+  history: any,
+  setEnabledUser: any,
+  sessionUuid: any,
+  enabledUser: any,
+  setVerified: any,
+  applicationState: AppState,
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
+  enabled: any,
+}
+
+function LoginPage( props: LoginPageProps ) {
+  const {
+    setCurrentUserUuid,
+    currentUserUuid,
+    register,
+    setRegister,
+    history,
+    setEnabledUser,
+    sessionUuid,
+    enabledUser,
+    setVerified,
+    enabled,
+    applicationState,
+    setApplicationState
+  } = props;
+
   setVerified(null)
 
   if (!enabled && !sessionUuid) {
@@ -18,6 +50,8 @@ function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister,
             setRegister={setRegister}
             history={history}
             setEnabledUser={setEnabledUser}
+            applicationState={applicationState}
+            setApplicationState={setApplicationState}
           />
           <SignIn
             setCurrentUserUuid={setCurrentUserUuid}
@@ -25,6 +59,8 @@ function LoginPage({ setCurrentUserUuid, currentUserUuid, register, setRegister,
             currentUserUuid={currentUserUuid}
             enabledUser={enabledUser}
             history={history}
+            applicationState={applicationState}
+            setApplicationState={setApplicationState}
           />
         </div>
         <div>

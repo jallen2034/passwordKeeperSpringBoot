@@ -6,6 +6,8 @@ import Paper from '@material-ui/core/Paper'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
 import '@fontsource/roboto/300.css'
+import {AppState} from "../App";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,16 +40,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const buttonClick = function (setVerified, history, setPasswordResetEmail) {
-  setVerified(null)
-  setPasswordResetEmail(null)
-  history.push("/login")
+type VerificationPageProps = {
+  history: any,
+  sessionUuid: any,
+  enabled: any,
+  setPasswordResetEmail: any,
+  setVerified: any,
+  verified: any,
+  applicationState: AppState,
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
+}
+
+const buttonClick = function (
+  setVerified: any,
+  history: any,
+  setPasswordResetEmail: any
+) {
+  setVerified(null);
+  setPasswordResetEmail(null);
+  history.push("/login");
 }
 
 // https://www.youtube.com/watch?v=y_pr4lRoUto
-function VerificationPage({ verified, setVerified, history, sessionUuid, enabled, setPasswordResetEmail }) {
-  const classes = useStyles()
-  const params = useParams()
+function VerificationPage(props: VerificationPageProps) {
+  const {
+    history,
+    sessionUuid,
+    enabled,
+    setPasswordResetEmail,
+    setVerified,
+    verified
+  } = props;
+  const classes: any = useStyles()
+  const params: any = useParams()
 
   if (!verified) {
     verifyUser(params.code, setVerified)
@@ -79,7 +104,7 @@ function VerificationPage({ verified, setVerified, history, sessionUuid, enabled
         </div>
       </>
     )
-  } else if (sessionUuid, enabled) {
+  } else if (sessionUuid || enabled) {
     return (
       <Redirect to={{ pathname: '/vault' }} />
     )

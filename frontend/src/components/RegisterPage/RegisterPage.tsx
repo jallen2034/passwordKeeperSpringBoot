@@ -3,8 +3,36 @@ import { Redirect } from "react-router-dom"
 import ButtonAppBar from "../Appbar/Appbar"
 import Register from "../Register/Register"
 import '@fontsource/roboto/300.css'
+import {AppState} from "../App";
+import React from "react";
 
-function RegisterPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, history, enabled, sessionUuid }) {
+type RegisterPageProps = {
+  setCurrentUserUuid: any,
+  currentUserUuid: any,
+  register: any,
+  setRegister: any,
+  history: any,
+  enabled: any,
+  sessionUuid: any,
+  setEnabledUser: any,
+  applicationState: AppState,
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
+}
+
+function RegisterPage(props: RegisterPageProps) {
+  const {
+    setCurrentUserUuid,
+    currentUserUuid,
+    register,
+    setRegister,
+    history,
+    enabled,
+    setEnabledUser,
+    sessionUuid,
+    applicationState,
+    setApplicationState
+  } = props;
+
   if (!enabled && !sessionUuid) {
     return (
       <>
@@ -15,6 +43,9 @@ function RegisterPage({ setCurrentUserUuid, currentUserUuid, register, setRegist
             register={register}
             setRegister={setRegister}
             history={history}
+            applicationState={applicationState}
+            setEnabledUser={setEnabledUser}
+            setApplicationState={setApplicationState}
           />
           <Register setCurrentUserUuid={setCurrentUserUuid}></Register>
         </div>

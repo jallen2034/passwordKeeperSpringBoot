@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -11,6 +11,7 @@ import { loginUser } from '../axiosCalls.js'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import 'react-toastify/dist/ReactToastify.css'
+import {AppState} from "../App";
 
 function Copyright() {
   return (
@@ -25,7 +26,7 @@ function Copyright() {
   )
 }
 
-const openResetPasswordPage = function (history) {
+const openResetPasswordPage = function (history : any) {
   history.push("/resetPassword")
 }
 
@@ -60,7 +61,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function SignIn({ setCurrentUserUuid, setEnabledUser, currentUserUuid, enabledUser, history }) {
+type SignInProps = {
+  setCurrentUserUuid: any,
+  currentUserUuid: any,
+  history: any,
+  setEnabledUser: any,
+  enabledUser: any,
+  applicationState: AppState,
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
+}
+
+function SignIn(props: SignInProps) {
+  const {
+    setCurrentUserUuid,
+    currentUserUuid,
+    history,
+    setEnabledUser,
+    enabledUser
+  } = props;
+
   const classes = useStyles()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -111,7 +130,16 @@ function SignIn({ setCurrentUserUuid, setEnabledUser, currentUserUuid, enabledUs
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={(event) => loginUser(event, setCurrentUserUuid, email, password, setEnabledUser, currentUserUuid, enabledUser, history)}
+              onClick={(event) => loginUser(
+                event,
+                setCurrentUserUuid,
+                email,
+                password,
+                setEnabledUser,
+                currentUserUuid,
+                enabledUser,
+                history
+              )}
             >
               Sign In
             </Button>

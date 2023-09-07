@@ -3,8 +3,41 @@ import { Redirect } from "react-router-dom"
 import PasswordVault from "../PasswordVault/PasswordVault"
 import ButtonAppBar from "../Appbar/Appbar"
 import '@fontsource/roboto/300.css'
+import {AppState} from "../App";
+import React from "react";
 
-function VaultPage({ setCurrentUserUuid, currentUserUuid, register, setRegister, setIndexSelected, indexSelected, history, setEnabledUser, enabledUser, sessionUuid, enabled }) {
+type VaultPageProps = {
+  setCurrentUserUuid: any,
+  currentUserUuid: any,
+  register: any,
+  setRegister: any,
+  history: any,
+  setEnabledUser: any,
+  sessionUuid: any,
+  enabledUser: any,
+  enabled: any,
+  setIndexSelected: any,
+  indexSelected: any,
+  applicationState: AppState,
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
+}
+
+function VaultPage(props: VaultPageProps) {
+  const {
+    setCurrentUserUuid,
+    currentUserUuid,
+    register,
+    setRegister,
+    history,
+    setEnabledUser,
+    sessionUuid,
+    enabledUser,
+    enabled,
+    setIndexSelected,
+    indexSelected,
+    applicationState,
+    setApplicationState
+  } = props;
 
   if (enabled && sessionUuid) {
     return (
@@ -18,12 +51,16 @@ function VaultPage({ setCurrentUserUuid, currentUserUuid, register, setRegister,
             setIndexSelected={setIndexSelected}
             history={history}
             setEnabledUser={setEnabledUser}
+            applicationState={applicationState}
+            setApplicationState={setApplicationState}
           />
           <PasswordVault
             indexSelected={indexSelected}
             sessionUuid={currentUserUuid.uuid}
             enabledUser={enabledUser}
             currentUserUuid={currentUserUuid}
+            applicationState={applicationState}
+            setApplicationState={setApplicationState}
           ></PasswordVault>
         </div>
         <div>

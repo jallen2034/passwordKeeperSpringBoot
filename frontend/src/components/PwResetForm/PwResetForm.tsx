@@ -1,13 +1,14 @@
-import { ToastContainer } from "react-toastify"
-import { useParams } from "react-router-dom"
-import { Button, Typography } from '@material-ui/core'
-import { resetUsersPassword, verifyResetFormValid } from '../axiosCalls'
+import {ToastContainer} from "react-toastify"
+import {useParams} from "react-router-dom"
+import {Button, Typography} from '@material-ui/core'
+import {resetUsersPassword, verifyResetFormValid} from '../axiosCalls'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import '@fontsource/roboto/300.css'
-import { makeStyles } from '@material-ui/core/styles'
-import { useEffect, useState } from "react"
+import {makeStyles} from '@material-ui/core/styles'
+import React, {useEffect, useState} from "react"
+import {AppState} from "../App";
 
 // test
 const useStyles = makeStyles((theme) => ({
@@ -63,15 +64,41 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const buttonClick = function (setVerified, history, setPasswordResetEmail) {
+const buttonClick = function (
+  setVerified: any,
+  history: any,
+  setPasswordResetEmail: any
+) {
   setVerified(null)
   setPasswordResetEmail(null)
   history.push("/login")
 }
 
-function PwResetForm({ setVerified, newPassword, setNewPassword, newConfirmPassword, setNewConfirmPassword, history, setPasswordResetEmail }) {
-  const classes = useStyles()
-  const params = useParams()
+type PasswordResetFormProps = {
+  setVerified: any,
+  newPassword: any,
+  setNewPassword: any,
+  newConfirmPassword: any,
+  setNewConfirmPassword: any,
+  history: any,
+  setPasswordResetEmail: any,
+  applicationState: AppState,
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
+}
+
+function PwResetForm(props: PasswordResetFormProps) {
+  const {
+    setVerified,
+    newPassword,
+    setNewPassword,
+    newConfirmPassword,
+    setNewConfirmPassword,
+    history,
+    setPasswordResetEmail
+  } = props;
+
+  const classes: any = useStyles()
+  const params: any = useParams()
   const [emailValid, setEmailValid] = useState(null)
 
   useEffect(() => {
@@ -125,7 +152,11 @@ function PwResetForm({ setVerified, newPassword, setNewPassword, newConfirmPassw
                   variant="contained"
                   color="primary"
                   className={classes.submit}
-                  onClick={() => resetUsersPassword(newPassword, newConfirmPassword, params.code)}
+                  onClick={() => resetUsersPassword(
+                    newPassword,
+                    newConfirmPassword,
+                    params.code)
+                  }
                 >
                   Send
                 </Button>
@@ -141,14 +172,15 @@ function PwResetForm({ setVerified, newPassword, setNewPassword, newConfirmPassw
             </Paper>
           </div>
           <div>
-            <ToastContainer position="bottom-center" autoClose={4000} />
+            <ToastContainer position="bottom-center" autoClose={4000}/>
           </div>
         </>
         :
         <>
           <div className={classes.notValid}>
             <Paper elevation={3}>
-              <Typography component="h1" variant="h5">Sorry! This password reset link has expired! Please create a new one from the login page and check your email inbox again!</Typography>
+              <Typography component="h1" variant="h5">Sorry! This password reset link has expired! Please create a new
+                one from the login page and check your email inbox again!</Typography>
               <Box m={0} pt={3}>
                 <Button
                   className={classes.buttonBack}
@@ -160,7 +192,7 @@ function PwResetForm({ setVerified, newPassword, setNewPassword, newConfirmPassw
             </Paper>
           </div>
           <div>
-            <ToastContainer position="bottom-center" autoClose={4000} />
+            <ToastContainer position="bottom-center" autoClose={4000}/>
           </div>
         </>
       }
