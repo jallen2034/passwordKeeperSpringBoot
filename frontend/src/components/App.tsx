@@ -16,7 +16,7 @@ export type AppState = {
   newPassword: null | any;
   newConfirmPassword: null | any;
   indexSelected: boolean;
-  currentUserUuid:string | null | undefined;
+  currentUserUuid: string | null | undefined;
   enabledUser: boolean | null | undefined;
 };
 
@@ -52,19 +52,8 @@ function App() {
   const history = useHistory()
   const sessionUuid = window.localStorage.getItem("Uuid")
   const enabled = window.localStorage.getItem("enabled")
-  const [register, setRegister] = useState<boolean>(false)
-  const [verified, setVerified] = useState(null)
-  const [passwordResetEmail, setPasswordResetEmail] = useState(null)
-  const [newPassword, setNewPassword] = useState(null)
-  const [newConfirmPassword, setNewConfirmPassword] = useState(null)
-  const [indexSelected, setIndexSelected] = useState(true)
-  const [currentUserUuid, setCurrentUserUuid] = useState({
-    uuid: sessionUuid || null
-  })
-  const [enabledUser, setEnabledUser] = useState({
-    enabled: enabled || null
-  })
 
+  // Application state stores in a single clean finite state machine
   const [applicationState, setApplicationState] = useState<AppState>({
     register: false,
     verified: null,
@@ -86,46 +75,23 @@ function App() {
       <Switch>
         <Route path="/login">
           <LoginPage
-            setCurrentUserUuid={setCurrentUserUuid}
-            currentUserUuid={currentUserUuid}
-            register={register}
-            setRegister={setRegister}
             history={history}
-            setEnabledUser={setEnabledUser}
-            sessionUuid={sessionUuid}
             enabled={enabled}
-            enabledUser={enabledUser}
-            setVerified={setVerified}
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />
         </Route>
         <Route path="/register">
           <RegisterPage
-            setCurrentUserUuid={setCurrentUserUuid}
-            currentUserUuid={currentUserUuid}
-            register={register}
-            setRegister={setRegister}
             history={history}
-            sessionUuid={sessionUuid}
             enabled={enabled}
-            setEnabledUser={setEnabledUser}
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />
         </Route>
         <Route path="/vault">
           <VaultPage
-            setCurrentUserUuid={setCurrentUserUuid}
-            currentUserUuid={currentUserUuid}
-            register={register}
-            setRegister={setRegister}
-            setIndexSelected={setIndexSelected}
-            indexSelected={indexSelected}
             history={history}
-            setEnabledUser={setEnabledUser}
-            enabledUser={enabledUser}
-            sessionUuid={sessionUuid}
             enabled={enabled}
             applicationState={applicationState}
             setApplicationState={setApplicationState}
@@ -133,35 +99,23 @@ function App() {
         </Route>
         <Route path="/verify:code">
           <VerificationPage
-            verified={verified}
-            setVerified={setVerified}
             history={history}
             sessionUuid={sessionUuid}
             enabled={enabled}
-            setPasswordResetEmail={setPasswordResetEmail}
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />
         </Route>
         <Route path="/resetPassword">
           <PwResetPage
-            setVerified={setVerified}
             history={history}
-            setPasswordResetEmail={setPasswordResetEmail}
-            passwordResetEmail={passwordResetEmail}
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />
         </Route>
         <Route path="/resetPasswordForm:code">
           <PwResetForm
-            setVerified={setVerified}
-            newPassword={newPassword}
-            setNewPassword={setNewPassword}
-            newConfirmPassword={newConfirmPassword}
-            setNewConfirmPassword={setNewConfirmPassword}
             history={history}
-            setPasswordResetEmail={setPasswordResetEmail}
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />

@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import '@fontsource/roboto/300.css'
 import {makeStyles} from '@material-ui/core/styles'
-import React, {useEffect, useState} from "react"
+import React, {ChangeEvent, useEffect, useState} from "react"
 import {AppState} from "../App";
 
 // test
@@ -65,36 +65,28 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const buttonClick = function (
-  setVerified: any,
   history: any,
-  setPasswordResetEmail: any
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 ) {
-  setVerified(null)
-  setPasswordResetEmail(null)
+  setApplicationState((prevState: AppState) => ({
+    ...prevState,
+    verified: null,
+    passwordResetEmail: null
+  }));
   history.push("/login")
 }
 
 type PasswordResetFormProps = {
-  setVerified: any,
-  newPassword: any,
-  setNewPassword: any,
-  newConfirmPassword: any,
-  setNewConfirmPassword: any,
   history: any,
-  setPasswordResetEmail: any,
   applicationState: AppState,
   setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 }
 
 function PwResetForm(props: PasswordResetFormProps) {
   const {
-    setVerified,
-    newPassword,
-    setNewPassword,
-    newConfirmPassword,
-    setNewConfirmPassword,
     history,
-    setPasswordResetEmail
+    applicationState,
+    setApplicationState
   } = props;
 
   const classes: any = useStyles()
@@ -125,7 +117,10 @@ function PwResetForm(props: PasswordResetFormProps) {
                   id="new-password"
                   autoComplete="new-password"
                   onChange={(event) => {
-                    setNewPassword(event.target.value)
+                    setApplicationState((prevState: AppState) => ({
+                      ...prevState,
+                      newPassword: event.target.value
+                    }));
                   }}
                 />
               </Box>
@@ -140,8 +135,11 @@ function PwResetForm(props: PasswordResetFormProps) {
                   type="password"
                   id="confirm-new-password"
                   autoComplete="confirm-new-password"
-                  onChange={(event) => {
-                    setNewConfirmPassword(event.target.value)
+                  onChange={(event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+                    setApplicationState((prevState: AppState) => ({
+                      ...prevState,
+                      newConfirmPassword: event.target.value
+                    }));
                   }}
                 />
               </Box>
@@ -153,10 +151,9 @@ function PwResetForm(props: PasswordResetFormProps) {
                   color="primary"
                   className={classes.submit}
                   onClick={() => resetUsersPassword(
-                    newPassword,
-                    newConfirmPassword,
-                    params.code)
-                  }
+                    params.code,
+                    applicationState
+                  )}
                 >
                   Send
                 </Button>
@@ -165,7 +162,7 @@ function PwResetForm(props: PasswordResetFormProps) {
                 <Button
                   className={classes.buttonBack}
                   color="inherit"
-                  onClick={() => buttonClick(setVerified, history, setPasswordResetEmail)}
+                  onClick={() => buttonClick(history, setApplicationState)}
                 > Back to Login
                 </Button>
               </Box>
@@ -185,7 +182,10 @@ function PwResetForm(props: PasswordResetFormProps) {
                 <Button
                   className={classes.buttonBack}
                   color="inherit"
-                  onClick={() => buttonClick(setVerified, history, setPasswordResetEmail)}
+                  onClick={() => buttonClick(
+                    history,
+                    setApplicationState
+                  )}
                 > Back to Login
                 </Button>
               </Box>

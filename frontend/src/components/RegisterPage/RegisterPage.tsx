@@ -7,47 +7,30 @@ import {AppState} from "../App";
 import React from "react";
 
 type RegisterPageProps = {
-  setCurrentUserUuid: any,
-  currentUserUuid: any,
-  register: any,
-  setRegister: any,
   history: any,
   enabled: any,
-  sessionUuid: any,
-  setEnabledUser: any,
   applicationState: AppState,
   setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 }
 
 function RegisterPage(props: RegisterPageProps) {
   const {
-    setCurrentUserUuid,
-    currentUserUuid,
-    register,
-    setRegister,
     history,
     enabled,
-    setEnabledUser,
-    sessionUuid,
     applicationState,
     setApplicationState
   } = props;
 
-  if (!enabled && !sessionUuid) {
+  if (!enabled && !applicationState.currentUserUuid) {
     return (
       <>
         <div className="App">
           <ButtonAppBar
-            setCurrentUserUuid={setCurrentUserUuid}
-            currentUserUuid={currentUserUuid}
-            register={register}
-            setRegister={setRegister}
             history={history}
             applicationState={applicationState}
-            setEnabledUser={setEnabledUser}
             setApplicationState={setApplicationState}
           />
-          <Register setCurrentUserUuid={setCurrentUserUuid}></Register>
+          <Register/>
         </div>
         <div>
           <ToastContainer position="bottom-center" autoClose={4000} />

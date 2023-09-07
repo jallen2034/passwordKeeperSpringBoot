@@ -42,30 +42,28 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const buttonClick = function (
-  setVerified: any,
   history: any,
-  setPasswordResetEmail: any
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 ) {
-  setVerified(null)
-  setPasswordResetEmail(null)
+  setApplicationState((prevState: AppState) => ({
+    ...prevState,
+    verified: null,
+    passwordResetEmail: null
+  }));
   history.push("/login")
 }
 
 type PasswordResetPageProps = {
-  setVerified: any,
   history: any,
-  setPasswordResetEmail: any,
-  passwordResetEmail: any,
   applicationState: AppState,
   setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 }
 
 function PwResetPage(props: PasswordResetPageProps) {
   const {
-    setVerified,
     history,
-    setPasswordResetEmail,
-    passwordResetEmail,
+    applicationState,
+    setApplicationState
   } = props;
 
   const classes: any = useStyles()
@@ -90,7 +88,10 @@ function PwResetPage(props: PasswordResetPageProps) {
               id="email-address"
               autoComplete="current-password"
               onChange={(event) => {
-                setPasswordResetEmail(event.target.value)
+                setApplicationState((prevState: AppState) => ({
+                  ...prevState,
+                  verified: null
+                }));
               }}
             />
           </Box>
@@ -101,7 +102,7 @@ function PwResetPage(props: PasswordResetPageProps) {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={() => sendPasswordResetEmail(passwordResetEmail)}
+              onClick={() => sendPasswordResetEmail(applicationState.passwordResetEmail)}
             >
               Reset Password
             </Button>
@@ -110,7 +111,10 @@ function PwResetPage(props: PasswordResetPageProps) {
             <Button
               className={classes.buttonBack}
               color="inherit"
-              onClick={() => buttonClick(setVerified, history, setPasswordResetEmail)}
+              onClick={() => buttonClick(
+                history,
+                setApplicationState
+              )}
             >
               Back to Login
             </Button>

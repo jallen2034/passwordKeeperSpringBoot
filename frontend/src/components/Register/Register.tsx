@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { registerUser } from '../axiosCalls.js'
+import { registerUser } from '../axiosCalls'
 import 'react-toastify/dist/ReactToastify.css';
 
 function Copyright() {
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // https://stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
-function Register({ setCurrentUserUuid }) {
+function Register() {
   const classes = useStyles()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -123,7 +123,7 @@ function Register({ setCurrentUserUuid }) {
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={(event) => registerUser(event, setCurrentUserUuid, email, password, passwordConfirm)}
+              onClick={(event) => registerUser(event, email, password, passwordConfirm)}
             >
               Register
             </Button>

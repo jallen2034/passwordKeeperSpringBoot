@@ -7,7 +7,7 @@ import Link from '@material-ui/core/Link'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
-import { loginUser } from '../axiosCalls.js'
+import { loginUser} from "../axiosCalls";
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import 'react-toastify/dist/ReactToastify.css'
@@ -62,22 +62,16 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 type SignInProps = {
-  setCurrentUserUuid: any,
-  currentUserUuid: any,
   history: any,
-  setEnabledUser: any,
-  enabledUser: any,
   applicationState: AppState,
   setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 }
 
 function SignIn(props: SignInProps) {
   const {
-    setCurrentUserUuid,
-    currentUserUuid,
     history,
-    setEnabledUser,
-    enabledUser
+    applicationState,
+    setApplicationState
   } = props;
 
   const classes = useStyles()
@@ -132,13 +126,11 @@ function SignIn(props: SignInProps) {
               className={classes.submit}
               onClick={(event) => loginUser(
                 event,
-                setCurrentUserUuid,
                 email,
                 password,
-                setEnabledUser,
-                currentUserUuid,
-                enabledUser,
-                history
+                history,
+                applicationState,
+                setApplicationState
               )}
             >
               Sign In

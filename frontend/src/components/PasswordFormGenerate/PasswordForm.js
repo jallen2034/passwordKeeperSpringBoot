@@ -1,6 +1,6 @@
 import { React, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { saveNewPasswrodForm } from '../axiosCalls.js'
+import { saveNewPasswrodForm } from '../axiosCalls.tsx'
 import 'react-toastify/dist/ReactToastify.css'
 import {
   Button,

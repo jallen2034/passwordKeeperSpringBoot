@@ -4,18 +4,10 @@ import ButtonAppBar from "../Appbar/Appbar"
 import SignIn from "../Login/login";
 import '@fontsource/roboto/300.css'
 import {AppState} from "../App";
-import React from "react";
+import React, {useEffect} from "react";
 
 type LoginPageProps = {
-  setCurrentUserUuid: any,
-  currentUserUuid: any,
-  register: any,
-  setRegister: any,
   history: any,
-  setEnabledUser: any,
-  sessionUuid: any,
-  enabledUser: any,
-  setVerified: any,
   applicationState: AppState,
   setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
   enabled: any,
@@ -23,41 +15,29 @@ type LoginPageProps = {
 
 function LoginPage( props: LoginPageProps ) {
   const {
-    setCurrentUserUuid,
-    currentUserUuid,
-    register,
-    setRegister,
     history,
-    setEnabledUser,
-    sessionUuid,
-    enabledUser,
-    setVerified,
     enabled,
     applicationState,
     setApplicationState
   } = props;
 
-  setVerified(null)
+  useEffect(() => {
+    setApplicationState((prevState: AppState) => ({
+      ...prevState,
+      verified: null
+    }));
+  }, [])
 
-  if (!enabled && !sessionUuid) {
+  if (!enabled && !applicationState.currentUserUuid) {
     return (
       <>
         <div className="App">
           <ButtonAppBar
-            setCurrentUserUuid={setCurrentUserUuid}
-            currentUserUuid={currentUserUuid}
-            register={register}
-            setRegister={setRegister}
             history={history}
-            setEnabledUser={setEnabledUser}
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />
           <SignIn
-            setCurrentUserUuid={setCurrentUserUuid}
-            setEnabledUser={setEnabledUser}
-            currentUserUuid={currentUserUuid}
-            enabledUser={enabledUser}
             history={history}
             applicationState={applicationState}
             setApplicationState={setApplicationState}

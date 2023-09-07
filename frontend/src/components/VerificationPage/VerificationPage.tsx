@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
 import '@fontsource/roboto/300.css'
 import {AppState} from "../App";
-import React from "react";
+import React, {useEffect} from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,20 +44,19 @@ type VerificationPageProps = {
   history: any,
   sessionUuid: any,
   enabled: any,
-  setPasswordResetEmail: any,
-  setVerified: any,
-  verified: any,
   applicationState: AppState,
   setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 }
 
 const buttonClick = function (
-  setVerified: any,
   history: any,
-  setPasswordResetEmail: any
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 ) {
-  setVerified(null);
-  setPasswordResetEmail(null);
+  setApplicationState((prevState: AppState) => ({
+    ...prevState,
+    verified: null,
+    passwordResetEmail: null
+  }));
   history.push("/login");
 }
 
@@ -67,26 +66,27 @@ function VerificationPage(props: VerificationPageProps) {
     history,
     sessionUuid,
     enabled,
-    setPasswordResetEmail,
-    setVerified,
-    verified
+    applicationState,
+    setApplicationState
   } = props;
   const classes: any = useStyles()
   const params: any = useParams()
 
-  if (!verified) {
-    verifyUser(params.code, setVerified)
-  }
+  useEffect(() => {
+    if (!applicationState.verified) {
+      verifyUser(params.code, setApplicationState)
+    }
+  }, []);
 
   if (params) {
     return (
       <>
         <div className={classes.root}>
           <Paper elevation={3}>
-            {verified
+            {applicationState.verified
               ?
               <Typography component="h1">
-                {verified}
+                {applicationState.verified}
               </Typography>
               :
               <div>
@@ -96,7 +96,10 @@ function VerificationPage(props: VerificationPageProps) {
               <Button
                 className={classes.buttonBack}
                 color="inherit"
-                onClick={() => buttonClick(setVerified, history, setPasswordResetEmail)}
+                onClick={() => buttonClick(
+                  history,
+                  setApplicationState
+                )}
               > Go Back to Login
               </Button>
             </Box>

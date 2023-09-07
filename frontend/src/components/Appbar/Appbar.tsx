@@ -3,40 +3,59 @@ import { Button, IconButton, Typography, Toolbar, AppBar } from '@material-ui/co
 import {AppState} from "../App";
 import React from "react";
 
+const handleRegisterStateChange = (
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>,
+  value: boolean
+) => {
+  setApplicationState((prevState: AppState) => ({
+    ...prevState,
+    register: value
+  }));
+}
+
+const handleIndexSelectedChange = (
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>,
+  value: boolean
+) => {
+  setApplicationState((prevState: AppState) => ({
+    ...prevState,
+    indexSelected: value
+  }));
+}
+
 const buttonClick = function (
-  setCurrentUserUuid: any,
-  currentUserUuid: any,
-  register: any,
-  setRegister: any,
-  setIndexSelected: any,
   switcherButton: any,
   history: any,
-  setEnabledUser: any
+  applicationState: AppState,
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 ) {
 
   switch (switcherButton) {
     case "view":
-      setIndexSelected(true)
+      handleIndexSelectedChange(setApplicationState, true);
       break
     case "create":
-      setIndexSelected(false)
+      handleIndexSelectedChange(setApplicationState, false);
       break
     default:
 
-      if (!register) {
-        setRegister(true)
+      if (!applicationState.register) {
+        handleRegisterStateChange(setApplicationState, true);
         history.push("/register")
-      } else if (register) {
-        setRegister(false)
+      } else if (applicationState.register) {
+        handleRegisterStateChange(setApplicationState, false);
         history.push("/login")
       }
 
-      if (currentUserUuid.uuid) {
-        setCurrentUserUuid((prev: any) => ({ ...prev, uuid: null }))
+      if (applicationState.currentUserUuid) {
         window.localStorage.removeItem('Uuid')
         window.localStorage.removeItem('enabled')
-        setRegister(false)
-        setEnabledUser((prev: any) => ({ ...prev, enabled: null }))
+        handleRegisterStateChange(setApplicationState, false);
+        setApplicationState((prevState: AppState) => ({
+          ...prevState,
+          currentUserUuid: null,
+          enabledUser: null
+        }));
         history.push("/login")
       }
   }
@@ -55,36 +74,28 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 type ButtonAppBarProps = {
-  setCurrentUserUuid: any,
-  currentUserUuid: any,
-  register: any,
-  setRegister: any,
-  setIndexSelected?: any,
   history: any,
-  setEnabledUser: any,
   applicationState: AppState,
   setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
 }
 
 function ButtonAppBar(props: ButtonAppBarProps) {
   const {
-    setCurrentUserUuid,
-    currentUserUuid,
-    register,
-    setRegister,
-    setIndexSelected,
     history,
-    setEnabledUser
+    applicationState,
+    setApplicationState
   } = props;
 
-
-  const classes = useStyles()
-  let switcherButton
+  const classes: any = useStyles();
+  let switcherButton: any;
 
   // for storybook testing of this component only
-  if (!currentUserUuid && !register) {
-    setCurrentUserUuid(false);
-    setRegister(true);
+  if (!applicationState.currentUserUuid && !applicationState.register) {
+    setApplicationState((prevState: AppState) => ({
+      ...prevState,
+      register: true,
+      currentUserUuid: null
+    }));
   }
 
   return (
@@ -97,36 +108,28 @@ function ButtonAppBar(props: ButtonAppBarProps) {
             PasswordKeeper
           </Typography>
           {(() => {
-            if (!currentUserUuid.uuid && !register) {
+            if (!applicationState.currentUserUuid && !applicationState.register) {
               return (
                 <Button
                   color="inherit"
                   onClick={() => buttonClick(
-                    setCurrentUserUuid,
-                    currentUserUuid,
-                    register,
-                    setRegister,
-                    setIndexSelected,
                     switcherButton = "default",
                     history,
-                    setEnabledUser
+                    applicationState,
+                    setApplicationState,
                   )}
                 > Register
                 </Button>
               )
-            } else if (!currentUserUuid.uuid && register) {
+            } else if (!applicationState.currentUserUuid && applicationState.register) {
               return (
                 <Button
                   color="inherit"
                   onClick={() => buttonClick(
-                    setCurrentUserUuid,
-                    currentUserUuid,
-                    register,
-                    setRegister,
-                    setIndexSelected,
                     switcherButton = "default",
                     history,
-                    setEnabledUser
+                    applicationState,
+                    setApplicationState,
                   )}
                 > Login
                 </Button>
@@ -137,42 +140,30 @@ function ButtonAppBar(props: ButtonAppBarProps) {
                   <Button
                     color="inherit"
                     onClick={() => buttonClick(
-                      setCurrentUserUuid,
-                      currentUserUuid,
-                      register,
-                      setRegister,
-                      setIndexSelected,
                       switcherButton = "view",
                       history,
-                      setEnabledUser
+                      applicationState,
+                      setApplicationState,
                     )}
                   > View Passwords
                   </Button>
                   <Button
                     color="inherit"
                     onClick={() => buttonClick(
-                      setCurrentUserUuid,
-                      currentUserUuid,
-                      register,
-                      setRegister,
-                      setIndexSelected,
                       switcherButton = "create",
                       history,
-                      setEnabledUser
+                      applicationState,
+                      setApplicationState,
                     )}
                   > Create New Password
                   </Button>
                   <Button
                     color="inherit"
                     onClick={() => buttonClick(
-                      setCurrentUserUuid,
-                      currentUserUuid,
-                      register,
-                      setRegister,
-                      setIndexSelected,
                       switcherButton = "default",
                       history,
-                      setEnabledUser
+                      applicationState,
+                      setApplicationState,
                     )}
                   > Logout
                   </Button>

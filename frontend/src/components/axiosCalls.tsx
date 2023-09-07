@@ -3,10 +3,12 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Grid from '@material-ui/core/Grid'
 import PasswordEntry from './PasswordEntry/PasswordEntry'
+import {AppState} from "./App";
+import React from "react";
 let generator = require('generate-password')
 
 // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-function makeid(length) {
+function makeid(length: any) {
   let result = ''
   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   let charactersLength = characters.length
@@ -19,24 +21,38 @@ function makeid(length) {
 }
 
 // implmented a queue to keep track of the most recent and least recent passwords updated by a user
-const passwordEditQueue = function (setEditedPasswordFromServer, editedPasswordFromServer, response) {
+const passwordEditQueue = function (
+  setEditedPasswordFromServer: any,
+  editedPasswordFromServer: any,
+  response: any
+) {
   const queue = []
   queue.unshift(editedPasswordFromServer[0])
   queue.unshift(response.data)
   setEditedPasswordFromServer(queue)
 }
 
-const loginUser = function (event, setCurrentUserUuid, email, password, setEnabledUser, currentUserUuid, enabledUser, history) {
+const loginUser = function (
+  event: any,
+  email: any,
+  password: any,
+  history: any,
+  applicationState: AppState,
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
+) {
   event.preventDefault()
 
   axios.post("http://localhost:8080/login", { email, password })
-    .then((response) => {
+    .then((response: any) => {
 
       if (response.data.enabled === 'true') {
         window.localStorage.setItem('Uuid', response.data.uuid)
         window.localStorage.setItem('enabled', response.data.enabled)
-        setCurrentUserUuid((prev) => ({ ...prev, uuid: response.data.uuid }))
-        setEnabledUser((prev) => ({ ...prev, enabled: true }))
+        setApplicationState((prevState: AppState) => ({
+          ...prevState,
+          currentUserUuid: response.data.uuid,
+          enabledUser: true
+        }));
         history.push("/vault")
       } else {
         toast.error("Uh oh, doesn't look like you verified your account yet. Please check your email inbox!")
@@ -46,25 +62,36 @@ const loginUser = function (event, setCurrentUserUuid, email, password, setEnabl
     })
 }
 
-const registerUser = function (event, setCurrentUserUuid, email, password, passwordConfirm) {
+const registerUser = function (
+  event: any,
+  email: any,
+  password: any,
+  passwordConfirm: any
+) {
   event.preventDefault()
 
   axios.post("http://localhost:8080/register", { email, password, passwordConfirm })
-    .then((response) => {
+    .then((response: any) => {
       toast.success(response.data)
     }).catch((error) => {
       toast.error(error.response.data.message)
     })
 }
 
-const deletePassword = function (passwordText, sessionUuid, id, setForceRender, handleClose) {
+const deletePassword = function (
+  passwordText: any,
+  sessionUuid: any,
+  id: any,
+  setForceRender: any,
+  handleClose: any
+) {
 
   axios.post("http://localhost:8080/passwords/delete", { sessionUuid, id, passwordText })
-    .then((response) => {
+    .then((response: any) => {
       if (response) {
         toast.success(response.data)
         handleClose()
-        setForceRender((prev) => ({ ...prev, value: makeid(5) }))
+        setForceRender((prev: any) => ({ ...prev, value: makeid(5) }))
       }
     }).catch((error) => {
       toast.error(error.response.data.message)
@@ -73,10 +100,17 @@ const deletePassword = function (passwordText, sessionUuid, id, setForceRender, 
 
 /* callback function after AXIOS call to loop through array of retrieved passwords from the API
  * https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once */
-const displayPasswords = function (responseData, setDataFromApi, sessionUuid, setForceRender, deletePassword, editPasssword) {
-  const passwordDivsList = []
+const displayPasswords = function (
+  responseData: any,
+  setDataFromApi: any,
+  sessionUuid: any,
+  setForceRender: any,
+  deletePassword: any,
+  editPasssword: any
+) {
+  const passwordDivsList: any[] = []
 
-  responseData.forEach((item, index) => {
+  responseData.forEach((item: any, index: any) => {
     passwordDivsList.push(<Grid item xs={6} md={3}>
       <PasswordEntry
         url={item.url}
@@ -96,13 +130,22 @@ const displayPasswords = function (responseData, setDataFromApi, sessionUuid, se
   setTimeout(function () { setDataFromApi(passwordDivsList) }, 850)
 }
 
-const editPasssword = function (passwordText, newPassword, sessionUuid, id, passwordUrl, setEditedPasswordFromServer, editedPasswordFromServer, setForceRender) {
+const editPasssword = function (
+  passwordText: any,
+  newPassword: any,
+  sessionUuid: any,
+  id: any,
+  passwordUrl: any,
+  setEditedPasswordFromServer: any,
+  editedPasswordFromServer: any,
+  setForceRender: any
+) {
 
   axios.post("http://localhost:8080/passwords/edit", { sessionUuid, id, passwordText, passwordUrl, newPassword })
-    .then((response) => {
+    .then((response: any) => {
       if (response) {
         toast.success(`Sucessfuly edited the old password: ${passwordText} to the new password: ${response.data}`)
-        setForceRender((prev) => ({ ...prev, value: makeid(5) }))
+        setForceRender((prev: any) => ({ ...prev, value: makeid(5) }))
         passwordEditQueue(setEditedPasswordFromServer, editedPasswordFromServer, response)
       }
     }).catch((error) => {
@@ -112,12 +155,23 @@ const editPasssword = function (passwordText, newPassword, sessionUuid, id, pass
     })
 }
 
-const retrieveUsersPasswords = function (sessionUuid, setDataFromApi, setForceRender, currentUserUuid) {
+const retrieveUsersPasswords = function (
+  sessionUuid: any,
+  setDataFromApi: any,
+  setForceRender: any,
+) {
 
   axios.post("http://localhost:8080/passwords", { sessionUuid })
-    .then((response) => {
+    .then((response: any) => {
       if (response) {
-        displayPasswords(response.data, setDataFromApi, sessionUuid, setForceRender, deletePassword, editPasssword, currentUserUuid)
+        displayPasswords(
+          response.data,
+          setDataFromApi,
+          sessionUuid,
+          setForceRender,
+          deletePassword,
+          editPasssword,
+        )
       }
     }).catch((error) => {
       if (error) {
@@ -126,7 +180,13 @@ const retrieveUsersPasswords = function (sessionUuid, setDataFromApi, setForceRe
     })
 }
 
-const saveNewPasswrod = function (event, sessionUuid, passwordText, category, url) {
+const saveNewPasswrod = function (
+  event: any,
+  sessionUuid: any,
+  passwordText: any,
+  category: any,
+  url: any
+) {
   event.preventDefault()
 
   if (!passwordText) {
@@ -138,7 +198,7 @@ const saveNewPasswrod = function (event, sessionUuid, passwordText, category, ur
   }
 
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
-    .then((response) => {
+    .then((response: any) => {
       if (response) {
         toast.success(response.data)
       }
@@ -149,7 +209,14 @@ const saveNewPasswrod = function (event, sessionUuid, passwordText, category, ur
     })
 }
 
-const saveNewPasswrodForm = function (event, sessionUuid, category, url, sliderValue, checked) {
+const saveNewPasswrodForm = function (
+  event: any,
+  sessionUuid: any,
+  category: any,
+  url: any,
+  sliderValue: any,
+  checked: any
+) {
 
   if (!checked.numbers && !checked.symbols && !checked.lowercas && !checked.uppercase) {
     return toast.error("You can't leave all checkboxes empty when making a password!")
@@ -166,7 +233,7 @@ const saveNewPasswrodForm = function (event, sessionUuid, category, url, sliderV
   })
 
   axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText: password[0], category, url })
-    .then((response) => {
+    .then((response: any) => {
       if (response) {
         toast.success(response.data)
       }
@@ -177,10 +244,10 @@ const saveNewPasswrodForm = function (event, sessionUuid, category, url, sliderV
     })
 }
 
-const verifyUser = function (params, setVerified) {
+const verifyUser = function (params: any, setVerified: any) {
 
   axios.post("http://localhost:8080/verify", { params })
-    .then((response) => {
+    .then((response: any) => {
       setVerified(response.data)
       return true
     }).catch((error) => {
@@ -188,26 +255,33 @@ const verifyUser = function (params, setVerified) {
     })
 }
 
-const sendPasswordResetEmail = function (passwordResetEmail) {
+const sendPasswordResetEmail = function (passwordResetEmail: any) {
 
   axios.post("http://localhost:8080/resetPasswordSendEmail", { passwordResetEmail })
-    .then((response) => {
+    .then((response: any) => {
       toast.success(response.data)
     }).catch((error) => {
       toast.error(error.response.data.message)
     })
 }
 
-const resetUsersPassword = function (newPassword, newPasswordConfirm, paramsCode) {
+const resetUsersPassword = function (
+  paramsCode: any,
+  applicationState: AppState,
+) {
 
-  if (!newPassword) {
+  if (!applicationState.newPassword) {
     toast.error("You can't leave the new password field empty!")
-  } else if (!newPasswordConfirm) {
+  } else if (!applicationState.newConfirmPassword) {
     toast.error("You can't leave the confirm new password field empty!")
   }
 
-  axios.post("http://localhost:8080/resetUsersPassword", { verificationCode: paramsCode, newPassword, newPasswordConfirm })
-    .then((response) => {
+  axios.post("http://localhost:8080/resetUsersPassword", {
+    verificationCode: paramsCode,
+    newPassword: applicationState.newPassword,
+    newPasswordConfirm: applicationState.newConfirmPassword
+  })
+    .then((response: any) => {
       if (response) {
         toast.success(response.data)
       }
@@ -218,10 +292,10 @@ const resetUsersPassword = function (newPassword, newPasswordConfirm, paramsCode
     })
 }
 
-const verifyResetFormValid = function (paramsCode, setEmailValid) {
+const verifyResetFormValid = function (paramsCode: any, setEmailValid: any) {
 
   axios.post("http://localhost:8080/verifyResetFormValid", { verificationCode: paramsCode })
-    .then((response) => {
+    .then((response: any) => {
       if (response) {
         response.data ? setEmailValid(true) : setEmailValid(false)
       }
