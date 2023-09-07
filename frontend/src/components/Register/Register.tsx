@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { registerUser } from '../axiosCalls'
+import { registerUser } from '../../network-requests/axiosCalls'
 import 'react-toastify/dist/ReactToastify.css';
 
 function Copyright() {

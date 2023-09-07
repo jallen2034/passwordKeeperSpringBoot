@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom"
 import PasswordVault from "../PasswordVault/PasswordVault"
 import ButtonAppBar from "../Appbar/Appbar"
 import '@fontsource/roboto/300.css'
-import {AppState} from "../App";
+import {AppState} from "../../app-types";
 import React from "react";
 
 type VaultPageProps = {

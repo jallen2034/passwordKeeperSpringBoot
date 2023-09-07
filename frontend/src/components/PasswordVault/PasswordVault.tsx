@@ -2,7 +2,7 @@ import React from 'react'
 import PasswordComposer from '../PasswordComposer/PasswordComposer'
 import PasswordContainer from '../PasswordContainer/PasswordContainer'
 import 'react-toastify/dist/ReactToastify.css'
-import {AppState} from "../App";
+import {AppState} from "../../App";
 
 type PasswordVaultProps = {
   applicationState: AppState,

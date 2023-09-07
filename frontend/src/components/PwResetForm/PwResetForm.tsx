@@ -1,14 +1,14 @@
 import {ToastContainer} from "react-toastify"
 import {useParams} from "react-router-dom"
 import {Button, Typography} from '@material-ui/core'
-import {resetUsersPassword, verifyResetFormValid} from '../axiosCalls'
+import {resetUsersPassword, verifyResetFormValid} from '../../network-requests/axiosCalls'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import '@fontsource/roboto/300.css'
 import {makeStyles} from '@material-ui/core/styles'
 import React, {ChangeEvent, useEffect, useState} from "react"
-import {AppState} from "../App";
+import {AppState} from "../../App";
 
 // test
 const useStyles = makeStyles((theme) => ({

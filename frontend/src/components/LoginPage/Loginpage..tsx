@@ -1,16 +1,11 @@
+import React, {useEffect} from "react";
 import { ToastContainer } from "react-toastify"
 import { Redirect } from "react-router-dom"
 import ButtonAppBar from "../Appbar/Appbar"
 import SignIn from "../Login/login";
+import {LoginPageProps} from "../Login/login-types";
+import {AppState} from "../../app-types";
 import '@fontsource/roboto/300.css'
-import {AppState} from "../App";
-import React, {useEffect} from "react";
-
-type LoginPageProps = {
-  history: any,
-  applicationState: AppState,
-  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
-}
 
 function LoginPage( props: LoginPageProps ) {
   const {

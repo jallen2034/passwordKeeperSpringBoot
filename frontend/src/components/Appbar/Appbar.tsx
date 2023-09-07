@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, IconButton, Typography, Toolbar, AppBar } from '@material-ui/core'
-import {AppState} from "../App";
+import {AppState} from "../../App";
 import React from "react";
 
 const handleRegisterStateChange = (

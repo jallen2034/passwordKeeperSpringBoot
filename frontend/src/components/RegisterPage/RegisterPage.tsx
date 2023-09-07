@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom"
 import ButtonAppBar from "../Appbar/Appbar"
 import Register from "../Register/Register"
 import '@fontsource/roboto/300.css'
-import {AppState} from "../App";
+import {AppState} from "../../App";
 import React from "react";
 
 type RegisterPageProps = {

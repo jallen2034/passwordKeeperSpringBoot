@@ -2,8 +2,8 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Grid from '@material-ui/core/Grid'
-import PasswordEntry from './PasswordEntry/PasswordEntry'
-import {AppState} from "./App";
+import PasswordEntry from '../components/PasswordEntry/PasswordEntry'
+import {AppState} from "../App";
 import React from "react";
 let generator = require('generate-password')
 
