@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import LoginPage from "./pages/LoginPage/Loginpage."
 import RegisterPage from "./pages/RegisterPage/RegisterPage"
-import VaultPage from "./components/VaultPage/VaultPage"
+import VaultPage from "./components/PasswordVault/VaultPage"
 import VerificationPage from "./pages/VerificationPage/VerificationPage"
 import PwResetPage from "./pages/PwResetPage/PwResetPage"
 import PwResetForm from "./components/PwResetForm/PwResetForm"

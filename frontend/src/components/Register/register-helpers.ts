@@ -13,7 +13,7 @@ const handleInputChange = (
       ...prevForm,
       [name]: value // Update the form state for the relevant field with the new value
     }));
-  } catch (e: Error) {
+  } catch (e: any) {
     throwAndLogExceptions(e);
   }
 };
@@ -27,7 +27,7 @@ const handleSubmit = (
   try {
     event.preventDefault();
     registerUser(event, email, password, passwordConfirm);
-  } catch (e: Error) {
+  } catch (e: any) {
     throwAndLogExceptions(e);
   }
 };

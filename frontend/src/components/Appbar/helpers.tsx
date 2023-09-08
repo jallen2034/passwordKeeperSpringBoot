@@ -12,7 +12,7 @@ const handleRegisterStateChange = (
       ...prevState,
       register: value
     }));
-  } catch (e: Error) {
+  } catch (e: any) {
     throwAndLogExceptions(e);
   }
 }
@@ -26,7 +26,7 @@ const handleIndexSelectedChange = (
       ...prevState,
       indexSelected: value
     }));
-  } catch (e: Error) {
+  } catch (e: any) {
     throwAndLogExceptions(e);
   }
 }
@@ -49,7 +49,7 @@ const logoutUser = (
 
     // Redirect to the login page
     history.push("/login");
-  } catch (e: Error) {
+  } catch (e: any) {
     throwAndLogExceptions(e);
   }
 };
@@ -77,7 +77,7 @@ const buttonClick = function (
       handleRegisterStateChange(setApplicationState, false);
       return history.push("/login")
     }
-  } catch (e: Error) {
+  } catch (e: any) {
     throwAndLogExceptions(e);
   }
 }

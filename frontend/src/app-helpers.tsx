@@ -12,17 +12,17 @@ const saveSessionDataToAppState = (
       currentUserUuid: sessionData.sessionUuid,
       enabledUser: Boolean(sessionData.enabled)
     }));
-  } catch (e: Error) {
+  } catch (e: any) {
     throwAndLogExceptions(e);
   }
 }
 
-const fetchDataFromLocalStorage = (): LocalStorageData => {
+const fetchDataFromLocalStorage = () => {
   try {
     const sessionUuid: string | null | undefined = window.localStorage.getItem("Uuid");
     const enabled: string | null | undefined = window.localStorage.getItem("enabled");
     return { sessionUuid, enabled }
-  } catch (e: Error) {
+  } catch (e: any) {
     throwAndLogExceptions(e);
   }
 }
@@ -32,9 +32,9 @@ const detectUsersSession = (
   setApplicationState: React.Dispatch<React.SetStateAction<AppState>>
 ) => {
   try {
-    const sessionData: LocalStorageData = fetchDataFromLocalStorage();
+    const sessionData: any = fetchDataFromLocalStorage();
     saveSessionDataToAppState(sessionData, setApplicationState);
-  } catch (e: Error) {
+  } catch (e: any) {
     throwAndLogExceptions(e);
   }
 }

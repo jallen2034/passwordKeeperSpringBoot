@@ -13,7 +13,7 @@ const buttonClick = function (
       passwordResetEmail: null
     }));
     history.push("/login");
-  } catch (e: Error) {
+  } catch (e: any) {
     throwAndLogExceptions(e);
   }
 }

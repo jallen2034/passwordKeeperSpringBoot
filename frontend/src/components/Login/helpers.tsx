@@ -4,7 +4,7 @@ import {throwAndLogExceptions} from "../../throw-and-log-exceptions";
 const openResetPasswordPage = function (history: any) {
   try {
     history.push("/resetPassword")
-  } catch (e: Error) {
+  } catch (e: any) {
     throwAndLogExceptions(e);
   }
 }

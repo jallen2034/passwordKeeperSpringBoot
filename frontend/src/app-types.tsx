@@ -10,6 +10,6 @@ export type AppState = {
 };
 
 export type LocalStorageData = {
-  sessionUuid?: string | undefined | null;
-  enabled?: string | undefined | null ;
+  sessionUuid?: any;
+  enabled?: any;
 }
