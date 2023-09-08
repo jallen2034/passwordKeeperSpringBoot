@@ -7,14 +7,15 @@ import com.example.passwordKeepr.passwordKeeprTest.Users.entity.User;
 import com.example.passwordKeepr.passwordKeeprTest.Users.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import static Constants.Constants.*;
+import static ErrorMessageConstants.ErrorMessageConstants.*;
 import java.util.List;
 import java.util.Map;
+
 
 @Service
 public class EditPasswordService {
 
-    // Injecting UsersRepository and PasswordsRepository to access the data access layer for our user + pw data
+    // Dependency injection for the PasswordsRepository and UsersRepository data access layer/entity objects.
     private final PasswordsRepository passwordsRepository;
     private final UsersRepository usersRepository;
 
@@ -24,44 +25,58 @@ public class EditPasswordService {
         this.usersRepository = usersRepository;
     }
 
-    private String encrypt(String text, String key) throws Exception {
+    public <lookupRequestObject> String editPasswordForUser(Map<String, Object> lookupRequestObject) throws Exception {
         try {
-            AES AESEncryptor = new AES(key);
-            return AESEncryptor.encrypt(text);
-        } catch (Exception ex) {
-            System.out.println(AES_ERROR_EXCEPTION + ex.getMessage());
-            return AES_ERROR_EXCEPTION + ex.getMessage();
-        }
-    }
+            String sessionUuid  = (String) lookupRequestObject.get("sessionUuid");
+            String newPassword = (String) lookupRequestObject.get("newPassword");
+            int passwordIdToEdit = (int) lookupRequestObject.get("id");
 
-    public String editPasswordForUser(Map<String, Object> lookupRequestObject) {
-        try {
-            String uuid = (String) lookupRequestObject.get(SESSION_UUID);
-            String newPassword = (String) lookupRequestObject.get(NEW_PASSWORD);
-            int id = (int) lookupRequestObject.get(ID);
-            User userFromDb = usersRepository.findByUuid(uuid);
-
-            if (userFromDb == null) {
-                return EDIT_PASSWORD_ERROR_EXISTENCE;
+            // It's a good practice to check if 'sessionUuid ' is null before using it.
+            if (sessionUuid == null) {
+                throw new IllegalArgumentException(SESSION_UUID_NULL);
             }
 
-            List<Password> passwordList = userFromDb.getPasswordList();
-            boolean pwned = Pwned.main(newPassword);
+            // Get user from DB by ID
+            User userFromDb = usersRepository.findByUuid(sessionUuid );
 
-            for (Password passwordInLoop : passwordList) {
-                if (passwordInLoop.getId() == id) {
-                    String encryptedPassword = encrypt(newPassword, userFromDb.getMasterPassword());
-                    passwordInLoop.setPassword_text(encryptedPassword);
-                    passwordInLoop.setPwned(pwned);
+            // Check if the user exists before proceeding.
+            if (userFromDb == null) {
+                throw new IllegalStateException(USER_NOT_FOUND);
+            }
+
+            // Get the user's master password and password list.
+            String userMasterPassword = userFromDb.getMasterPassword();
+            List passwordList = userFromDb.getPasswordList();
+            boolean isPwned = Pwned.main(newPassword);
+
+            // Loop through the password list and find the password to edit.
+            for (int i = 0; i < passwordList.size(); i++) {
+                Password singlePassword = (Password) passwordList.get(i);
+                int passwordId = singlePassword.getId();
+
+                if (passwordId == passwordIdToEdit) {
+                    String encryptedPassword = encrypt(newPassword, userMasterPassword );
+                    singlePassword.setPassword_text(encryptedPassword);
+                    singlePassword.setPwned(isPwned );
                     usersRepository.save(userFromDb);
                     return newPassword;
                 }
             }
 
-            return EDIT_PASSWORD_ERROR_GENERIC;
+            return PASSWORD_EDIT_FAILED;
         } catch (Exception ex) {
-            System.out.println(EDIT_PASSWORD_ERROR_EXCEPTION + ex.getMessage()); // Log exception
-            return EDIT_PASSWORD_ERROR_EXCEPTION + ex.getMessage();
+            System.out.println(PASSWORD_EDIT_ERROR + ex);
+            throw new IllegalStateException(PASSWORD_EDIT_ERROR, ex);
+        }
+    }
+
+    private String encrypt(String text, String Key) {
+        try {
+            AES AESEncryptor = new AES(Key);
+            return AESEncryptor.encrypt(text);
+        } catch (Exception ex) {
+            System.out.println(ENCRYPTION_FAILED + ex.getMessage());
+            throw new IllegalStateException(ENCRYPTION_FAILED, ex);
         }
     }
 }
