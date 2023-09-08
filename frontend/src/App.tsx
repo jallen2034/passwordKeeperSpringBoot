@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react"
-import LoginPage from "./Pages/LoginPage/Loginpage."
-import RegisterPage from "./Pages/RegisterPage/RegisterPage"
+import LoginPage from "./pages/LoginPage/Loginpage."
+import RegisterPage from "./pages/RegisterPage/RegisterPage"
 import VaultPage from "./components/VaultPage/VaultPage"
-import VerificationPage from "./Pages/VerificationPage/VerificationPage"
-import PwResetPage from "./Pages/PwResetPage/PwResetPage"
+import VerificationPage from "./pages/VerificationPage/VerificationPage"
+import PwResetPage from "./pages/PwResetPage/PwResetPage"
 import PwResetForm from "./components/PwResetForm/PwResetForm"
 import {detectUsersSession} from "./app-helpers";
 import { Route, Switch, useHistory } from "react-router-dom"
