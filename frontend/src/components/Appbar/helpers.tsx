@@ -1,44 +1,57 @@
 import React from "react";
 import {AppState} from "../../app-types";
 import {Button} from "@material-ui/core";
+import {throwAndLogExceptions} from "../../throw-and-log-exceptions";
 
 const handleRegisterStateChange = (
   setApplicationState: React.Dispatch<React.SetStateAction<AppState>>,
   value: boolean
 ) => {
-  setApplicationState((prevState: AppState) => ({
-    ...prevState,
-    register: value
-  }));
+  try {
+    setApplicationState((prevState: AppState) => ({
+      ...prevState,
+      register: value
+    }));
+  } catch (e: Error) {
+    throwAndLogExceptions(e);
+  }
 }
 
 const handleIndexSelectedChange = (
   setApplicationState: React.Dispatch<React.SetStateAction<AppState>>,
   value: boolean
 ) => {
-  setApplicationState((prevState: AppState) => ({
-    ...prevState,
-    indexSelected: value
-  }));
+  try {
+    setApplicationState((prevState: AppState) => ({
+      ...prevState,
+      indexSelected: value
+    }));
+  } catch (e: Error) {
+    throwAndLogExceptions(e);
+  }
 }
 
 const logoutUser = (
   setApplicationState: React.Dispatch<React.SetStateAction<AppState>>,
   history: any
 ): void => {
-  // Remove items from localStorage
-  window.localStorage.removeItem('Uuid');
-  window.localStorage.removeItem('enabled');
+  try {
+    // Remove items from localStorage
+    window.localStorage.removeItem('Uuid');
+    window.localStorage.removeItem('enabled');
 
-  // Update application state to log the user out
-  setApplicationState((prevState: AppState) => ({
-    ...prevState,
-    currentUserUuid: null,
-    enabledUser: null
-  }));
+    // Update application state to log the user out
+    setApplicationState((prevState: AppState) => ({
+      ...prevState,
+      currentUserUuid: null,
+      enabledUser: null
+    }));
 
-  // Redirect to the login page
-  history.push("/login");
+    // Redirect to the login page
+    history.push("/login");
+  } catch (e: Error) {
+    throwAndLogExceptions(e);
+  }
 };
 
 // Handle when the user clicks on the appbar buttons
@@ -48,20 +61,24 @@ const buttonClick = function (
   applicationState: AppState,
   setApplicationState: React.Dispatch<React.SetStateAction<AppState>>
 ) {
-  if (switcherButton === "view") return handleIndexSelectedChange(setApplicationState, true);
-  if (switcherButton === "create") return handleIndexSelectedChange(setApplicationState, false);
-  if (applicationState.currentUserUuid) return logoutUser(setApplicationState, history);
+  try {
+    if (switcherButton === "view") return handleIndexSelectedChange(setApplicationState, true);
+    if (switcherButton === "create") return handleIndexSelectedChange(setApplicationState, false);
+    if (applicationState.currentUserUuid) return logoutUser(setApplicationState, history);
 
-  // Handle the case where the user is trying to navigate from login page to registration page
-  if (!applicationState.register) {
-    handleRegisterStateChange(setApplicationState, true);
-    return history.push("/register")
-  }
+    // Handle the case where the user is trying to navigate from login page to registration page
+    if (!applicationState.register) {
+      handleRegisterStateChange(setApplicationState, true);
+      return history.push("/register")
+    }
 
-  // Handle the case where the user is trying to navigate from registration page to login page
-  if (applicationState.register) {
-    handleRegisterStateChange(setApplicationState, false);
-    return history.push("/login")
+    // Handle the case where the user is trying to navigate from registration page to login page
+    if (applicationState.register) {
+      handleRegisterStateChange(setApplicationState, false);
+      return history.push("/login")
+    }
+  } catch (e: Error) {
+    throwAndLogExceptions(e);
   }
 }
 

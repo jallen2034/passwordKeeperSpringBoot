@@ -1,29 +1,42 @@
 import React from "react";
 import {AppState, LocalStorageData} from "./app-types";
+import {throwAndLogExceptions} from "./throw-and-log-exceptions";
 
 const saveSessionDataToAppState = (
   sessionData: LocalStorageData,
   setAppState: React.Dispatch<React.SetStateAction<AppState>>
 ): void => {
-  setAppState((prevState: AppState) => ({
-    ...prevState,
-    currentUserUuid: sessionData.sessionUuid,
-    enabledUser: Boolean(sessionData.enabled)
-  }));
+  try {
+    setAppState((prevState: AppState) => ({
+      ...prevState,
+      currentUserUuid: sessionData.sessionUuid,
+      enabledUser: Boolean(sessionData.enabled)
+    }));
+  } catch (e: Error) {
+    throwAndLogExceptions(e);
+  }
 }
 
 const fetchDataFromLocalStorage = (): LocalStorageData => {
-  const sessionUuid: string | null | undefined = window.localStorage.getItem("Uuid")
-  const enabled: string | null | undefined = window.localStorage.getItem("enabled")
-  return { sessionUuid, enabled }
+  try {
+    const sessionUuid: string | null | undefined = window.localStorage.getItem("Uuid");
+    const enabled: string | null | undefined = window.localStorage.getItem("enabled");
+    return { sessionUuid, enabled }
+  } catch (e: Error) {
+    throwAndLogExceptions(e);
+  }
 }
 
 
 const detectUsersSession = (
   setApplicationState: React.Dispatch<React.SetStateAction<AppState>>
 ) => {
-  const sessionData: LocalStorageData = fetchDataFromLocalStorage();
-  saveSessionDataToAppState(sessionData, setApplicationState);
+  try {
+    const sessionData: LocalStorageData = fetchDataFromLocalStorage();
+    saveSessionDataToAppState(sessionData, setApplicationState);
+  } catch (e: Error) {
+    throwAndLogExceptions(e);
+  }
 }
 
 export {

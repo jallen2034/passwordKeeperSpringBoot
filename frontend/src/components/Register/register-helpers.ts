@@ -1,16 +1,21 @@
 import React, {ChangeEvent} from "react";
 import {registerUser} from "../../network-requests/axiosCalls";
+import {throwAndLogExceptions} from "../../throw-and-log-exceptions";
 import {RegisterForm} from "./register-types";
 
 const handleInputChange = (
   event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
   setRegisterForm: React.Dispatch<React.SetStateAction<RegisterForm>>
 ) => {
-  const { name, value } = event.target;
-  setRegisterForm((prevForm: RegisterForm) => ({
-    ...prevForm,
-    [name]: value
-  }));
+  try {
+    const { name, value } = event.target; // Destructure the name and value from the event target
+    setRegisterForm((prevForm: RegisterForm) => ({
+      ...prevForm,
+      [name]: value // Update the form state for the relevant field with the new value
+    }));
+  } catch (e: Error) {
+    throwAndLogExceptions(e);
+  }
 };
 
 const handleSubmit = (
@@ -19,8 +24,12 @@ const handleSubmit = (
   password: string,
   passwordConfirm: string
 ) => {
-  event.preventDefault();
-  registerUser(event, email, password, passwordConfirm);
+  try {
+    event.preventDefault();
+    registerUser(event, email, password, passwordConfirm);
+  } catch (e: Error) {
+    throwAndLogExceptions(e);
+  }
 };
 
 export {

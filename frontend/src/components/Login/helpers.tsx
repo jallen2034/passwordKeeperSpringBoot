@@ -1,7 +1,12 @@
 import React from "react";
+import {throwAndLogExceptions} from "../../throw-and-log-exceptions";
 
 const openResetPasswordPage = function (history: any) {
-  history.push("/resetPassword")
+  try {
+    history.push("/resetPassword")
+  } catch (e: Error) {
+    throwAndLogExceptions(e);
+  }
 }
 
 export {

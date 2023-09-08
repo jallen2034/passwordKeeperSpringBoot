@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import Grid from '@material-ui/core/Grid'
 import PasswordEntry from '../components/PasswordEntry/PasswordEntry'
 import {AppState} from "../app-types";
+import {throwAndLogExceptions} from "../throw-and-log-exceptions";
 let generator = require('generate-password')
 
 // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
@@ -93,8 +94,8 @@ const deletePassword = function (
         handleClose()
         setForceRender((prev: any) => ({ ...prev, value: makeid(5) }))
       }
-    }).catch((error) => {
-      toast.error(error.response.data.message)
+    }).catch((e: any) => {
+      toast.error(e.response.data.message)
     })
 }
 
@@ -180,35 +181,6 @@ const retrieveUsersPasswords = function (
     })
 }
 
-const saveNewPasswrod = function (
-  event: any,
-  sessionUuid: any,
-  passwordText: any,
-  category: any,
-  url: any
-) {
-  event.preventDefault()
-
-  if (!passwordText) {
-    return toast.error("You can't create an empty password!")
-  } else if (!category) {
-    return toast.error("You can't create an empty category!")
-  } else if (!url) {
-    return toast.error("You can't create a password with an empty url!")
-  }
-
-  axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
-    .then((response: any) => {
-      if (response) {
-        toast.success(response.data)
-      }
-    }).catch((error) => {
-      if (error) {
-        toast.error(error.response.data.message)
-      }
-    })
-}
-
 const saveNewPasswrodForm = function (
   event: any,
   sessionUuid: any,
@@ -237,9 +209,9 @@ const saveNewPasswrodForm = function (
       if (response) {
         toast.success(response.data)
       }
-    }).catch((error) => {
-      if (error) {
-        toast.error(error.response.data.message)
+    }).catch((e: any) => {
+      if (e) {
+        toast.error(e.response.data.message)
       }
     })
 }
@@ -254,13 +226,12 @@ const verifyUser = function (
         ...prevState,
         verified: response.data
       }));
-    }).catch((error) => {
-      console.error(error);
+    }).catch((e: Error) => {
+      throwAndLogExceptions(e);
     })
 }
 
 const sendPasswordResetEmail = function (passwordResetEmail: any) {
-
   axios.post("http://localhost:8080/resetPasswordSendEmail", { passwordResetEmail })
     .then((response: any) => {
       toast.success(response.data)
@@ -314,9 +285,9 @@ const saveNewPassword = function (
       if (response) {
         toast.success(response.data);
       }
-    }).catch((error) => {
-    if (error) {
-      toast.error(error.response.data.message);
+    }).catch((e: any) => {
+    if (e) {
+      toast.error(e.response.data.message);
     }
   })
 }
@@ -338,7 +309,6 @@ export {
   displayPasswords,
   editPasssword,
   retrieveUsersPasswords,
-  saveNewPasswrod,
   saveNewPasswrodForm,
   loginUser,
   registerUser,
