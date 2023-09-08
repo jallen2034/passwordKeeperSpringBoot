@@ -6,14 +6,16 @@ import com.example.passwordKeepr.passwordKeeprTest.Passwords.repository.Password
 import com.example.passwordKeepr.passwordKeeprTest.Users.entity.User;
 import com.example.passwordKeepr.passwordKeeprTest.Users.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import static ErrorMessageConstants.ErrorMessageConstants.*;
 import java.util.List;
 import java.util.Map;
+
 
 @Service
 public class EditPasswordService {
 
+    // Dependency injection for the PasswordsRepository and UsersRepository data access layer/entity objects.
     private final PasswordsRepository passwordsRepository;
     private final UsersRepository usersRepository;
 
@@ -24,42 +26,57 @@ public class EditPasswordService {
     }
 
     public <lookupRequestObject> String editPasswordForUser(Map<String, Object> lookupRequestObject) throws Exception {
-        String uuid = (String) lookupRequestObject.get("sessionUuid");
-        String newPassword = (String) lookupRequestObject.get("newPassword");
-        int id = (int) lookupRequestObject.get("id");
-        User userFromDb = usersRepository.findByUuid(uuid);
-        String usersMastePassword = userFromDb.getMasterPassword();
-        List passwordList = userFromDb.getPasswordList();
-        boolean pwned = Pwned.main(newPassword);
+        try {
+            String sessionUuid  = (String) lookupRequestObject.get("sessionUuid");
+            String newPassword = (String) lookupRequestObject.get("newPassword");
+            int passwordIdToEdit = (int) lookupRequestObject.get("id");
 
-        if (userFromDb == null) {
-            throw new IllegalStateException("You can't edit a password for someone who doesn't exist!");
-        }
-
-        for (int i = 0; i < passwordList.size(); i++) {
-            Password passwordInLoop = (Password) passwordList.get(i);
-            int passwordId = passwordInLoop.getId();
-
-            if (passwordId == id) {
-                try {
-                    String encryptedPassword = encrypt(newPassword, usersMastePassword);
-                    passwordInLoop.setPassword_text(encryptedPassword);
-                    passwordInLoop.setPwned(pwned);
-                } catch (EmptyResultDataAccessException ex) {
-                    throw new IllegalStateException("Uh oh, database shenanigans!");
-                }
-
-                usersRepository.save(userFromDb);
-                return newPassword;
+            // It's a good practice to check if 'sessionUuid ' is null before using it.
+            if (sessionUuid == null) {
+                throw new IllegalArgumentException(SESSION_UUID_NULL);
             }
-        }
 
-        return "Uh oh, something went wrong when editing that password!";
+            // Get user from DB by ID
+            User userFromDb = usersRepository.findByUuid(sessionUuid );
+
+            // Check if the user exists before proceeding.
+            if (userFromDb == null) {
+                throw new IllegalStateException(USER_NOT_FOUND);
+            }
+
+            // Get the user's master password and password list.
+            String userMasterPassword = userFromDb.getMasterPassword();
+            List passwordList = userFromDb.getPasswordList();
+            boolean isPwned = Pwned.main(newPassword);
+
+            // Loop through the password list and find the password to edit.
+            for (int i = 0; i < passwordList.size(); i++) {
+                Password singlePassword = (Password) passwordList.get(i);
+                int passwordId = singlePassword.getId();
+
+                if (passwordId == passwordIdToEdit) {
+                    String encryptedPassword = encrypt(newPassword, userMasterPassword );
+                    singlePassword.setPassword_text(encryptedPassword);
+                    singlePassword.setPwned(isPwned );git
+                    usersRepository.save(userFromDb);
+                    return newPassword;
+                }
+            }
+
+            return PASSWORD_EDIT_FAILED;
+        } catch (Exception ex) {
+            System.out.println(PASSWORD_EDIT_ERROR + ex);
+            throw new IllegalStateException(PASSWORD_EDIT_ERROR, ex);
+        }
     }
 
-    private String encrypt(String text, String Key) throws Exception {
-        AES AESEncryptor = new AES(Key);
-        String decryptedText = AESEncryptor.encrypt(text);
-        return decryptedText;
+    private String encrypt(String text, String Key) {
+        try {
+            AES AESEncryptor = new AES(Key);
+            return AESEncryptor.encrypt(text);
+        } catch (Exception ex) {
+            System.out.println(ENCRYPTION_FAILED + ex.getMessage());
+            throw new IllegalStateException(ENCRYPTION_FAILED, ex);
+        }
     }
 }

@@ -12,6 +12,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -40,24 +41,24 @@ public class RegisterService {
     }
 
     public <lookupRequestObject> String registerUser(Map<String, Object> lookupRequestObject, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
-        String email = (String) lookupRequestObject.get("email");
         String password = (String) lookupRequestObject.get("password");
         String confirmPassword = (String) lookupRequestObject.get("passwordConfirm");
 
         List<String> blacklistedValues = Arrays.asList(
-            "Passw0rd",
-            "Password123",
-            "password",
-            "Password!",
-            "123456",
-            "1234567",
-            "12345678",
-            "123456789",
-            "12345678910",
-            "qwerty"
+                "Passw0rd",
+                "Password123",
+                "password",
+                "Password!",
+                "123456",
+                "1234567",
+                "12345678",
+                "123456789",
+                "12345678910",
+                "qwerty"
         );
 
         // blacklist users inputted password
+        String email = (String) lookupRequestObject.get("email");
         for (int i = 0; i < blacklistedValues.size(); i++) {
             if (password.equals(blacklistedValues.get(i)) == true) {
                 this.duplicateFound = true;
@@ -89,7 +90,6 @@ public class RegisterService {
     /* https://www.techiedelight.com/validate-password-java/
      * https://mkyong.com/regular-expressions/how-to-validate-password-with-regular-expression/ */
     private String passwordVerifier(String password, String email, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
-
         if (PASSWORD_PATTERN.matcher(password).matches()) {
             return this.commitNewUser(email, password, request);
         } else {
@@ -98,15 +98,19 @@ public class RegisterService {
     }
 
     private String commitNewUser(String email, String password, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
-        String uuid = UUID.randomUUID().toString();
-        String randomVerificationCode = RandomString.make(64);
-        String emailPassword = email + password;
-        this.passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = this.passwordEncoder.encode(emailPassword);
-        User newUser = new User(0, email, encodedPassword, uuid, false, randomVerificationCode, null, 0, false, null, null);
-        usersRepository.save(newUser);
-        sendVerificationEmail(newUser, request);
-        return "User successfully registered! Check your email to verify your new account!";
+        try {
+            String uuid = UUID.randomUUID().toString();
+            String randomVerificationCode = RandomString.make(64);
+            String emailPassword = email + password;
+            this.passwordEncoder = new BCryptPasswordEncoder();
+            String encodedPassword = this.passwordEncoder.encode(emailPassword);
+            User newUser = new User(0, email, encodedPassword, uuid, false, randomVerificationCode, null, 0, false, null, null);
+            usersRepository.save(newUser);
+            sendVerificationEmail(newUser, request);
+            return "User successfully registered! Check your email to verify your new account!";
+        } catch (IllegalStateException ex) {
+            throw new IllegalStateException("Uh oh, database shenanigans!");
+        }
     }
 
     private void sendVerificationEmail(User newUser, HttpServletRequest request) throws UnsupportedEncodingException, MessagingException {
