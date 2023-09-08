@@ -76,10 +76,86 @@ Once you have the prerequisites installed, you can follow these steps:
 
 1. Clone the repository: `git clone https://github.com/jallen2034/passwordKeeperSpringBoot.git`
 2. Navigate to the backend directory: `cd passwordKeeperSpringBoot`
-3. Create a PostgreSQL database for the application locally on your machine. I recommend doing so in WSL if you are on Windows like me.
-4. Import the database schema by running the provided SQL script. You can find the Entity-Relationship Diagram (ERD) for the database to do this [here](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/ERD/ERD.PNG).
-5. Build the project: `mvn clean install`
-6. Run the application: `mvn spring-boot:run`
+
+### Database Setup
+4. Before proceeding, ensure you have PostgreSQL installed and running on your machine.
+5. Create a PostgreSQL database for the application locally on your machine. For Windows users, I recommended to use Windows Subsystem for Linux (WSL) for database setup, as it can simplify the process. If you're not using WSL, make sure you have PostgreSQL properly configured.
+6. Open your terminal and log into your PostgreSQL database using the command:
+```
+psql -U your_username
+```
+7. Create a New Database: Run the following SQL command in the PostgreSQL terminal to create a new database named PasswordKeeperDB. This database will store application data:
+
+```sql
+CREATE DATABASE PasswordKeeperDB;
+```
+
+5. Import the database schema by running the provided SQL script in the PostgreSQL terminal. The script defines the necessary tables and relationships for the application. You can find the Entity-Relationship Diagram (ERD) for the database  [here](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/ERD/ERD.PNG).
+
+```sql
+-- Create the 'users_organizations' table to manage relationships between users and organizations.
+CREATE TABLE "users_organizations" (
+    "id" SERIAL PRIMARY KEY,
+    "user_id" INTEGER NOT NULL,
+    "organization_id" INTEGER NOT NULL
+);
+
+-- Create the 'passwords' table to store password-related information.
+CREATE TABLE "passwords" (
+    "id" SERIAL PRIMARY KEY,
+    "user_id" INTEGER NOT NULL,
+    "organization_id" INTEGER NOT NULL,
+    "category" VARCHAR(255) NOT NULL,
+    "url" VARCHAR(255) NOT NULL,
+    "password_text" VARCHAR(255) NOT NULL,
+    "pwned" BOOLEAN NOT NULL
+);
+
+-- Create the 'organizations' table to store organization details.
+CREATE TABLE "organizations" (
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR(255) NOT NULL
+);
+
+-- Create the 'users' table to store user account information.
+CREATE TABLE "users" (
+    "id" SERIAL PRIMARY KEY,
+    "email" VARCHAR(255) NOT NULL,
+    "master_password" VARCHAR(255) NOT NULL,
+    "enabled" BOOLEAN NOT NULL,
+    "verification_code" VARCHAR(255) NOT NULL,
+    "timestampPwReset" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+    "failed_attempt" INTEGER NOT NULL,
+    "account_non_locked" BOOLEAN NOT NULL,
+    "lock_time" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL
+);
+
+-- Define foreign key constraints to establish relationships between tables.
+-- Set these up so a user can be a part of many organizations and an organization can have many users.
+
+-- Define a foreign key from 'users_organizations' to 'organizations'.
+ALTER TABLE "users_organizations"
+    ADD CONSTRAINT "fk_users_org_organization_id"
+        FOREIGN KEY("organization_id") REFERENCES "organizations"("id");
+
+-- Define a foreign key from 'passwords' to 'organizations'.
+ALTER TABLE "passwords"
+    ADD CONSTRAINT "fk_passwords_org_organization_id"
+        FOREIGN KEY("organization_id") REFERENCES "organizations"("id");
+
+-- Define a foreign key from 'passwords' to 'users'.
+ALTER TABLE "passwords"
+    ADD CONSTRAINT "fk_passwords_user_user_id"
+        FOREIGN KEY("user_id") REFERENCES "users"("id");
+
+-- Define a foreign key from 'users_organizations' to 'users'.
+ALTER TABLE "users_organizations"
+    ADD CONSTRAINT "fk_users_org_user_id"
+        FOREIGN KEY("user_id") REFERENCES "users"("id");
+```
+
+6. Build the Spring Boot project by running the following command in the terminal: `mvn clean install`
+7. Start the application by running the following command in the terminal: `mvn spring-boot:run`
 
 I'm currently planning to dockerize this app to simplify the setup process. I understand that setting this up manually can be a hassle.
 
