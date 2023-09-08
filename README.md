@@ -46,6 +46,23 @@ Database:
 
 **Workaround:** While I work on a fix, you can try register a user from the registration page, then manually update the 'enabled' flag for that user from the Postgres DB from 'False' to 'True' to then bypass the email verification and login. 
 
+1. Open your terminal and log into your PostgreSQL database using the following command (replace `your_username` with your actual PostgreSQL username):
+```bash
+psql -U your_username
+```
+2. Connect to the database (assuming you've already followed the setup steps):
+
+```sql
+\c passwordkeeper
+```
+3. Run the following SQL command to update the 'enabled' status of all existing users to 'TRUE,' enabling them to log in without email verification:
+
+```sql
+UPDATE users
+SET enabled = true;
+```
+This workaround will allow users to access their accounts until we resolve the email issue. I appreciate your patience as I work on a permanent solution.
+
 ### TODO
 
 - Enhance the project by migrating away from Create-React-App and adopting Next.js. This will unlock server-side rendering (SSR) capabilities and a host of other features, taking the user experience to the next level.
@@ -81,7 +98,7 @@ Once you have the prerequisites installed, you can follow these steps:
 4. Before proceeding, ensure you have PostgreSQL installed and running on your machine.
 5. Create a PostgreSQL database for the application locally on your machine. For Windows users, I recommended to use Windows Subsystem for Linux (WSL) for database setup, as it can simplify the process. If you're not using WSL, make sure you have PostgreSQL properly configured.
 6. Open your terminal and log into your PostgreSQL database using the command:
-```
+```bash
 psql -U your_username
 ```
 7. Create a New Database: Run the following SQL command in the PostgreSQL terminal to create a new database named PasswordKeeperDB. This database will store application data:
@@ -89,45 +106,54 @@ psql -U your_username
 ```sql
 CREATE DATABASE PasswordKeeperDB;
 ```
+Now connect to the database: 
 
-5. Import the database schema by running the provided SQL script in the PostgreSQL terminal. The script defines the necessary tables and relationships for the application. You can find the Entity-Relationship Diagram (ERD) for the database  [here](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/ERD/ERD.PNG).
+```sql
+\c passwordkeeper
+```
+
+5. Import the database schema by running the provided SQL script in the PostgreSQL terminal while connected ot the database. The script defines the necessary tables and relationships for the application. You can find the Entity-Relationship Diagram (ERD) for the database  [here](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/ERD/ERD.PNG).
+
+(Note: As this application is primarily intended for experimentation and learning purposes, some database fields have been left as nullable (not marked as 'NOT NULL'). In a production environment, it's strongly recommended to enforce data integrity by making these fields 'NOT NULL' wherever applicable for improved reliability and security)
+
+Now 
 
 ```sql
 -- Create the 'users_organizations' table to manage relationships between users and organizations.
 CREATE TABLE "users_organizations" (
     "id" SERIAL PRIMARY KEY,
-    "user_id" INTEGER NOT NULL,
-    "organization_id" INTEGER NOT NULL
+    "user_id" INTEGER,
+    "organization_id" INTEGER
 );
 
 -- Create the 'passwords' table to store password-related information.
 CREATE TABLE "passwords" (
     "id" SERIAL PRIMARY KEY,
-    "user_id" INTEGER NOT NULL,
-    "organization_id" INTEGER NOT NULL,
-    "category" VARCHAR(255) NOT NULL,
-    "url" VARCHAR(255) NOT NULL,
-    "password_text" VARCHAR(255) NOT NULL,
-    "pwned" BOOLEAN NOT NULL
+    "user_id" INTEGER,
+    "organization_id" INTEGER,
+    "category" VARCHAR(255),
+    "url" VARCHAR(255),
+    "password_text" VARCHAR(255),
+    "pwned" BOOLEAN
 );
 
 -- Create the 'organizations' table to store organization details.
 CREATE TABLE "organizations" (
     "id" SERIAL PRIMARY KEY,
-    "name" VARCHAR(255) NOT NULL
+    "name" VARCHAR(255)
 );
 
 -- Create the 'users' table to store user account information.
 CREATE TABLE "users" (
     "id" SERIAL PRIMARY KEY,
-    "email" VARCHAR(255) NOT NULL,
-    "master_password" VARCHAR(255) NOT NULL,
-    "enabled" BOOLEAN NOT NULL,
-    "verification_code" VARCHAR(255) NOT NULL,
-    "timestampPwReset" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
-    "failed_attempt" INTEGER NOT NULL,
-    "account_non_locked" BOOLEAN NOT NULL,
-    "lock_time" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL
+    "email" VARCHAR(255),
+    "master_password" VARCHAR(255),
+    "enabled" BOOLEAN,
+    "verification_code" VARCHAR(255),
+    "timestampPwReset" TIMESTAMP(0) WITHOUT TIME ZONE,
+    "failed_attempt" INTEGER,
+    "account_non_locked" BOOLEAN,
+    "lock_time" TIMESTAMP(0) WITHOUT TIME ZONE
 );
 
 -- Define foreign key constraints to establish many-to-many relationships between tables.
@@ -244,4 +270,4 @@ Reset password Error:
 
 Reset password success:
 
-!["Reset pw failure pw"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/passwordResetSuccess.png)
+!["Reset pw failure pw"](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/Screenshots/pas
