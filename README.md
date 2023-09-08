@@ -130,8 +130,8 @@ CREATE TABLE "users" (
     "lock_time" TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL
 );
 
--- Define foreign key constraints to establish relationships between tables.
--- Set these up so a user can be a part of many organizations and an organization can have many users.
+-- Define foreign key constraints to establish many-to-many relationships between tables.
+-- Set these up to allow a user to be associated with multiple organizations and an organization to have multiple users.
 
 -- Define a foreign key from 'users_organizations' to 'organizations'.
 ALTER TABLE "users_organizations"
