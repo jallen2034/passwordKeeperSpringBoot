@@ -49,6 +49,7 @@ Database:
 ### TODO
 
 - Enhance the project by migrating away from Create-React-App and adopting Next.js. This will unlock server-side rendering (SSR) capabilities and a host of other features, taking the user experience to the next level.
+- Containerize both the Frontend and Backend using Docker to streamline and accelerate development processes.
 - Write unit tests for my API using Junit.
 - Write tests for my components on the frontend using the React Testing Library + jest. 
 - Set up a CI pipeline for testing.
@@ -59,7 +60,6 @@ Database:
 - Fix styling on the frontend to make the app responsive on all screen sizes.
 - For each password displayed to the user, tell them how strong or weak it is. If it is too weak, suggest they change it to something stronger.
 - Add a search bar to the password vault.
-- Containerize both the Frontend and Backend using Docker to streamline and accelerate development processes.
   
 ### TypeScript Integration
 
