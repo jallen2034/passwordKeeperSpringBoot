@@ -1,10 +1,10 @@
+import React from "react";
 import { ToastContainer } from "react-toastify"
 import { Redirect } from "react-router-dom"
 import ButtonAppBar from "../Appbar/Appbar"
 import Register from "../Register/Register"
+import {AppState} from "../../app-types";
 import '@fontsource/roboto/300.css'
-import {AppState} from "../../App";
-import React from "react";
 
 type RegisterPageProps = {
   history: any,
@@ -19,27 +19,23 @@ function RegisterPage(props: RegisterPageProps) {
     setApplicationState
   } = props;
 
-  if (!applicationState.enabledUser && !applicationState.currentUserUuid) {
-    return (
-      <>
+  return (
+    <>
+      {(!applicationState.enabledUser && !applicationState.currentUserUuid) ? (
         <div className="App">
           <ButtonAppBar
             history={history}
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />
-          <Register/>
-        </div>
-        <div>
+          <Register />
           <ToastContainer position="bottom-center" autoClose={4000} />
         </div>
-      </>
-    )
-  } else {
-    return (
-      <Redirect to={{ pathname: '/vault' }} />
-    )
-  }
+      ) : (
+        <Redirect to={{ pathname: '/vault' }} />
+      )}
+    </>
+  )
 }
 
 export default RegisterPage

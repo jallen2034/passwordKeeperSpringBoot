@@ -11,7 +11,7 @@ import {AppState} from "./app-types";
 import '@fontsource/roboto/300.css'
 
 function App() {
-  const history = useHistory()
+  const history: any = useHistory()
 
   // Application state stored in a single clean finite state machine
   const [applicationState, setApplicationState] = useState<AppState>({
@@ -25,11 +25,14 @@ function App() {
     enabledUser: null
   });
 
+  console.log("applicationState: ", applicationState);
+
   // Only check the status of the users session once when the top level app component mounts
   useEffect(() => {
     detectUsersSession(setApplicationState);
   }, []);
 
+  // Use React router to set up our client side routes. SPA, no Next.js SSR goodness :(
   return (
     <>
       <Switch>

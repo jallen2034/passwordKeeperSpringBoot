@@ -1,3 +1,4 @@
+import React, {useEffect} from "react";
 import { useParams, Redirect } from "react-router-dom"
 import { Button, Typography } from '@material-ui/core'
 import { verifyUser } from '../../network-requests/axiosCalls'
@@ -5,9 +6,8 @@ import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
+import {AppState} from "../../app-types";
 import '@fontsource/roboto/300.css'
-import {AppState} from "../../App";
-import React, {useEffect} from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,11 +68,11 @@ function VerificationPage(props: VerificationPageProps) {
   const classes: any = useStyles()
   const params: any = useParams()
 
-  useEffect(() => {
-    if (!applicationState.verified) {
-      verifyUser(params.code, setApplicationState)
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!applicationState.verified) {
+  //     verifyUser(params.code, setApplicationState)
+  //   }
+  // }, []);
 
   if (params) {
     return (

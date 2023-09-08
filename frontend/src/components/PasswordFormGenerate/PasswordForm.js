@@ -1,7 +1,6 @@
-import { React, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import { saveNewPasswrodForm } from '../../network-requests/axiosCalls.tsx'
-import 'react-toastify/dist/ReactToastify.css'
+import { useState } from 'react';
+import { saveNewPasswrodForm } from '../../network-requests/axiosCalls.tsx';
+import {useStyles} from "./Password-form-styes";
 import {
   Button,
   Select,
@@ -12,7 +11,8 @@ import {
   Checkbox,
   FormControlLabel,
   MenuItem
-} from '@material-ui/core'
+} from '@material-ui/core';
+import 'react-toastify/dist/ReactToastify.css';
 
 const categories = [
   "Social",
@@ -20,55 +20,34 @@ const categories = [
   "Entertainment"
 ]
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  divContainer: {
-    padding: '25px',
-    borderRadius: '15px',
-    backgroundColor: '#e9ecef',
-    display: 'flex',
-    flexDirection: "column",
-    width: '750px'
-  },
-  slider: {
-    marginTop: '10px',
-    marginTop: '10px'
-  }
-}))
-
 function PasswordForm({ sessionUuid }) {
-  const classes = useStyles()
-  const [category, setCategory] = useState('')
-  const [url, setUrl] = useState('')
-  const [sliderValue, setSliderValue] = useState('')
+  const classes = useStyles();
+
+  const [category, setCategory] = useState('');
+  const [url, setUrl] = useState('');
+  const [sliderValue, setSliderValue] = useState('');
   const [checked, setChecked] = useState({
     uppercase: false,
     lowercase: false,
     numbers: false,
     symbols: false
-  })
+  });
 
   const handleCategoryChange = (event) => {
-    setCategory(event.target.value)
+    setCategory(event.target.value);
   }
 
   const handleCheckChange = (event) => {
-    setChecked({ ...checked, [event.target.name]: event.target.checked })
+    setChecked({ ...checked, [event.target.name]: event.target.checked });
   }
 
   const onChange = (event) => {
-    setUrl(event.target.value)
+    setUrl(event.target.value);
   }
 
   function valuetext(value) {
-    setSliderValue(value)
-    return { value }
+    setSliderValue(value);
+    return { value };
   }
 
   return (

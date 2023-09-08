@@ -1,3 +1,4 @@
+import React, {ChangeEvent, useEffect, useState} from "react"
 import {ToastContainer} from "react-toastify"
 import {useParams} from "react-router-dom"
 import {Button, Typography} from '@material-ui/core'
@@ -7,8 +8,7 @@ import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
 import '@fontsource/roboto/300.css'
 import {makeStyles} from '@material-ui/core/styles'
-import React, {ChangeEvent, useEffect, useState} from "react"
-import {AppState} from "../../App";
+import {AppState} from "../../app-types";
 
 // test
 const useStyles = makeStyles((theme) => ({

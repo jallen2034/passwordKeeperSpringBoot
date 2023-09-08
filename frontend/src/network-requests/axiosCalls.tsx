@@ -1,10 +1,10 @@
+import React from "react";
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Grid from '@material-ui/core/Grid'
 import PasswordEntry from '../components/PasswordEntry/PasswordEntry'
-import {AppState} from "../App";
-import React from "react";
+import {AppState} from "../app-types";
 let generator = require('generate-password')
 
 // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
@@ -292,16 +292,42 @@ const resetUsersPassword = function (
     })
 }
 
-const verifyResetFormValid = function (paramsCode: any, setEmailValid: any) {
+const saveNewPassword = function (
+  event: any,
+  sessionUuid: any,
+  passwordText: any,
+  category: any,
+  url: any,
+) {
+  if (!passwordText) {
+    return toast.error("You can't create an empty password!")
+  } else if (!category) {
+    return toast.error("You can't create an empty category!")
+  }
 
+  axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
+    .then((response: any) => {
+      if (response) {
+        toast.success(response.data);
+      }
+    }).catch((error) => {
+    if (error) {
+      toast.error(error.response.data.message);
+    }
+  })
+}
+
+const verifyResetFormValid = function (paramsCode: any, setEmailValid: any) {
   axios.post("http://localhost:8080/verifyResetFormValid", { verificationCode: paramsCode })
     .then((response: any) => {
       if (response) {
         response.data ? setEmailValid(true) : setEmailValid(false)
       }
     }).catch((error) => {
+      console.error(error);
     })
 }
+
 
 export {
   deletePassword,
@@ -315,5 +341,6 @@ export {
   verifyUser,
   sendPasswordResetEmail,
   resetUsersPassword,
-  verifyResetFormValid
+  verifyResetFormValid,
+  saveNewPassword
 }

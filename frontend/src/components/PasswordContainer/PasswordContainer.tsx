@@ -4,8 +4,9 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import 'react-toastify/dist/ReactToastify.css'
 import { retrieveUsersPasswords} from "../../network-requests/axiosCalls";
 import Grid from '@material-ui/core/Grid'
+
 import '@fontsource/roboto'
-import {AppState} from "../../App";
+import {AppState} from "../../app-types";
 
 // styling  component
 const useStyles = makeStyles((theme) => ({

@@ -3,28 +3,23 @@ import { ToastContainer } from "react-toastify"
 import { Redirect } from "react-router-dom"
 import ButtonAppBar from "../Appbar/Appbar"
 import SignIn from "../Login/login";
-import {LoginPageProps} from "../Login/login-types";
+import {LoginPageProps} from "./login-page-types";
 import {AppState} from "../../app-types";
 import '@fontsource/roboto/300.css'
 
 function LoginPage( props: LoginPageProps ) {
-  const {
-    history,
-    applicationState,
-    setApplicationState
-  } = props;
+  const { history, applicationState, setApplicationState } = props;
 
-  useEffect(() => {
-    setApplicationState((prevState: AppState) => ({
-      ...prevState,
-      verified: null
-    }));
-  }, [])
+  // Reset the users verified status in the application state when the user navigates to the login page
+  // useEffect(() => {
+  //   setApplicationState((prevState: AppState) => ({ ...prevState, verified: null }));
+  // }, [])
 
-  if (!applicationState.enabledUser && !applicationState.currentUserUuid) {
-    return (
-      <>
-        <div className="App">
+  // Conditionally render the login page or redirect to the vault if the user is logged in
+  return (
+    <>
+      {(!applicationState.enabledUser && !applicationState.currentUserUuid) ? (
+        <>
           <ButtonAppBar
             history={history}
             applicationState={applicationState}
@@ -35,17 +30,13 @@ function LoginPage( props: LoginPageProps ) {
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />
-        </div>
-        <div>
           <ToastContainer position="bottom-center" autoClose={4000} />
-        </div>
-      </>
-    )
-  } else {
-    return (
-      <Redirect to={{ pathname: '/vault' }} />
-    )
-  }
+        </>
+      ) : (
+        <Redirect to={{ pathname: '/vault' }} />
+      )}
+    </>
+  )
 }
 
 export default LoginPage

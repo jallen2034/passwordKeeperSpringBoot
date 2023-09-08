@@ -1,3 +1,4 @@
+import React from "react";
 import { Button, Typography } from '@material-ui/core'
 import { ToastContainer } from "react-toastify"
 import Box from '@material-ui/core/Box'
@@ -5,9 +6,8 @@ import TextField from '@material-ui/core/TextField'
 import Paper from '@material-ui/core/Paper'
 import { sendPasswordResetEmail } from '../../network-requests/axiosCalls'
 import { makeStyles } from '@material-ui/core/styles'
+import {AppState} from "../../app-types";
 import '@fontsource/roboto/300.css'
-import {AppState} from "../../App";
-import React from "react";
 
 // https://stackoverflow.com/questions/60969224/how-to-override-muipaper-root-style-in-material-table
 const useStyles = makeStyles((theme) => ({

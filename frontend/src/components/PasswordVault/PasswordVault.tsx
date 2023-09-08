@@ -1,8 +1,8 @@
 import React from 'react'
 import PasswordComposer from '../PasswordComposer/PasswordComposer'
 import PasswordContainer from '../PasswordContainer/PasswordContainer'
+import {AppState} from "../../app-types";
 import 'react-toastify/dist/ReactToastify.css'
-import {AppState} from "../../App";
 
 type PasswordVaultProps = {
   applicationState: AppState,
@@ -24,7 +24,9 @@ function PasswordVault(props: PasswordVaultProps) {
           setApplicationState={setApplicationState}
         />
         :
-        <PasswordComposer sessionUuid={applicationState.currentUserUuid} />
+        <PasswordComposer
+          sessionUuid={applicationState.currentUserUuid}
+        />
       }
     </div>
   )

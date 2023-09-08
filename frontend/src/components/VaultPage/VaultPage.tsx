@@ -1,10 +1,10 @@
-import { ToastContainer, toast } from "react-toastify"
+import { ToastContainer } from "react-toastify"
 import { Redirect } from "react-router-dom"
 import PasswordVault from "../PasswordVault/PasswordVault"
 import ButtonAppBar from "../Appbar/Appbar"
-import '@fontsource/roboto/300.css'
 import {AppState} from "../../app-types";
 import React from "react";
+import '@fontsource/roboto/300.css'
 
 type VaultPageProps = {
   history: any,
@@ -19,9 +19,9 @@ function VaultPage(props: VaultPageProps) {
     setApplicationState
   } = props;
 
-  if (applicationState.enabledUser && applicationState.currentUserUuid) {
-    return (
-      <>
+  return (
+    <>
+      {(applicationState.enabledUser && applicationState.currentUserUuid) ? (
         <div className="App">
           <ButtonAppBar
             history={history}
@@ -32,17 +32,13 @@ function VaultPage(props: VaultPageProps) {
             applicationState={applicationState}
             setApplicationState={setApplicationState}
           />
-        </div>
-        <div>
           <ToastContainer position="bottom-center" autoClose={4000} />
         </div>
-      </>
-    )
-  } else {
-    return (
-      <Redirect to={{ pathname: '/login' }} />
-    )
-  }
+      ) : (
+        <Redirect to={{ pathname: '/login' }} />
+      )}
+    </>
+  );
 }
 
 export default VaultPage
