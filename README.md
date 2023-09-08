@@ -63,7 +63,7 @@ enabled
   
 ### TypeScript Integration
 
-Since the project's inception, TypeScript has been incrementally added to enhance type safety and code quality.
+Since the project's inception, TypeScript has been incrementally added to enhance type safety and improved code quality.
 
 ### Setup Instructions (Backend)
 
