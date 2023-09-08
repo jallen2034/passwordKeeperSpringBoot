@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react"
-import LoginPage from "./components/LoginPage/Loginpage."
-import RegisterPage from "./components/RegisterPage/RegisterPage"
+import LoginPage from "./Pages/LoginPage/Loginpage."
+import RegisterPage from "./Pages/RegisterPage/RegisterPage"
 import VaultPage from "./components/VaultPage/VaultPage"
-import VerificationPage from "./components/VerificationPage/VerificationPage"
-import PwResetPage from "./components/PwResetPage/PwResetPage"
+import VerificationPage from "./Pages/VerificationPage/VerificationPage"
+import PwResetPage from "./Pages/PwResetPage/PwResetPage"
 import PwResetForm from "./components/PwResetForm/PwResetForm"
 import {detectUsersSession} from "./app-helpers";
 import { Route, Switch, useHistory } from "react-router-dom"
@@ -24,8 +24,6 @@ function App() {
     currentUserUuid: null,
     enabledUser: null
   });
-
-  console.log("applicationState: ", applicationState);
 
   // Only check the status of the users session once when the top level app component mounts
   useEffect(() => {

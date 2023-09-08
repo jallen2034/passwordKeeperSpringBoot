@@ -8,7 +8,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {useStyles} from "./register-styles";
-import {Copyright} from "../Copyright";
+import {Copyright} from "../Copyright/Copyright";
 import {RegisterForm} from "./register-types";
 import {handleInputChange, handleSubmit} from "./register-helpers";
 import 'react-toastify/dist/ReactToastify.css';

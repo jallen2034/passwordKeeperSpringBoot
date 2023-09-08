@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import {SignInProps} from "./login-types";
 import {useStyles} from "./login-styles";
 import {openResetPasswordPage} from "./helpers";
-import {Copyright} from "../Copyright";
+import {Copyright} from "../Copyright/Copyright";
 import 'react-toastify/dist/ReactToastify.css';
 
 function SignIn(props: SignInProps) {

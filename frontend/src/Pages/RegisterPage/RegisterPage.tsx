@@ -1,8 +1,8 @@
 import React from "react";
 import { ToastContainer } from "react-toastify"
 import { Redirect } from "react-router-dom"
-import ButtonAppBar from "../Appbar/Appbar"
-import Register from "../Register/Register"
+import ButtonAppBar from "../../components/Appbar/Appbar"
+import Register from "../../components/Register/Register"
 import {AppState} from "../../app-types";
 import '@fontsource/roboto/300.css'
 

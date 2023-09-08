@@ -244,14 +244,18 @@ const saveNewPasswrodForm = function (
     })
 }
 
-const verifyUser = function (params: any, setVerified: any) {
-
+const verifyUser = function (
+  params: any,
+  setApplicationState:  React.Dispatch<React.SetStateAction<AppState>>
+  ) {
   axios.post("http://localhost:8080/verify", { params })
     .then((response: any) => {
-      setVerified(response.data)
-      return true
+      setApplicationState((prevState: AppState) => ({
+        ...prevState,
+        verified: response.data
+      }));
     }).catch((error) => {
-      return false
+      console.error(error);
     })
 }
 

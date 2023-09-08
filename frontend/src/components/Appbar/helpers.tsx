@@ -63,7 +63,6 @@ const buttonClick = function (
     handleRegisterStateChange(setApplicationState, false);
     return history.push("/login")
   }
-
 }
 
 // Define a reusable function to create buttons

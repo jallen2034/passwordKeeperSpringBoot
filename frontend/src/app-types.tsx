@@ -1,6 +1,6 @@
 export type AppState = {
   register: boolean;
-  verified: null | any;
+  verified: null | string;
   passwordResetEmail: null | any;
   newPassword: null | any;
   newConfirmPassword: null | any;

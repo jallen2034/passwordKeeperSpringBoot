@@ -1,6 +1,6 @@
 import { ToastContainer } from "react-toastify"
 import { Redirect } from "react-router-dom"
-import PasswordVault from "../PasswordVault/PasswordVault"
+import PasswordVault from "../../Pages/PasswordVaultPage/PasswordVault"
 import ButtonAppBar from "../Appbar/Appbar"
 import {AppState} from "../../app-types";
 import React from "react";

@@ -1,6 +1,6 @@
 import React from 'react'
-import PasswordComposer from '../PasswordComposer/PasswordComposer'
-import PasswordContainer from '../PasswordContainer/PasswordContainer'
+import PasswordComposer from '../../components/PasswordComposer/PasswordComposer'
+import PasswordContainer from '../../components/PasswordContainer/PasswordContainer'
 import {AppState} from "../../app-types";
 import 'react-toastify/dist/ReactToastify.css'
 
