@@ -42,8 +42,7 @@ Database:
 
 **Registration Email Issue:** Currently, the registration process may not work as expected due to an issue with the Spring Boot starter mail service. The demo mail account used for sending verification emails has become inactive after two years. I apologize for the inconvenience.
 
-**Status:** Investigating a long-term solution to restore email functionality.
-enabled
+**Status:** Currently investigating a long-term solution to restore email functionality.
 
 **Workaround:** While I work on a fix, you can try register a user from the registration page, then manually update the 'enabled' flag for that user from the Postgres DB from 'False' to 'True' to then bypass the email verification and login. 
 
@@ -51,6 +50,7 @@ enabled
 
 - Enhance the project by migrating away from Create-React-App and adopting Next.js. This will unlock server-side rendering (SSR) capabilities and a host of other features, taking the user experience to the next level.
 - Write unit tests for my API using Junit.
+- Write tests for my components on the frontend using the React Testing Library + jest. 
 - Set up a CI pipeline for testing.
 - Clean up clutter/unnecessary files in the repo.
 - Refactor backend Java code to be more clear and readable.
@@ -63,14 +63,14 @@ enabled
   
 ### TypeScript Integration
 
-Since the project's inception, TypeScript has been incrementally added to enhance type safety and improved code quality.
+TypeScript has been incrementally added to enhance type safety and improved code quality.
 
 ### Setup Instructions (Backend)
 
 To run the backend of the project, you'll need to have the following prerequisites:
 
-- Java Development Kit (JDK) 11 or later
-- Apache Maven
+- Java Development Kit (JDK) 11 or later.
+- Apache Maven.
 
 Once you have the prerequisites installed, you can follow these steps:
 
