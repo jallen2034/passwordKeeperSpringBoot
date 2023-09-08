@@ -57,7 +57,7 @@ public class EditPasswordService {
                 if (passwordId == passwordIdToEdit) {
                     String encryptedPassword = encrypt(newPassword, userMasterPassword );
                     singlePassword.setPassword_text(encryptedPassword);
-                    singlePassword.setPwned(isPwned );git
+                    singlePassword.setPwned(isPwned );
                     usersRepository.save(userFromDb);
                     return newPassword;
                 }

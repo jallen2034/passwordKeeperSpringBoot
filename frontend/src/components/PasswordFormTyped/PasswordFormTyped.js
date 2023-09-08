@@ -1,9 +1,8 @@
-import { React, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import axios from 'axios'
-import { Button, Select, TextField, FormControl, MenuItem } from '@material-ui/core'
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { useState } from 'react';
+import { Button, Select, TextField, FormControl, MenuItem } from '@material-ui/core';
+import {saveNewPassword} from "../../network-requests/axiosCalls";
+import {useStyles} from "./Password-form-typed-styles";
+import 'react-toastify/dist/ReactToastify.css';
 
 const categories = [
   "Social",
@@ -11,46 +10,10 @@ const categories = [
   "Entertainment"
 ]
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  divContainer: {
-    padding: '25px',
-    borderRadius: '15px',
-    backgroundColor: '#e9ecef',
-    display: 'flex',
-    flexDirection: "column",
-    width: '750px'
-  }
-}))
-
-const saveNewPasswrod = function (event, sessionUuid, passwordText, category, url) {
-
-  if (!passwordText) {
-    return toast.error("You can't create an empty password!")
-  } else if (!category) {
-    return toast.error("You can't create an empty category!")
-  }
-
-  axios.post("http://localhost:8080/passwords/create", { sessionUuid, passwordText, category, url })
-    .then((response) => {
-      if (response) {
-        toast.success(response.data)
-      }
-    }).catch((error) => {
-      if (error) {
-        toast.error(error.response.data.message)
-      }
-    })
-}
-
 function PasswordFormTyped({ sessionUuid }) {
-  const classes = useStyles()
+  const classes = useStyles();
+
+  // Pass form typed state
   const [category, setCategory] = useState('')
   const [url, setUrl] = useState('')
   const [passwordText, setPasswordText] = useState('')
@@ -91,7 +54,13 @@ function PasswordFormTyped({ sessionUuid }) {
           passwordText={passwordText}
           onChange={onPasswordTextChange}
         />
-        <Button onClick={(event) => saveNewPasswrod(event, sessionUuid, passwordText, category, url)}>Generate Password</Button>
+        <Button onClick={(event) => saveNewPassword(
+          event,
+          sessionUuid,
+          passwordText,
+          category,
+          url
+        )}>Generate Password</Button>
       </FormControl>
     </div>
   )
