@@ -13,11 +13,11 @@ Languages:
 - Java 11
 - JavaScript
 - TypeScript
-- SQL
+- SQL (Postgres)
 
 Libraries and Frameworks
 
-- React with Material-UI
+- React with Create-React-App and Material-UI
 - Spring Boot with Spring Data JPA and Spring Security
 
 Database:
@@ -38,8 +38,18 @@ Database:
 - Users can create, edit and delete passwords from their password vault.
 - Sections of the app are protected from improper use/access with React Router.
 
+### Known Issues
+
+**Registration Email Issue:** Currently, the registration process may not work as expected due to an issue with the Spring Boot starter mail service. The demo mail account used for sending verification emails has become inactive after two years. We apologize for the inconvenience.
+
+**Status:** Investigating a long-term solution to restore email functionality.
+enabled
+
+**Workaround:** While I work on a fix, you can try register a user from the registration page, then manually update the 'enabled' flag for that user from the Postgres DB from 'False' to 'True' to then bypass the email verification and login. 
+
 ### TODO
 
+- Enhance the project by migrating away from Create-React-App and adopting Next.js. This will unlock server-side rendering (SSR) capabilities and a host of other features, taking the user experience to the next level.
 - Write unit tests for my API using Junit.
 - Set up a CI pipeline for testing.
 - Clean up clutter/unnecessary files in the repo.
@@ -50,7 +60,7 @@ Database:
 - For each password displayed to the user, tell them how strong or weak it is. If it is too weak, suggest they change it to something stronger.
 - Add a search bar to the password vault.
 - Containerize both the Frontend and Backend using Docker to streamline and accelerate development processes.
-
+  
 ### TypeScript Integration
 
 Since the project's inception, TypeScript has been incrementally added to enhance type safety and code quality.
@@ -66,8 +76,12 @@ Once you have the prerequisites installed, you can follow these steps:
 
 1. Clone the repository: `git clone https://github.com/jallen2034/passwordKeeperSpringBoot.git`
 2. Navigate to the backend directory: `cd passwordKeeperSpringBoot`
-3. Build the project: `mvn clean install`
-4. Run the application: `mvn spring-boot:run`
+3. Create a PostgreSQL database for the application locally on your machine. I recommend doing so in WSL if you are on Windows like me.
+4. Import the database schema by running the provided SQL script. You can find the Entity-Relationship Diagram (ERD) for the database to do this [here](https://github.com/jallen2034/passwordKeeperSpringBoot/blob/master/docs/ERD/ERD.PNG).
+5. Build the project: `mvn clean install`
+6. Run the application: `mvn spring-boot:run`
+
+I'm currently planning to dockerize this app to simplify the setup process. I understand that setting this up manually can be a hassle.
 
 ### Setup Instructions (Frontend)
 
