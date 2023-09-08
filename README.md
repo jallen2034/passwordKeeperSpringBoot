@@ -2,16 +2,17 @@
 
 Created by Jacob Allen. This project is a work in progress.
 
-PasswordKeepR is a storage system for passwords for personal use. The app will let a user generate a new password for their logged in account (just like LastPass). Users will be able to generate a password based on the options the form will provide. Some of the options are: password length, contains lowercase, contairs uppercase, contains numbers, and contains symbols.
+PasswordKeepR is a storage system for passwords for personal use. The app will let a user generate a new password for their logged-in account (just like LastPass). Users will be able to generate a password based on the options the form will provide. Some of the options are: password length, contains lowercase, contains uppercase, contains numbers, and contains symbols.
 
-If a user needs to log in to a specific website (e.g. Facebook) they can go into the app, find the appropriate password, they can also click a button which copies the password into the clipboard, and log in.
+If a user needs to log in to a specific website (e.g., Facebook), they can go into the app, find the appropriate password, they can also click a button which copies the password into the clipboard and log in.
 
-## Tech stack
+### Tech Stack
 
 Languages:
 
 - Java 11
 - JavaScript
+- TypeScript
 - SQL
 
 Libraries and Frameworks
@@ -23,31 +24,63 @@ Database:
 
 - PostgreSQL
 
-## Features
+### Features
 
 - Full user registration and login.
-- Encryption of all users master passwords using Bcrypt and a salt being the users email address (like LastPass).
-- Users email addresses are fully encrypted and decrypted using AES like I did for their passwords in the password vaults. Less plaintext.
-- All user passwords stored in each users password vault are fully encrypted using AES. Each users master password (which is a hashed email + password using bcrypt) is used as a key to encrypt and decrypt all of the passwords in each users password vault. Better security, no more plaintext!
-- Added a limit on how many times a user can attempt ot login with an incorrect password. Lock out their account on too many attempts for 20 minutes. Preventing brute force attacks.
-- Used the have i been pwned API to inform a user if any of the passwords in their password vault have been in a data breach, and urging them to change it if so. 
+- Encryption of all user's master passwords using Bcrypt and a salt being the user's email address (like LastPass).
+- Users' email addresses are fully encrypted and decrypted using AES like I did for their passwords in the password vaults. Less plaintext.
+- All user passwords stored in each user's password vault are fully encrypted using AES. Each user's master password (which is a hashed email + password using bcrypt) is used as a key to encrypt and decrypt all of the passwords in each user's password vault. Better security, no more plaintext!
+- Added a limit on how many times a user can attempt to log in with an incorrect password. Lock out their account on too many attempts for 20 minutes. Preventing brute force attacks.
+- Used the have i been pwned API to inform a user if any of the passwords in their password vault have been in a data breach, and urging them to change it if so.
 - Email verification of user accounts upon creation.
 - Users can reset their master password via their email if they forget it.
-- There is a 20 minute timeout on the password reset email when sent before it is rendered invalid.
+- There is a 20-minute timeout on the password reset email when sent before it is rendered invalid.
 - Users can create, edit and delete passwords from their password vault.
 - Sections of the app are protected from improper use/access with React Router.
 
-## TODO
+### TODO
 
 - Write unit tests for my API using Junit.
-- Setup a CI pipeline for testing.
-- Clean up clutter/unnecessary files in repo.
+- Set up a CI pipeline for testing.
+- Clean up clutter/unnecessary files in the repo.
 - Refactor backend Java code to be more clear and readable.
 - Refactor react frontend code to be more clear and readable.
-- Setup a way to handle database migrations from one version to the next.
-- Fix styling on frontend to make app responsive on all screen sizes.
+- Set up a way to handle database migrations from one version to the next.
+- Fix styling on the frontend to make the app responsive on all screen sizes.
 - For each password displayed to the user, tell them how strong or weak it is. If it is too weak, suggest they change it to something stronger.
-- Add search bar to password vault.
+- Add a search bar to the password vault.
+- Containerize both the Frontend and Backend using Docker to streamline and accelerate development processes.
+
+### TypeScript Integration
+
+Since the project's inception, TypeScript has been incrementally added to enhance type safety and code quality.
+
+### Setup Instructions (Backend)
+
+To run the backend of the project, you'll need to have the following prerequisites:
+
+- Java Development Kit (JDK) 11 or later
+- Apache Maven
+
+Once you have the prerequisites installed, you can follow these steps:
+
+1. Clone the repository: `git clone https://github.com/jallen2034/passwordKeeperSpringBoot.git`
+2. Navigate to the backend directory: `cd passwordKeeperSpringBoot`
+3. Build the project: `mvn clean install`
+4. Run the application: `mvn spring-boot:run`
+
+### Setup Instructions (Frontend)
+
+To run the frontend of the project, you'll need to have the following prerequisites:
+
+- Node.js
+- npm
+
+Once you have the prerequisites installed, you can follow these steps:
+
+1. Navigate to the frontend directory: `cd frontend`
+2. Install dependencies: `npm install`
+3. Start the development server: `npm start`
 
 ## Screenshots
 
