@@ -22,7 +22,6 @@ public class EditPasswordController {
     @PostMapping("/passwords/edit")
     public String editPassword(@RequestBody Map<String, Object> lookupRequestObject) throws Exception {
         System.out.println(lookupRequestObject);
-        String message = editPasswordService.editPasswordForUser(lookupRequestObject);
-        return message;
+        return editPasswordService.editPasswordForUser(lookupRequestObject);
     }
 }
