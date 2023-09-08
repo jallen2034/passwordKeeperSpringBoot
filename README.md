@@ -40,7 +40,7 @@ Database:
 
 ### Known Issues
 
-**Registration Email Issue:** Currently, the registration process may not work as expected due to an issue with the Spring Boot starter mail service. The demo mail account used for sending verification emails has become inactive after two years. We apologize for the inconvenience.
+**Registration Email Issue:** Currently, the registration process may not work as expected due to an issue with the Spring Boot starter mail service. The demo mail account used for sending verification emails has become inactive after two years. I apologize for the inconvenience.
 
 **Status:** Investigating a long-term solution to restore email functionality.
 enabled
